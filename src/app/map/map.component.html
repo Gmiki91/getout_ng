@@ -1,5 +1,10 @@
-<div class="map-container">
-    <div class="map-frame">
-      <div id="map"></div>
-    </div>
-  </div>
+<google-map 
+  height="400px"
+  width="750px"
+  [center]="center"
+  [zoom]="zoom"
+  (mapClick)="moveMap($event)"
+  (mapMousemove)="move($event)" />
+
+<div>Latitude: {{display?.lat}}</div>
+<div>Longitude: {{display?.lng}}</div>
