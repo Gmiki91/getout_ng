@@ -12,7 +12,7 @@ import { MapComponent } from './map/map.component';
     EventListComponent,
     EventListComponent,
     HeaderComponent,
-    MapComponent,
+    MapComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
