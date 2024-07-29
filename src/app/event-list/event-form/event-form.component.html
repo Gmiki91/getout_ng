@@ -1,0 +1,36 @@
+<div class="backdrop"></div>
+<dialog open>
+  <h2>Add Task</h2>
+  <form (ngSubmit)="onSubmit()">
+    <p>
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" [(ngModel)]="title"/>
+    </p>
+
+    <p>
+      <label for="location">Location</label>
+      <input type="text" id="location"  name="location" [(ngModel)]="location"/>
+    </p>
+
+    <p>
+      <label for="date">Date</label>
+      <input type="date" id="date" name="date" [(ngModel)]="date"/>
+    </p>
+
+    <p>
+      <label for="min">Minimum people</label>
+      <input type="number" id="min" name="min" [(ngModel)]="min"/>
+    </p>
+
+    <p>
+      <label for="max">Maxiimum people</label>
+      <input type="number" id="max" name="max" [(ngModel)]="max"/>
+    </p>
+
+
+    <p class="actions">
+      <button type="button" (click)="onClose()">Cancel</button>
+      <button type="submit">Create</button>
+    </p>
+  </form>
+</dialog>

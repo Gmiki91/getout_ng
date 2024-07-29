@@ -1,1 +1,8 @@
-<app-event/>
+@for(event of events; track event.id){
+    <app-event [event]="event"/>
+
+}
+<button (click)="onCreateEvent()">New event</button>
+@if(openForm){
+    <app-event-form (closing)="onCloseForm()"/>
+}
