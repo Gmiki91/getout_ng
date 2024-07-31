@@ -1,22 +1,25 @@
 import { Injectable } from '@angular/core';
 import { NewEventData, Event } from './event/event.model';
-
+import { HttpClient } from "@angular/common/http";
+import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
+import {  Observable,map } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class EventsService {
   events: Event[] = [];
+  url = environment.url + 'events';
+  constructor(private http: HttpClient, private router: Router) { }
 
   addEvent(event: NewEventData): void {
-    const submitableEvent: Event = {
-      id: '' + new Date().getTime(),
-      joined: 0,
-      ...event,
-    };
-    this.events.unshift(submitableEvent);
-  }
+    this.http.post<{ status: string }>(`${this.url}`, event).subscribe(result => {
+        console.log(result);
+  })
+}
 
-  getEvents(): Event[] {
-    return this.events;
+  getEvents(): Observable<Event[]> {
+    return this.http.get<any>(`${this.url}`).pipe(
+      map(response => response._embedded.events));
   }
 }

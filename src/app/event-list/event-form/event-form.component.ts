@@ -13,7 +13,7 @@ import { EventsService } from '../events.service';
 export class EventFormComponent {
   title=signal('');
   location=signal('');
-  date=signal(0);
+  time=signal('');
   min=signal(0);
   max=signal(0);
   closing=output<boolean>();
@@ -27,7 +27,7 @@ export class EventFormComponent {
     this.eventsService.addEvent({
       title:this.title(),
       location:this.location(),
-      date:this.date(),
+      time:this.time(),
       min:this.min(),
       max:this.max()
     })

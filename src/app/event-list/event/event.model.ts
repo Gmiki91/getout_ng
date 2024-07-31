@@ -1,8 +1,8 @@
 export type Event={
-    id:string,
+    id:number,
     title:string,
     location:string,
-    date:number,
+    time:string,
     joined:number;
     min?:number;
     max?:number;
@@ -11,7 +11,7 @@ export type Event={
 export type NewEventData={
     title:string,
     location:string,
-    date:number,
+    time:string,
     min?:number;
     max?:number;
 }
