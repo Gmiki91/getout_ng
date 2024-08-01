@@ -14,9 +14,14 @@
 
     <p>
       <label for="date">Date</label>
-      <input type="date" id="time" name="time" [(ngModel)]="time"/>
+      <input type="date" id="date" name="date" [(ngModel)]="date"/>
     </p>
 
+    <p>
+      <label for="hour">Time</label>
+      <input required type="number" min="0" max="24" id="hour" name="hour" [(ngModel)]="hour"/>
+      <input required type="number" min="0" max="60" id="minute" name="minute" [(ngModel)]="minute"/>
+    </p>
     <p>
       <label for="min">Minimum people</label>
       <input type="number" id="min" name="min" [(ngModel)]="min"/>

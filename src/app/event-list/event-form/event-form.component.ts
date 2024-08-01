@@ -13,7 +13,9 @@ import { EventsService } from '../events.service';
 export class EventFormComponent {
   title=signal('');
   location=signal('');
-  time=signal('');
+  date=signal('');
+  hour=signal(0);
+  minute=signal(0);
   min=signal(0);
   max=signal(0);
   closing=output<boolean>();
@@ -24,10 +26,14 @@ export class EventFormComponent {
     this.closing.emit(true)
   }
   onSubmit(){
+    const time  = new Date(this.date());
+    time.setHours(this.hour());
+    time.setMinutes(this.minute());
+    const dateTime = time.getTime();
     this.eventsService.addEvent({
       title:this.title(),
       location:this.location(),
-      time:this.time(),
+      time:dateTime,
       min:this.min(),
       max:this.max()
     })

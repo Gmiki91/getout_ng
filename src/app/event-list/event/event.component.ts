@@ -1,9 +1,10 @@
 import { Component,input} from '@angular/core';
 import { Event } from './event.model';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-event',
   standalone: true,
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './event.component.html',
   styleUrl: './event.component.scss',
 })
