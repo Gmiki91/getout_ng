@@ -1,0 +1,11 @@
+<div (click)="closePopup()" class="backdrop"></div>
+<dialog open>
+<div class="event">
+    <span>{{event().title}}</span>
+    <span>{{event().time | date:'medium'}}</span>
+    <span>{{event().location}}</span>
+    <span>{{event().joined}} / {{event().max}}</span>
+    <span>{{event().info}}</span>
+    <button (click)=join()>Join</button>
+</div>
+</dialog>
