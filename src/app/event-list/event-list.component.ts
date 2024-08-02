@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit,inject } from '@angular/core';
 import { EventComponent } from './event/event.component';
 import { EventFormComponent } from './event-form/event-form.component';
 import { EventsService } from './events.service';
@@ -11,12 +11,12 @@ import { Event } from './event/event.model';
   styleUrl: './event-list.component.scss'
 })
 export class EventListComponent implements OnInit {
+  private eventsService=inject(EventsService);
   openForm=false;
-  events:Event[] = [];
+  events = this.eventsService.allEvents;
 
-  constructor(private eventsService:EventsService){}
   ngOnInit(): void {
-      this.eventsService.getEvents().subscribe(events=>{this.events=events});
+      this.eventsService.getEvents();
   }
   onCreateEvent(){
     this.openForm=true;

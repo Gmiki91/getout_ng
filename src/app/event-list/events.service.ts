@@ -1,24 +1,34 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { NewEventData, Event } from './event/event.model';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-import {  Observable,map } from 'rxjs';
-@Injectable({
-  providedIn: 'root',
-})
+import { Observable, tap } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
 export class EventsService {
-  events: Event[] = [];
+  private events = signal<Event[]>([]);
   url = environment.url + 'events';
-  constructor(private http: HttpClient, private router: Router) { }
+  allEvents = this.events.asReadonly();
 
-  addEvent(event: NewEventData): Observable<{status:string}> {
-   return this.http.post<{ status: string }>(`${this.url}`, event)
+  constructor(private http: HttpClient, private router: Router) {}
 
-}
+  addEvent(event: NewEventData): Observable<Event> {
+    return this.http
+      .post<Event>(`${this.url}`, event)
+      .pipe(tap((event) => this.events.update((events) => [...events, event])));
+  }
 
-  getEvents(): Observable<Event[]> {
-    return this.http.get<any>(`${this.url}`).pipe(
-      map(response => response._embedded.events));
+  getEvents():void {
+    this.http.get<any>(`${this.url}`).subscribe((response) => {
+      this.events.set(response._embedded.events);
+    });
+  }
+
+  remove(id: number):void {
+    this.http.delete(`${this.url}/${id}`).subscribe((result) => {
+      const updatedEvents = this.events().filter((event) => event.id != id);
+      this.events.set(updatedEvents);
+    });
   }
 }
