@@ -1,5 +1,5 @@
-import { Component, output, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, output } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { EventsService } from '../events.service';
 
 @Component({
@@ -7,36 +7,39 @@ import { EventsService } from '../events.service';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './event-form.component.html',
-  styleUrl: './event-form.component.scss'
+  styleUrl: './event-form.component.scss',
 })
-
 export class EventFormComponent {
-  title=signal('');
-  location=signal('');
-  date=signal('');
-  hour=signal(0);
-  minute=signal(0);
-  min=signal(0);
-  max=signal(0);
-  closing=output<boolean>();
+  closing = output<boolean>();
+  minPeople = 2;
+  constructor(private eventsService: EventsService) {}
 
-  constructor(private eventsService: EventsService ){}
-
-  onClose(){
-    this.closing.emit(true)
+  onClose() {
+    this.closing.emit(true);
   }
-  onSubmit(){
-    const time  = new Date(this.date());
-    time.setHours(this.hour());
-    time.setMinutes(this.minute());
-    const dateTime = time.getTime();
-    this.eventsService.addEvent({
-      title:this.title(),
-      location:this.location(),
-      time:dateTime,
-      min:this.min(),
-      max:this.max()
-    })
-    this.onClose();
+  onSubmit(form: NgForm) {
+    if (form.valid) {
+      const {title,location,date,hour,minute,min,max} = form.form.value
+      const time = new Date(date);
+      time.setHours(hour);
+      time.setMinutes(minute);
+      const dateTime = time.toISOString();
+      this.eventsService
+        .addEvent({
+          title: title,
+          location: location,
+          time: dateTime,
+          min: min,
+          max: max
+        })
+        .subscribe({
+          next: () => {
+            this.onClose();
+          },
+          error: (error) => {
+            console.error('Error adding event:', error);
+          },
+        });
+    }
   }
 }

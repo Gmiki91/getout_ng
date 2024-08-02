@@ -12,10 +12,9 @@ export class EventsService {
   url = environment.url + 'events';
   constructor(private http: HttpClient, private router: Router) { }
 
-  addEvent(event: NewEventData): void {
-    this.http.post<{ status: string }>(`${this.url}`, event).subscribe(result => {
-        console.log(result);
-  })
+  addEvent(event: NewEventData): Observable<{status:string}> {
+   return this.http.post<{ status: string }>(`${this.url}`, event)
+
 }
 
   getEvents(): Observable<Event[]> {
