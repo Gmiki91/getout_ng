@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { UserService } from '../user.service';
 
 @Component({
@@ -8,10 +8,7 @@ import { UserService } from '../user.service';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent  {
   userService = inject(UserService);
-  username = ''
-  ngOnInit(): void {
-      this.username = this.userService.getUsername();
-  }
+  username = computed(()=>this.userService.user().name);
 }
