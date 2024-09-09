@@ -14,6 +14,10 @@ export class EventComponent {
   eventsService = inject(EventsService);
 
   remove(){
-    this.eventsService.remove(this.event().id);
+    this.eventsService.removeEvent(this.event().id);
+  }
+
+  join(){
+    this.eventsService.joinEvent(this.event().id);
   }
 }
