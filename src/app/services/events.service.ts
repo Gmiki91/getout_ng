@@ -1,5 +1,5 @@
-import { Injectable, signal, computed } from '@angular/core';
-import { NewEventData, Event } from './event/event.model';
+import { Injectable, signal } from '@angular/core';
+import { NewEventData, Event } from '../models/event.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
@@ -21,7 +21,11 @@ export class EventsService {
   addEvent(event: NewEventData): Observable<Event> {
     return this.http
       .post<Event>(`${this.url}`, event)
-      .pipe(tap((event) => this._yourEvents.update((events) => [...events, event])));
+      .pipe(tap((event) => {
+        this._yourEvents.update((events) => [...events, event]);
+        this.events.update((events) => [...events, event]);
+      }
+      ));
   }
 
   getEvents(): void {
@@ -33,15 +37,11 @@ export class EventsService {
     });
   }
 
-  removeEvent(id: number): void {
+  removeEvent(id: string): void {
     this.http.delete(`${this.url}/${id}`).subscribe((result) => {
       const updatedEvents = this.events().filter((event) => event.id != id);
       this.events.set(updatedEvents);
     });
-  }
-
-  joinEvent(id:number):void{
-    
   }
 
   private filterEvents(events: Event[]): void {

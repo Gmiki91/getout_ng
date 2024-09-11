@@ -1,6 +1,6 @@
 import { Component, output } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { EventsService } from '../events.service';
+import { EventsService } from '../../services/events.service';
 
 @Component({
   selector: 'app-event-form',

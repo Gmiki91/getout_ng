@@ -1,5 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
-import { UserService } from '../user.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-header',

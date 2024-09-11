@@ -1,5 +1,5 @@
 import { Component,input,output } from '@angular/core';
-import { Event } from '../event/event.model';
+import { Event } from '../../models/event.model';
 import { DatePipe } from '@angular/common';
 
 @Component({

@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { EventListComponent } from './event-list/event-list.component';
 import { HeaderComponent } from './header/header.component';
 import { MapComponent } from './map/map.component';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',

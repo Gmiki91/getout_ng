@@ -1,7 +1,7 @@
 import { Component,OnInit,inject } from '@angular/core';
 import { EventComponent } from './event/event.component';
 import { EventFormComponent } from './event-form/event-form.component';
-import { EventsService } from './events.service';
+import { EventsService } from '../services/events.service';
 import { EventDetailsComponent } from './event-details/event-details.component';
 @Component({
   selector: 'app-event-list',
