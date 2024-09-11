@@ -16,7 +16,7 @@ export class EventsService {
   yourEvents = this._yourEvents.asReadonly();
   otherEvents = this._otherEvents.asReadonly();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   addEvent(event: NewEventData): Observable<Event> {
     return this.http
@@ -29,12 +29,12 @@ export class EventsService {
   }
 
   getEvents(): void {
-    this.http.get<any>(`${this.url}`).subscribe((response) => {
-      const events = response._embedded.events;
-      this.events.set(events);
-      if(events[0])
-      this.filterEvents(events);
-    });
+    const id = localStorage.getItem("uuid")
+    this.http.get<{ joinedEvents: Event[], otherEvents: Event[] }>(`${this.url}/${id}`).subscribe((response) => {
+      console.log(response)
+      this._yourEvents.set(response.joinedEvents);
+      this._otherEvents.set(response.otherEvents);
+    })
   }
 
   removeEvent(id: string): void {
@@ -42,19 +42,5 @@ export class EventsService {
       const updatedEvents = this.events().filter((event) => event.id != id);
       this.events.set(updatedEvents);
     });
-  }
-
-  private filterEvents(events: Event[]): void {
-    let currentUser = "???"
-    if(this.isLocalStorageAvailable)
-     currentUser = localStorage.getItem('username')||"???";
-    // const yourEvents = events.filter((event) =>
-    //    event.joined.filter((name) => name == currentUser)
-    // );
-    // this._yourEvents.set(yourEvents);
-    // const otherEvents = events.filter((event) =>
-    //   event.joined.filter((name) => name != currentUser)
-    // );
-    // this._otherEvents.set(otherEvents);
   }
 }

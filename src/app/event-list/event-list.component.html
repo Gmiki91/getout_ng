@@ -1,12 +1,12 @@
 <label>Your upcoming events</label>
-@for(event of events(); track event.id){
+@for(event of joinedEvents(); track event.id){
     <app-event (click)="onDetails()"  [event]="event"/>
     @if(openDetails){
         <app-event-details (closeDialog)="onDetails()" [event]="event"></app-event-details>
     }
 }
 <label>Other events</label>
-@for(event of events(); track event.id){
+@for(event of otherEvents(); track event.id){
     <app-event (click)="onDetails()"  [event]="event"/>
     @if(openDetails){
         <app-event-details (closeDialog)="onDetails()" [event]="event"></app-event-details>
