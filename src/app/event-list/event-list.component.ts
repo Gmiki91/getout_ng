@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { Event } from '../models/event.model';
 import { EventComponent } from './event/event.component';
 import { EventFormComponent } from './event-form/event-form.component';
 import { EventsService } from '../services/events.service';
@@ -14,7 +15,7 @@ import { EventDetailsComponent } from './event-details/event-details.component';
 export class EventListComponent {
   private eventsService = inject(EventsService);
   openForm = false;
-  openDetails = false;
+  selectedEvent: Event | null = null
   joinedEvents = this.eventsService.yourEvents;
   otherEvents = this.eventsService.otherEvents;
 
@@ -24,20 +25,23 @@ export class EventListComponent {
   onCloseForm() {
     this.openForm = false;
   }
-  onDetails() {
-    this.openDetails = !this.openDetails;
+  onDetails(event: Event): void {
+    this.selectedEvent = event;
+  }
+  onCloseDetails(): void {
+    this.selectedEvent = null; 
   }
   onJoinEvent(eventId:string) {
       this.eventsService.joinEvent(eventId);
-      this.onDetails();
+      this.onCloseDetails();
   }
   onLeaveEvent(eventId:string){
       this.eventsService.leaveEvent(eventId);
-      this.onDetails();
+      this.onCloseDetails();
   }
 
-  onRemoveEvent(eventId:string) {
-    this.eventsService.removeEvent(eventId);
-    this.onDetails();
+  onDeleteEvent(eventId:string) {
+    this.eventsService.deleteEvent(eventId);
+    this.onCloseDetails();
   }
 }

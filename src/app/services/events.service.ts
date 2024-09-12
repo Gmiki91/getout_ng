@@ -29,7 +29,7 @@ export class EventsService {
   }
 
   getEvents(): void {
-    this.http.get<{ joinedEvents: Event[], otherEvents: Event[] }>(`${this.url}/${this.userId}`).subscribe((response) => {
+    this.http.get<{ joinedEvents: Event[], otherEvents: Event[] }>(`${this.url}/user/${this.userId}`).subscribe((response) => {
       this._yourEvents.set(response.joinedEvents);
       this._otherEvents.set(response.otherEvents);
     })
@@ -45,8 +45,8 @@ export class EventsService {
 
   leaveEvent(eventId: string): void { }
 
-  removeEvent(id: string): void {
-    this.http.delete(`${this.url}/${id}`).subscribe((result) => {
+  deleteEvent(id: string): void {
+    this.http.delete(`${this.url}/${id}`).subscribe(() => {
       const updatedEvents = this._yourEvents().filter((event) => event.id != id);
       this._yourEvents.set(updatedEvents);
     });

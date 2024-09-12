@@ -14,7 +14,7 @@ export class EventDetailsComponent {
   event=input.required<Event>();
   joined=input.required<boolean>();
   participation = output<boolean>();
-  removeEvent = output();
+  deleteEvent = output();
   closeDialog = output();
 
   onJoin():void{
@@ -25,8 +25,8 @@ export class EventDetailsComponent {
     this.participation.emit(false);
   }
 
-  onRemoveEvent():void{
-    this.removeEvent.emit();
+  onDelete():void{
+    this.deleteEvent.emit();
   }
 
   onCloseDialog():void{
