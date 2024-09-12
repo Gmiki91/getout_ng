@@ -7,15 +7,16 @@ import { Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class EventsService {
-  url = environment.url + 'events';
+  private url = environment.url + 'events';
+  private bridgeUrl = environment.url + 'user-events'
   private isLocalStorageAvailable = typeof localStorage !== 'undefined';
-  private events = signal<Event[]>([]);
+  // private events = signal<Event[]>([]);
   private _yourEvents = signal<Event[]>([]);
   private _otherEvents = signal<Event[]>([]);
-  allEvents = this.events.asReadonly();
+  // allEvents = this.events.asReadonly();
   yourEvents = this._yourEvents.asReadonly();
   otherEvents = this._otherEvents.asReadonly();
-
+  private userId = localStorage.getItem("uuid");
   constructor(private http: HttpClient, private router: Router) { }
 
   addEvent(event: NewEventData): Observable<Event> {
@@ -23,24 +24,31 @@ export class EventsService {
       .post<Event>(`${this.url}`, event)
       .pipe(tap((event) => {
         this._yourEvents.update((events) => [...events, event]);
-        this.events.update((events) => [...events, event]);
       }
       ));
   }
 
   getEvents(): void {
-    const id = localStorage.getItem("uuid")
-    this.http.get<{ joinedEvents: Event[], otherEvents: Event[] }>(`${this.url}/${id}`).subscribe((response) => {
-      console.log(response)
+    this.http.get<{ joinedEvents: Event[], otherEvents: Event[] }>(`${this.url}/${this.userId}`).subscribe((response) => {
       this._yourEvents.set(response.joinedEvents);
       this._otherEvents.set(response.otherEvents);
     })
   }
 
+  joinEvent(eventId: string): void {
+    this.http.post<Event>(`${this.bridgeUrl}/join/${this.userId}/${eventId}`, null,).subscribe((joinedEvent) => {
+      console.log("joined event ", eventId);
+      this._yourEvents.update(events => [...events, joinedEvent]);
+      this._otherEvents.update(events => events.filter(event => event.id !== eventId));
+    });
+  }
+
+  leaveEvent(eventId: string): void { }
+
   removeEvent(id: string): void {
     this.http.delete(`${this.url}/${id}`).subscribe((result) => {
-      const updatedEvents = this.events().filter((event) => event.id != id);
-      this.events.set(updatedEvents);
+      const updatedEvents = this._yourEvents().filter((event) => event.id != id);
+      this._yourEvents.set(updatedEvents);
     });
   }
 }

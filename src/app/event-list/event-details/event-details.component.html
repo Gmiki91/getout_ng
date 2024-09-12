@@ -1,4 +1,4 @@
-<div (click)="closePopup()" class="backdrop"></div>
+<div (click)=onCloseDialog() class="backdrop"></div>
 <dialog open>
 <div class="event">
     <span>{{event().title}}</span>
@@ -6,6 +6,10 @@
     <span>{{event().location}}</span>
     <span>{{event().joined}} / {{event().max}}</span>
     <span>{{event().info}}</span>
-    <button (click)=join()>Join</button>
+    @if (joined()) {
+        <button (click)=onLeave()>Leave</button>
+    }@else{
+        <button (click)=onJoin()>Join</button>
+    }
 </div>
 </dialog>

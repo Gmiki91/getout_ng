@@ -1,8 +1,6 @@
-import { Component,input,inject} from '@angular/core';
+import { Component,input} from '@angular/core';
 import { Event } from '../../models/event.model';
 import { DatePipe } from '@angular/common';
-import { EventsService } from '../../services/events.service';
-import { UserEventService } from '../../services/userEvent.service';
 @Component({
   selector: 'app-event',
   standalone: true,
@@ -12,14 +10,4 @@ import { UserEventService } from '../../services/userEvent.service';
 })
 export class EventComponent {
   event=input.required<Event>();
-  eventsService = inject(EventsService);
-  userEventService =inject(UserEventService)
-
-  remove(){
-    this.eventsService.removeEvent(this.event().id);
-  }
-
-  join(){
-    this.userEventService.joinEvent(this.event().id);
-  }
 }

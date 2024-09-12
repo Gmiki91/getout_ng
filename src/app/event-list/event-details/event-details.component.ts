@@ -12,12 +12,24 @@ import { DatePipe } from '@angular/common';
 
 export class EventDetailsComponent {
   event=input.required<Event>();
+  joined=input.required<boolean>();
+  participation = output<boolean>();
+  removeEvent = output();
   closeDialog = output();
 
-  join():void{
+  onJoin():void{
+    this.participation.emit(true);
+  }
+  
+  onLeave():void{
+    this.participation.emit(false);
   }
 
-  closePopup():void{
+  onRemoveEvent():void{
+    this.removeEvent.emit();
+  }
+
+  onCloseDialog():void{
     this.closeDialog.emit();
   }
 }
