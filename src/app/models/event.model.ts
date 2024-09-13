@@ -16,4 +16,5 @@ export type NewEventData={
     min:number;
     max?:number;
     info?:string;
+    ownerId?:string
 }
