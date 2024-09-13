@@ -35,20 +35,30 @@ export class EventsService {
     })
   }
 
-  joinEvent(eventId: string): void {
-    this.http.post<Event>(`${this.bridgeUrl}/join/${this.userId}/${eventId}`, null,).subscribe((joinedEvent) => {
-      console.log("joined event ", eventId);
-      this._yourEvents.update(events => [...events, joinedEvent]);
-      this._otherEvents.update(events => events.filter(event => event.id !== eventId));
+  deleteEvent(eventId: string): void {
+    this.http.delete(`${this.url}/${eventId}`).subscribe(() => {
+      const updatedEvents = this._yourEvents().filter((event) => event.id != eventId);
+      this._yourEvents.set(updatedEvents);
     });
   }
 
-  leaveEvent(eventId: string): void { }
+  joinEvent(eventId: string): void {
+    this.http.post<Event>(`${this.bridgeUrl}/${this.userId}/join/${eventId}`, null,).subscribe(() => {
+      const joinedEvent = this._otherEvents().find(event=>event.id==eventId);
+      if(joinedEvent){
+      this._yourEvents.update(events => [...events, joinedEvent]);
+      this._otherEvents.update(events => events.filter(event => event.id !== eventId));
+      }
+    });
+  }
 
-  deleteEvent(id: string): void {
-    this.http.delete(`${this.url}/${id}`).subscribe(() => {
-      const updatedEvents = this._yourEvents().filter((event) => event.id != id);
-      this._yourEvents.set(updatedEvents);
+  leaveEvent(eventId: string): void {
+    this.http.delete(`${this.bridgeUrl}/${eventId}/participants/${this.userId}`).subscribe(() => {
+      const removedEvent = this._yourEvents().find(event=>event.id==eventId);
+      if(removedEvent){
+      this._otherEvents.update(events => [...events, removedEvent]);
+      this._yourEvents.update(events => events.filter(event => event.id !== eventId));
+      }
     });
   }
 }
