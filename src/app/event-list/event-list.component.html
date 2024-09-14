@@ -1,20 +1,23 @@
-<label>Your upcoming events</label>
-@for(event of joinedEvents(); track event.id){
-<app-event (click)="onDetails(event)" [event]="event" />
-@if(selectedEvent && selectedEvent.id === event.id){
-<app-event-details [event]="event" [joined]="true" (participation)="onLeaveEvent(event.id)" (closeDialog)="onCloseDetails()"
-    (deleteEvent)="onDeleteEvent(event.id)"></app-event-details>
-}
-}
-<label>Other events</label>
-@for(event of otherEvents(); track event.id){
-<app-event (click)="onDetails(event)" [event]="event" />
-@if(selectedEvent && selectedEvent.id === event.id){
-<app-event-details [event]="event" [joined]="false" (participation)="onJoinEvent(event.id)" (closeDialog)="onCloseDetails()">
-</app-event-details>
-}
-}
-<button (click)="onCreateEvent()">New event</button>
-@if(openForm){
-<app-event-form (closing)="onCloseForm()"/>
-}
+<div class="container">
+    <label>Your upcoming events</label>
+    @for(event of joinedEvents(); track event.id){
+    <app-event (click)="onDetails(event)" [event]="event" />
+    @if(selectedEvent && selectedEvent.id === event.id){
+    <app-event-details [event]="event" [joined]="true" (participation)="onLeaveEvent(event.id)"
+        (closeDialog)="onCloseDetails()" (deleteEvent)="onDeleteEvent(event.id)"></app-event-details>
+    }
+    }
+    <label>Other events</label>
+    @for(event of otherEvents(); track event.id){
+    <app-event (click)="onDetails(event)" [event]="event" />
+    @if(selectedEvent && selectedEvent.id === event.id){
+    <app-event-details [event]="event" [joined]="false" (participation)="onJoinEvent(event.id)"
+        (closeDialog)="onCloseDetails()">
+    </app-event-details>
+    }
+    }
+    <button (click)="onCreateEvent()">New event</button>
+    @if(openForm){
+    <app-event-form (closing)="onCloseForm()" />
+    }
+</div>
