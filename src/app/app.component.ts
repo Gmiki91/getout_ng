@@ -4,6 +4,7 @@ import { EventListComponent } from './event-list/event-list.component';
 import { HeaderComponent } from './header/header.component';
 import { MapComponent } from './map/map.component';
 import { UserService } from './services/user.service';
+import { FilterBarComponent } from "./filter-bar/filter-bar.component";
 
 @Component({
   selector: 'app-root',
@@ -13,8 +14,9 @@ import { UserService } from './services/user.service';
     EventListComponent,
     EventListComponent,
     HeaderComponent,
-    MapComponent
-  ],
+    MapComponent,
+    FilterBarComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
