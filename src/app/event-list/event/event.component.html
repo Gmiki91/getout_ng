@@ -2,5 +2,5 @@
     <span>{{event().title}}</span>
     <span>{{event().time | date:'medium'}}</span>
     <span>{{event().location}}</span>
-    <span>{{event().joined}} / {{event().max}}</span>
+    <span>{{event().participants.length}} / {{event().max}}</span>
 </div>

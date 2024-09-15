@@ -4,7 +4,7 @@
     <span>{{event().title}}</span>
     <span>{{event().time | date:'medium'}}</span>
     <span>{{event().location}}</span>
-    <span>{{event().joined}} / {{event().max}}</span>
+    <span>{{event().participants}} / {{event().max}}</span>
     <span>{{event().info}}</span>
     @if (joined()) {
         <button (click)="onLeave()">Leave</button>
