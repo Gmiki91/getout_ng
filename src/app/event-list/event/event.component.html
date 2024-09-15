@@ -1,6 +1,6 @@
 <div class="event">
     <span>{{event().title}}</span>
-    <span>{{event().time | date:'medium'}}</span>
+    <span>{{event().time | timeUntil}}</span>
     <span>{{event().location}}</span>
     <span>{{event().participants.length}} / {{event().max}}</span>
 </div>

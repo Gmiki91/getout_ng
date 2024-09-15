@@ -1,10 +1,10 @@
 import { Component,input} from '@angular/core';
 import { Event } from '../../models/event.model';
-import { DatePipe } from '@angular/common';
+import { TimeUntilPipe } from '../../time-until.pipe';
 @Component({
   selector: 'app-event',
   standalone: true,
-  imports: [DatePipe],
+  imports: [TimeUntilPipe],
   templateUrl: './event.component.html',
   styleUrl: './event.component.scss',
 })
