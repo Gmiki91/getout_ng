@@ -1,61 +1,47 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { GoogleMap } from '@angular/google-maps';
+import { GoogleMap, MapMarker, MapInfoWindow } from '@angular/google-maps';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [GoogleMap],
+  imports: [GoogleMap, MapMarker,
+    MapInfoWindow],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
-  center: google.maps.LatLngLiteral = { lat: 47.5, lng: 19.07 };
+  center: google.maps.LatLngLiteral = { lat: 24, lng: 12 };
   zoom = 14;
-  display!: google.maps.LatLngLiteral;
-  address:string='';
-  options: google.maps.MapOptions ={
-    disableDefaultUI:true
+  markerOptions: google.maps.MarkerOptions = { draggable: false };
+  markerPositions: google.maps.LatLngLiteral[] = [];
+
+  ngOnInit(): void {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.center = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+      }
+    )
   }
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
-  ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          this.center = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          console.log(this.center);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
-  }
-
-  moveMap(event: google.maps.MapMouseEvent) {
-    this.center = event.latLng!.toJSON();
-    console.log(event.latLng!.toJSON());
-    const latlng = event.latLng;
+  addMarker(event: google.maps.MapMouseEvent) {
+    this.markerPositions.push(event.latLng!.toJSON());
     const geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ location: latlng }, (results, status) => {
+    geocoder.geocode({ location: event.latLng }, (results, status) => {
       if (status === 'OK') {
         if (results![0]) {
-          this.address = results![0].formatted_address;
-          this.zoom=19;
+          this.zoom = 19;
+          this.center = {
+            lat: event.latLng!.lat(),
+            lng: event.latLng!.lng()}
+          console.log(results![0].formatted_address);
         } else {
-          console.log('No results found');
+          console.log('error');
         }
-      } else {
-        console.log('Geocoder failed due to: ' + status);
       }
-    });
-  }
-
-  move(event: google.maps.MapMouseEvent) {
-    this.display = event.latLng!.toJSON();
+    })
   }
 }

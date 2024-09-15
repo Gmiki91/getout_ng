@@ -1,9 +1,9 @@
 <div class="container">
-  <google-map class="map" [height]="null" [width]="null" [center]="center" [zoom]="zoom" [options]="options"
-    (mapClick)="onMapClick($event)" (mapMousemove)="move($event)">
-    @for (location of locations; track location) {
-    <map-advanced-marker #markerElem="mapAdvancedMarker" [position]="{ lat: location.lat, lng: location.lng }" />
+  <google-map class="map" [height]="null" [width]="null" [center]="center" [zoom]="zoom"
+    (mapClick)="addMarker($event)">
+    @for (position of markerPositions; track position) {
+      <map-marker [position]="position" [options]="markerOptions" />
     }
   </google-map>
-  <div>Address: {{address}}</div>
+ 
 </div>
