@@ -11,7 +11,7 @@
   </p>
   <p>
       <mat-label for="location">Location</mat-label>
-      <input matInput required type="text" id="location" name="location" ngModel #location="ngModel" />
+      <input #locationField matInput required type="text" id="location" name="location" ngModel #location="ngModel" />
     </p>
     @if (location.invalid && (location.dirty || location.touched)){
     <span>Location is required</span>

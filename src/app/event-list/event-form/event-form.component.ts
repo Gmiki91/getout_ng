@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { AfterViewInit, Component, output, ViewChild,ElementRef } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { EventsService } from '../../services/events.service';
 import {MatInputModule} from '@angular/material/input';
@@ -11,11 +11,19 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.scss',
 })
-export class EventFormComponent {
+export class EventFormComponent implements AfterViewInit {
   closing = output<boolean>();
   minPeople = 2;
+  autocomplete: google.maps.places.Autocomplete | undefined;
+  @ViewChild('locationField')
+  locationField!: ElementRef;
   constructor(private eventsService: EventsService) {}
 
+  ngAfterViewInit(): void {
+    this.autocomplete = new google.maps.places.Autocomplete(
+      this.locationField.nativeElement
+    );
+  }
   onClose() {
     this.closing.emit(true);
   }
