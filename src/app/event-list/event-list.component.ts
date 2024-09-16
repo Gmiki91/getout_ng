@@ -4,11 +4,13 @@ import { EventComponent } from './event/event.component';
 import { EventFormComponent } from './event-form/event-form.component';
 import { EventsService } from '../services/events.service';
 import { EventDetailsComponent } from './event-details/event-details.component';
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-event-list',
   standalone: true,
-  imports: [EventComponent, EventFormComponent, EventDetailsComponent],
+  imports: [EventComponent, EventFormComponent, EventDetailsComponent,MatButtonModule,MatFormFieldModule],
   templateUrl: './event-list.component.html',
   styleUrl: './event-list.component.scss'
 })

@@ -1,12 +1,11 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { GoogleMap, MapMarker, MapInfoWindow } from '@angular/google-maps';
+import { GoogleMap, MapMarker } from '@angular/google-maps';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [GoogleMap, MapMarker,
-    MapInfoWindow],
+  imports: [GoogleMap, MapMarker],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
@@ -33,7 +32,7 @@ export class MapComponent implements OnInit {
     geocoder.geocode({ location: event.latLng }, (results, status) => {
       if (status === 'OK') {
         if (results![0]) {
-          this.zoom = 19;
+          this.zoom = 17;
           this.center = {
             lat: event.latLng!.lat(),
             lng: event.latLng!.lng()}
@@ -43,5 +42,8 @@ export class MapComponent implements OnInit {
         }
       }
     })
+  }
+  onMarkerClick(event:MapMarker){
+    console.log(event.getPosition());
   }
 }

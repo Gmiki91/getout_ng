@@ -1,11 +1,13 @@
 import { Component, output } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { EventsService } from '../../services/events.service';
-
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-event-form',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,MatFormFieldModule,MatInputModule,MatButtonModule],
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.scss',
 })

@@ -1,5 +1,5 @@
 <div class="container">
-    <label>Your upcoming events</label>
+    <mat-label>Your upcoming events</mat-label>
     @for(event of joinedEvents(); track event.id){
     <app-event (click)="onDetails(event)" [event]="event" />
     @if(selectedEvent && selectedEvent.id === event.id){
@@ -7,7 +7,7 @@
         (closeDialog)="onCloseDetails()" (deleteEvent)="onDeleteEvent(event.id)"></app-event-details>
     }
     }
-    <label>Other events</label>
+    <mat-label>Other events</mat-label>
     @for(event of otherEvents(); track event.id){
     <app-event (click)="onDetails(event)" [event]="event" />
     @if(selectedEvent && selectedEvent.id === event.id){
@@ -16,7 +16,7 @@
     </app-event-details>
     }
     }
-    <button (click)="onCreateEvent()">New event</button>
+    <button mat-button (click)="onCreateEvent()">New event</button>
     @if(openForm){
     <app-event-form (closing)="onCloseForm()" />
     }

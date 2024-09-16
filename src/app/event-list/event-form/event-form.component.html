@@ -3,85 +3,59 @@
   <h2>Add Task</h2>
   <form #form="ngForm" (ngSubmit)="onSubmit(form)">
     <p>
-      <label for="title">Title</label>
-      <input required type="text" id="title" name="title" ngModel #title="ngModel"/>
+      <mat-label for="title">Title</mat-label>
+      <input matInput required type="text" id="title" name="title" ngModel #title="ngModel" />
       @if (title.invalid && (title.dirty || title.touched)){
       <span>Title is required</span>
       }
-      
-    </p>
-
-    <p>
-      <label for="location">Location</label>
-      <input
-        required
-        type="text"
-        id="location"
-        name="location"
-        ngModel
-        #location="ngModel"
-      />
+  </p>
+  <p>
+      <mat-label for="location">Location</mat-label>
+      <input matInput required type="text" id="location" name="location" ngModel #location="ngModel" />
     </p>
     @if (location.invalid && (location.dirty || location.touched)){
-      <span>Location is required</span>
-      }
+    <span>Location is required</span>
+    }
 
     <p>
-      <label for="date">Date</label>
-      <input required type="date" id="date" name="date" ngModel #date="ngModel"/>
+      <mat-label for="date">Date</mat-label>
+      <input matInput required type="date" id="date" name="date" ngModel #date="ngModel" />
     </p>
     @if (date.invalid && (date.dirty || date.touched)){
-      <span>Date is required</span>
-      }
+    <span>Date is required</span>
+    }
 
-    <p>
-      <label>Time</label>
-      <input
-        required
-        type="number"
-        min="0"
-        max="24"
-        id="hour"
-        name="hour"
-       ngModel
-        #hour="ngModel"
-      />
-      <input
-        required
-        type="number"
-        min="0"
-        max="60"
-        id="minute"
-        name="minute"
-        ngModel
-        #minute="ngModel"
-      />
+   <p>
+      <mat-label>Time</mat-label>
+      <input matInput required type="number" min="0" max="24" id="hour" name="hour" ngModel #hour="ngModel" />
+      <input matInput required type="number" min="0" max="60" id="minute" name="minute" ngModel #minute="ngModel" />
     </p>
     @if (hour.invalid && (hour.dirty || hour.touched)){
-      <span>Invalid hour</span>
-      }
-      @if (minute.invalid && (minute.dirty || minute.touched)){
-        <span>Invalid minute</span>
-        }
+    <span>Invalid hour</span>
+    }
+    @if (minute.invalid && (minute.dirty || minute.touched)){
+    <span>Invalid minute</span>
+    }
 
-    <p>
-      <label for="min">Minimum people</label>
-      <input type="number" id="min" name="min" value="2" placeholder="2" min="2" [(ngModel)]="minPeople" #min="ngModel" />
-    </p>
+   <p>
+      <mat-label for="min">Minimum people</mat-label>
+      <input matInput type="number" id="min" name="min" value="2" placeholder="2" min="2" [(ngModel)]="minPeople"
+        #min="ngModel" />
+      </p>
     @if (min.invalid && (min.dirty || min.touched)){
-      <span>At least 2 people is required</span>
-      }
-    <p>
-      <label for="max">Maximum people</label>
-      <input type="number" id="max" name="max" ngModel />
+    <span>At least 2 people is required</span>
+    }
+   <p>
+      <mat-label for="max">Maximum people</mat-label>
+      <input matInput type="number" id="max" name="max" ngModel />
     </p>
-    <p>
-      <label for="info">Info</label>
-      <textarea></textarea>
+   <p>
+      <mat-label for="info">Info</mat-label>
+      <textarea matInput></textarea>
     </p>
     <p class="actions">
-      <button type="button" (click)="onClose()">Cancel</button>
-      <button type="submit">Create</button>
+      <button matButton type="button" (click)="onClose()">Cancel</button>
+      <button matButton type="submit">Create</button>
     </p>
   </form>
 </dialog>
