@@ -1,6 +1,5 @@
-<div class="backdrop"></div>
-<dialog open>
-  <h2>Add Task</h2>
+<div>
+  <h4>New event</h4>
   <form #form="ngForm" (ngSubmit)="onSubmit(form)">
     <p>
       <mat-label for="title">Title</mat-label>
@@ -11,7 +10,7 @@
   </p>
   <p>
       <mat-label for="location">Location</mat-label>
-      <input #locationField matInput required type="text" id="location" name="location" ngModel #location="ngModel" />
+      <input #locationField matInput required type="text" id="location" name="location" [ngModel]="address()" #location="ngModel" />
     </p>
     @if (location.invalid && (location.dirty || location.touched)){
     <span>Location is required</span>
@@ -58,4 +57,4 @@
       <button matButton type="submit">Create</button>
     </p>
   </form>
-</dialog>
+</div>
