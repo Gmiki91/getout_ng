@@ -7,7 +7,7 @@ export type Event={
     time:string,
     participants:User[];
     min:number;
-    max?:number;
+    max:number;
     info:string;
 }
 
@@ -16,7 +16,7 @@ export type NewEventData={
     location:string,
     time:string,
     min:number;
-    max?:number;
+    max:number;
     info?:string;
     ownerId?:string
 }

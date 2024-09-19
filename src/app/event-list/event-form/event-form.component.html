@@ -38,16 +38,19 @@
 
    <p>
       <mat-label for="min">Minimum people</mat-label>
-      <input matInput type="number" id="min" name="min" value="2" placeholder="2" min="2" [(ngModel)]="minPeople"
+      <input matInput type="number" id="min" name="min" min="2" [(ngModel)]="minPeople"
         #min="ngModel" />
       </p>
     @if (min.invalid && (min.dirty || min.touched)){
-    <span>At least 2 people is required</span>
+    <span>At least 2 people are required</span>
     }
    <p>
       <mat-label for="max">Maximum people</mat-label>
-      <input matInput type="number" id="max" name="max" ngModel />
+      <input matInput type="number" id="max" name="max" [min]="minPeople"  ngModel #max="ngModel" />
     </p>
+    @if (max.invalid && (max.dirty || max.touched)){
+      <span>Cant be lower than the minimum people</span>
+      }
    <p>
       <mat-label for="info">Info</mat-label>
       <textarea matInput></textarea>
