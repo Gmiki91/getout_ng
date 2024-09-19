@@ -51,7 +51,7 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
   }
   onSubmit(form: NgForm) {
     if (form.valid) {
-      const { title, location, date, hour, minute, min, max } = form.form.value;
+      const { title, location, date, hour, minute, min, max,info } = form.form.value;
       const myLocation = this.exactMatch || this.closestMatch || location
       const time = new Date(date);
       time.setHours(hour);
@@ -61,9 +61,11 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
         .addEvent({
           title: title,
           location: myLocation,
+          latLng:this.mapService.latLng(),
           time: dateTime,
           min: min,
           max: max,
+          info:info
         })
         .subscribe({
           next: () => {
