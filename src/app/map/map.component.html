@@ -1,5 +1,5 @@
 <div class="container">
-  <google-map class="map" [height]="null" [width]="null" [center]="possibleMarkerPosition()" [zoom]="zoom"
+  <google-map #map class="map" [height]="null" [width]="null" [center]="possibleMarkerPosition()" [zoom]="zoom()" [options]="mapOptions"
     (mapClick)="onMapClick($event)">
     @for (position of markerPositions; track position) {
       <map-marker  #markerElem="mapMarker" [position]="position" [options]="markerOptions"  (mapClick)="onMarkerClick(markerElem)" />
