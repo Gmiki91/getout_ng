@@ -19,13 +19,17 @@ import { MapService } from '../services/map.service';
 export class MapComponent implements OnInit, AfterViewInit {
   @ViewChild('map')
   map!: GoogleMap;
+  distanceService;
   mapOptions: google.maps.MapOptions={maxZoom:18};
   markerOptions: google.maps.MarkerOptions = { draggable: false };
   markerPositions: google.maps.LatLngLiteral[] = [];
   zoom = this._mapService.zoom;
   possibleMarkerPosition = this._mapService.latLng;
+  currentPosition?:google.maps.LatLngLiteral;
 
-  constructor(private _mapService: MapService) {}
+  constructor(private _mapService: MapService) {
+    this.distanceService =  new google.maps.DistanceMatrixService();
+  }
 
   ngOnInit(): void {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -33,6 +37,7 @@ export class MapComponent implements OnInit, AfterViewInit {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       }
+      this.currentPosition  =latlng;
       this._mapService.setLatLng(latlng);
     });
   }
@@ -52,6 +57,8 @@ export class MapComponent implements OnInit, AfterViewInit {
       }
       this._mapService.setLatLng(latlng);
       this._mapService.convertLatLngToAddress(event.latLng);
+      this.distanceService.getDistanceMatrix({origins:[this.currentPosition!],destinations:[latlng],travelMode:google.maps.TravelMode.WALKING})
+      .then((result=>console.log(result.rows[0].elements[0].distance)))
     }
   }
 

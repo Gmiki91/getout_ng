@@ -1,11 +1,35 @@
 <div class="container">
-  <google-map #map class="map" [height]="null" [width]="null" [center]="possibleMarkerPosition()" [zoom]="zoom()" [options]="mapOptions"
-    (mapClick)="onMapClick($event)">
+  <google-map
+    #map
+    class="map"
+    [height]="null"
+    [width]="null"
+    [center]="possibleMarkerPosition()"
+    [zoom]="zoom()"
+    [options]="mapOptions"
+    (mapClick)="onMapClick($event)"
+  >
     @for (position of markerPositions; track position) {
-      <map-marker  #markerElem="mapMarker" [position]="position" [options]="markerOptions"  (mapClick)="onMarkerClick(markerElem)" />
+    <map-marker
+      #markerElem="mapMarker"
+      [position]="position"
+      [options]="markerOptions"
+      (mapClick)="onMarkerClick(markerElem)"
+    />
+    } 
+    @if(currentPosition){
+    <map-marker
+      #markerElem="mapMarker"
+      [position]="currentPosition"
+      [options]="markerOptions"
+      (mapClick)="onMarkerClick(markerElem)"
+    />
     }
-
-      <map-marker  #markerElem="mapMarker" [position]="possibleMarkerPosition()" [options]="markerOptions"  (mapClick)="onMarkerClick(markerElem)" />
-    
+    <map-marker
+      #markerElem="mapMarker"
+      [position]="possibleMarkerPosition()"
+      [options]="markerOptions"
+      (mapClick)="onMarkerClick(markerElem)"
+    />
   </google-map>
 </div>
