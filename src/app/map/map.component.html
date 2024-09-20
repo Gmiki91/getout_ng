@@ -14,7 +14,7 @@
       #markerElem="mapMarker"
       [position]="event.latLng"
       [options]="markerOptions"
-      (mapClick)="onMarkerClick(markerElem)"
+      (mapClick)="onMarkerClick(event.id)"
     />
     } 
     @if(currentPosition()){
@@ -22,14 +22,12 @@
       #markerElem="mapMarker"
       [position]="currentPosition()"
       [options]="markerOptions"
-      (mapClick)="onMarkerClick(markerElem)"
     />
     }
     <map-marker
       #markerElem="mapMarker"
       [position]="markerPosition()"
       [options]="markerOptions"
-      (mapClick)="onMarkerClick(markerElem)"
     />
   </google-map>
 </div>

@@ -68,7 +68,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onMarkerClick(event: MapMarker) {
-    console.log(event.getPosition());
+  onMarkerClick(eventId: string) {
+    this._eventService.selectEvent(eventId)
   }
 }

@@ -8,15 +8,18 @@ import { Observable, tap } from 'rxjs';
 export class EventsService {
   private url = environment.url + 'events';
   private bridgeUrl = environment.url + 'user-events'
+  private userId = localStorage.getItem("uuid");
+  private http = inject(HttpClient);
   private isLocalStorageAvailable = typeof localStorage !== 'undefined';
-   private _allEvents = signal<Event[]>([]);
+  private _allEvents = signal<Event[]>([]);
   private _yourEvents = signal<Event[]>([]);
   private _otherEvents = signal<Event[]>([]);
+  private _selectedEventId = signal<string>('');
+  
   allEvents = this._allEvents.asReadonly();
   yourEvents = this._yourEvents.asReadonly();
   otherEvents = this._otherEvents.asReadonly();
-  private userId = localStorage.getItem("uuid");
-  private http = inject(HttpClient);
+  selectedEventId = this._selectedEventId.asReadonly();
 
   addEvent(event: NewEventData): Observable<Event> {
     if (this.userId)
@@ -60,5 +63,9 @@ export class EventsService {
         this._yourEvents.update(events => events.filter(e => e.id !== event.id));
       }
     });
+  }
+
+  selectEvent(eventId:string):void{
+    this._selectedEventId.set(eventId);
   }
 }

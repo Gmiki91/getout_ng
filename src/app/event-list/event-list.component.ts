@@ -19,7 +19,7 @@ export class EventListComponent {
   private eventsService = inject(EventsService);
   private mapService = inject(MapService)
   openForm = false;
-  selectedEvent: Event | null = null
+  selectedEventId= this.eventsService.selectedEventId;
   joinedEvents = this.eventsService.yourEvents;
   otherEvents = this.eventsService.otherEvents;
   currentPosition = this.mapService.currentPosition;
@@ -31,10 +31,10 @@ export class EventListComponent {
     this.openForm = false;
   }
   onDetails(event: Event): void {
-    this.selectedEvent = event;
+    this.eventsService.selectEvent(event.id);
   }
   onCloseDetails(): void {
-    this.selectedEvent = null; 
+    this.eventsService.selectEvent("");
   }
   onJoinEvent(eventId:string) {
       this.eventsService.joinEvent(eventId);

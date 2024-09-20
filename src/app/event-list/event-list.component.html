@@ -3,7 +3,7 @@
   <mat-label>Your upcoming events</mat-label>
   @for(event of joinedEvents(); track event.id){
   <app-event (click)="onDetails(event)" [event]="event" [currentPosition]="currentPosition()" />
-  @if(selectedEvent && selectedEvent.id === event.id){
+  @if(selectedEventId() === event.id){
   <app-event-details
     [event]="event"
     [joined]="true"
@@ -15,7 +15,7 @@
   <mat-label>Other events</mat-label>
   @for(event of otherEvents(); track event.id){
   <app-event (click)="onDetails(event)" [event]="event" [currentPosition]="currentPosition()" />
-  @if(selectedEvent && selectedEvent.id === event.id){
+  @if(selectedEventId() === event.id){
   <app-event-details
     [event]="event"
     [joined]="false"
