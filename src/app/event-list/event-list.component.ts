@@ -6,6 +6,7 @@ import { EventsService } from '../services/events.service';
 import { EventDetailsComponent } from './event-details/event-details.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { MapService } from '../services/map.service';
 
 @Component({
   selector: 'app-event-list',
@@ -16,11 +17,13 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 })
 export class EventListComponent {
   private eventsService = inject(EventsService);
+  private mapService = inject(MapService)
   openForm = false;
   selectedEvent: Event | null = null
   joinedEvents = this.eventsService.yourEvents;
   otherEvents = this.eventsService.otherEvents;
-
+  currentPosition = this.mapService.currentPosition;
+  
   onCreateEvent() {
     this.openForm = true;
   }
