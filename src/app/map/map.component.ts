@@ -26,15 +26,14 @@ export class MapComponent implements OnInit, AfterViewInit {
   mapOptions: google.maps.MapOptions={maxZoom:18};
   markerOptions: google.maps.MarkerOptions = { draggable: false };
   markerPositions: google.maps.LatLngLiteral[] = [];
-  currentPosition?:google.maps.LatLngLiteral;
+  currentPosition;
   events;
-  distanceService;
-  possibleMarkerPosition;
+  markerPosition;
   zoom;
 
   constructor() {
-    this.distanceService =  new google.maps.DistanceMatrixService();
-    this.possibleMarkerPosition = this._mapService.latLng;
+    this.markerPosition = this._mapService.markerPosition;
+    this.currentPosition = this._mapService.currentPosition;
     this.zoom = this._mapService.zoom;
     this.events = this._eventService.allEvents;
   }
@@ -45,8 +44,8 @@ export class MapComponent implements OnInit, AfterViewInit {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       }
-      this.currentPosition  =latlng;
-      this._mapService.setLatLng(latlng);
+      this._mapService.setCurrentPosition(latlng);
+      this._mapService.setMarkerPosition(latlng);
     });
   }
 
@@ -63,10 +62,9 @@ export class MapComponent implements OnInit, AfterViewInit {
         lat: event.latLng.lat(),
         lng: event.latLng.lng(),
       }
-      this._mapService.setLatLng(latlng);
+      this._mapService.setMarkerPosition(latlng);
       this._mapService.convertLatLngToAddress(event.latLng);
-      this.distanceService.getDistanceMatrix({origins:[this.currentPosition!],destinations:[latlng],travelMode:google.maps.TravelMode.WALKING})
-      .then((result=>console.log(result.rows[0].elements[0].distance)))
+      
     }
   }
 

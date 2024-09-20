@@ -27,7 +27,7 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
   minPeople = 2;
   autocompleteService: google.maps.places.AutocompleteService;
   autocomplete?: google.maps.places.Autocomplete;
-  address = this.mapService.address;
+  address = this.mapService.markerAddress;
   exactMatch?:string;
   closestMatch?:string;
   bounds?:google.maps.LatLngBoundsLiteral;
@@ -61,7 +61,7 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
         .addEvent({
           title: title,
           location: myLocation,
-          latLng:this.mapService.latLng(),
+          latLng:this.mapService.markerPosition(),
           time: dateTime,
           min: min,
           max: max,

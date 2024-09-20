@@ -4,7 +4,7 @@
     class="map"
     [height]="null"
     [width]="null"
-    [center]="possibleMarkerPosition()"
+    [center]="markerPosition()"
     [zoom]="zoom()"
     [options]="mapOptions"
     (mapClick)="onMapClick($event)"
@@ -17,17 +17,17 @@
       (mapClick)="onMarkerClick(markerElem)"
     />
     } 
-    @if(currentPosition){
+    @if(currentPosition()){
     <map-marker
       #markerElem="mapMarker"
-      [position]="currentPosition"
+      [position]="currentPosition()"
       [options]="markerOptions"
       (mapClick)="onMarkerClick(markerElem)"
     />
     }
     <map-marker
       #markerElem="mapMarker"
-      [position]="possibleMarkerPosition()"
+      [position]="markerPosition()"
       [options]="markerOptions"
       (mapClick)="onMarkerClick(markerElem)"
     />
