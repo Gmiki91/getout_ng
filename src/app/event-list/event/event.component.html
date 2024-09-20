@@ -1,6 +1,14 @@
 <mat-card appearance="outlined" class="event">
-    <mat-card-content>{{event().title}} </mat-card-content>
-    <mat-card-content>{{event().time | timeUntil}} </mat-card-content>
-    <mat-card-content>{{distance}}</mat-card-content>
-    <mat-card-content>{{event().participants.length}} / {{event().max}} </mat-card-content>
+  <mat-card-content>{{ event().title }} </mat-card-content>
+  <mat-card-content>{{ event().time | timeUntil }} </mat-card-content>
+  <mat-card-content>{{ distance }}</mat-card-content>
+  <mat-card-content
+    >{{ event().participants.length }} / {{ event().max }}
+  </mat-card-content>
+  <mat-card-content>
+    <mat-icon
+      (click)="onFindMarker($event)"
+      fontIcon="not_listed_location"
+    ></mat-icon>
+  </mat-card-content>
 </mat-card>

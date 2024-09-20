@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Event } from '../models/event.model';
+import { Event,LatLng } from '../models/event.model';
 import { EventComponent } from './event/event.component';
 import { EventFormComponent } from './event-form/event-form.component';
 import { EventsService } from '../services/events.service';
@@ -35,6 +35,9 @@ export class EventListComponent {
   }
   onCloseDetails(): void {
     this.eventsService.selectEvent("");
+  }
+  onFindMarker(eventPosition: LatLng): void {
+    this.mapService.setMarkerPosition(eventPosition);
   }
   onJoinEvent(eventId:string) {
       this.eventsService.joinEvent(eventId);
