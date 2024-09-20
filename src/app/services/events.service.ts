@@ -1,7 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal,inject } from '@angular/core';
 import { NewEventData, Event } from '../models/event.model';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { Observable, tap } from 'rxjs';
 
@@ -10,14 +9,14 @@ export class EventsService {
   private url = environment.url + 'events';
   private bridgeUrl = environment.url + 'user-events'
   private isLocalStorageAvailable = typeof localStorage !== 'undefined';
-  // private events = signal<Event[]>([]);
+   private _allEvents = signal<Event[]>([]);
   private _yourEvents = signal<Event[]>([]);
   private _otherEvents = signal<Event[]>([]);
-  // allEvents = this.events.asReadonly();
+  allEvents = this._allEvents.asReadonly();
   yourEvents = this._yourEvents.asReadonly();
   otherEvents = this._otherEvents.asReadonly();
   private userId = localStorage.getItem("uuid");
-  constructor(private http: HttpClient, private router: Router) { }
+  private http = inject(HttpClient);
 
   addEvent(event: NewEventData): Observable<Event> {
     if (this.userId)
@@ -26,11 +25,13 @@ export class EventsService {
       .post<Event>(`${this.bridgeUrl}`, event)
       .pipe(tap((event) => {
         this._yourEvents.update(events=> [event,...events]);
+        this._allEvents.update(events=> [event,...events]);
       }));
   }
 
   getEvents(): void {
     this.http.get<{ joinedEvents: Event[], otherEvents: Event[] }>(`${this.url}/user/${this.userId}`).subscribe((response) => {
+      this._allEvents.set(response.joinedEvents.concat(response.otherEvents));
       this._yourEvents.set(response.joinedEvents);
       this._otherEvents.set(response.otherEvents);
     })

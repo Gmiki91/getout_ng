@@ -4,10 +4,12 @@ import {
   OnInit,
   PLATFORM_ID,
   ViewChild,
+  inject
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { GoogleMap, MapMarker } from '@angular/google-maps';
 import { MapService } from '../services/map.service';
+import { EventsService } from '../services/events.service';
 
 @Component({
   selector: 'app-map',
@@ -19,16 +21,22 @@ import { MapService } from '../services/map.service';
 export class MapComponent implements OnInit, AfterViewInit {
   @ViewChild('map')
   map!: GoogleMap;
-  distanceService;
+  private _mapService = inject(MapService)
+  private _eventService = inject(EventsService)
   mapOptions: google.maps.MapOptions={maxZoom:18};
   markerOptions: google.maps.MarkerOptions = { draggable: false };
   markerPositions: google.maps.LatLngLiteral[] = [];
-  zoom = this._mapService.zoom;
-  possibleMarkerPosition = this._mapService.latLng;
   currentPosition?:google.maps.LatLngLiteral;
+  events;
+  distanceService;
+  possibleMarkerPosition;
+  zoom;
 
-  constructor(private _mapService: MapService) {
+  constructor() {
     this.distanceService =  new google.maps.DistanceMatrixService();
+    this.possibleMarkerPosition = this._mapService.latLng;
+    this.zoom = this._mapService.zoom;
+    this.events = this._eventService.allEvents;
   }
 
   ngOnInit(): void {

@@ -9,10 +9,10 @@
     [options]="mapOptions"
     (mapClick)="onMapClick($event)"
   >
-    @for (position of markerPositions; track position) {
+    @for (event of events(); track event.id) {
     <map-marker
       #markerElem="mapMarker"
-      [position]="position"
+      [position]="event.latLng"
       [options]="markerOptions"
       (mapClick)="onMarkerClick(markerElem)"
     />
