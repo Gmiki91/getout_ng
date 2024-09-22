@@ -2,12 +2,14 @@
   @if(!openForm){
   <mat-label>Your upcoming events</mat-label>
   @for(event of joinedEvents(); track event.id){
+    @if(currentPosition()){
   <app-event
     (click)="onDetails(event)"
     (findMarker)="onFindMarker(event.latLng)"
     [event]="event"
     [currentPosition]="currentPosition()"
   />
+    }
   @if(selectedEventId() === event.id){
   <app-event-details
     [event]="event"
@@ -19,12 +21,14 @@
   } }
   <mat-label>Other events</mat-label>
   @for(event of otherEvents(); track event.id){
+    @if(currentPosition()){
   <app-event
     (click)="onDetails(event)"
     (findMarker)="onFindMarker(event.latLng)"
     [event]="event"
     [currentPosition]="currentPosition()"
   />
+}
   @if(selectedEventId() === event.id){
   <app-event-details
     [event]="event"
