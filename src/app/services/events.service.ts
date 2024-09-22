@@ -41,7 +41,7 @@ export class EventsService {
   }
 
   deleteEvent(eventId: string): void {
-    this.http.delete(`${this.url}/${eventId}`).subscribe(() => {
+    this.http.delete(`${this.bridgeUrl}/events/${eventId}`).subscribe(() => {
       const updatedEvents = this._yourEvents().filter((event) => event.id != eventId);
       this._yourEvents.set(updatedEvents);
     });
