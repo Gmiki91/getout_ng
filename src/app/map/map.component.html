@@ -2,9 +2,10 @@
   <google-map
     #map
     class="map"
+    mapId="mapId "
     [height]="null"
     [width]="null"
-    [center]="markerPosition()"
+    [center]="selectedPosition()"
     [zoom]="zoom()"
     [options]="mapOptions"
     (mapClick)="onMapClick($event)"
@@ -13,7 +14,7 @@
     <map-marker
       #markerElem="mapMarker"
       [position]="event.latLng"
-      [options]="markerOptions"
+     [icon]="eventPin"
       (mapClick)="onMarkerClick(event.id)"
     />
     } 
@@ -21,13 +22,13 @@
     <map-marker
       #markerElem="mapMarker"
       [position]="currentPosition()"
-      [options]="markerOptions"
+      [icon]="currentPin"
     />
     }
     <map-marker
       #markerElem="mapMarker"
-      [position]="markerPosition()"
-      [options]="markerOptions"
+      [position]="selectedPosition()"
+      [icon]="selectedPin"
     />
   </google-map>
 </div>

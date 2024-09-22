@@ -21,29 +21,33 @@ import { EventsService } from '../services/events.service';
 export class MapComponent implements OnInit, AfterViewInit {
   @ViewChild('map')
   map!: GoogleMap;
-  private _mapService = inject(MapService)
-  private _eventService = inject(EventsService)
-  mapOptions: google.maps.MapOptions={maxZoom:18};
-  markerOptions: google.maps.MarkerOptions = { draggable: false };
-  markerPositions: google.maps.LatLngLiteral[] = [];
+  private _mapService = inject(MapService);
+  private _eventService = inject(EventsService);
+  mapOptions: google.maps.MapOptions = { maxZoom: 18 };
   currentPosition;
+  currentPin;
+  selectedPosition;
+  selectedPin;
   events;
-  markerPosition;
+  eventPin;
   zoom;
 
   constructor() {
-    this.markerPosition = this._mapService.markerPosition;
+    this.selectedPosition = this._mapService.markerPosition;
     this.currentPosition = this._mapService.currentPosition;
-    this.zoom = this._mapService.zoom;
     this.events = this._eventService.allEvents;
+    this.currentPin = this.pinSymbol('#ff0505', '#690000');
+    this.selectedPin = this.pinSymbol('#fcdb03', '#6b5d02');
+    this.eventPin = this.pinSymbol('#33db04', '#228B22');
+    this.zoom = this._mapService.zoom;
   }
-
+ 
   ngOnInit(): void {
     navigator.geolocation.getCurrentPosition((position) => {
       const latlng = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
-      }
+      };
       this._mapService.setCurrentPosition(latlng);
       this._mapService.setMarkerPosition(latlng);
     });
@@ -61,14 +65,25 @@ export class MapComponent implements OnInit, AfterViewInit {
       const latlng = {
         lat: event.latLng.lat(),
         lng: event.latLng.lng(),
-      }
+      };
       this._mapService.setMarkerPosition(latlng);
       this._mapService.convertLatLngToAddress(event.latLng);
-      
     }
   }
 
   onMarkerClick(eventId: string) {
-    this._eventService.selectEvent(eventId)
+    this._eventService.selectEvent(eventId);
   }
+
+  private pinSymbol(fill: string, border: string) {
+    return {
+      path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
+      fillColor: fill,
+      fillOpacity: 1,
+      strokeColor: border,
+      strokeWeight: 3,
+      scale: 1.1,
+    };
+  }
+
 }
