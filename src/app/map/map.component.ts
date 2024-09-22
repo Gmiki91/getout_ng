@@ -7,7 +7,7 @@ import {
   inject
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { GoogleMap, MapMarker } from '@angular/google-maps';
+import { GoogleMap, MapMarker, } from '@angular/google-maps';
 import { MapService } from '../services/map.service';
 import { EventsService } from '../services/events.service';
 
@@ -23,7 +23,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   map!: GoogleMap;
   private _mapService = inject(MapService);
   private _eventService = inject(EventsService);
-  mapOptions: google.maps.MapOptions = { maxZoom: 18 };
+  mapOptions: google.maps.MapOptions = { };
   currentPosition;
   currentPin;
   selectedPosition;
@@ -50,6 +50,7 @@ export class MapComponent implements OnInit, AfterViewInit {
       };
       this._mapService.setCurrentPosition(latlng);
       this._mapService.setMarkerPosition(latlng);
+      this.initMapOptions();
     });
   }
 
@@ -86,4 +87,27 @@ export class MapComponent implements OnInit, AfterViewInit {
     };
   }
 
+  private initMapOptions():void{
+  this.mapOptions=  {
+    maxZoom: 18,
+    styles: [
+      {
+        featureType: 'poi', // Hide all POIs (points of interest)
+        elementType: 'all',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        featureType: 'transit', // Hide all transit stations
+        elementType: 'all',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        featureType: 'road', // Hide road labels
+        elementType: 'labels',
+        stylers: [{ visibility: 'off' }]
+      },
+    ],
+  };
+
+}
 }
