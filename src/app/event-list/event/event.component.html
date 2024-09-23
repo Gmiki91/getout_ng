@@ -11,4 +11,9 @@
       fontIcon="not_listed_location"
     ></mat-icon>
   </mat-card-content>
+  @if(uuid==event().ownerId){
+    <mat-card-content>
+      <i class="material-icons">copyright</i>
+    </mat-card-content>
+  }
 </mat-card>

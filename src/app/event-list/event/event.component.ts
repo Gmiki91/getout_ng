@@ -17,8 +17,10 @@ export class EventComponent implements AfterViewInit {
   findMarker = output()
   distanceService;
   distance="0";
+  uuid;
 
   constructor(){
+    this.uuid = localStorage.getItem('uuid') || '0';  
     this.distanceService =  new google.maps.DistanceMatrixService();
   }
 

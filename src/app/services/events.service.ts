@@ -40,11 +40,15 @@ export class EventsService {
     })
   }
 
-  deleteEvent(eventId: string): void {
-    this.http.delete(`${this.bridgeUrl}/events/${eventId}`).subscribe(() => {
-      const updatedEvents = this._yourEvents().filter((event) => event.id != eventId);
-      this._yourEvents.set(updatedEvents);
-    });
+  deleteEvent(eventId: string, ownerId:string): void {
+    if(this.userId===ownerId) {
+      this.http.delete(`${this.bridgeUrl}/events/${eventId}`).subscribe(() => {
+        this._otherEvents.update(events => events.filter(e => e.id !== eventId));
+        this._yourEvents.update(events => events.filter(e => e.id !== eventId));
+      });
+    }else{
+      alert("You can only delete events you've created");
+    }
   }
 
   joinEvent(eventId: string): void {

@@ -48,8 +48,8 @@ export class EventListComponent {
       this.onCloseDetails();
   }
 
-  onDeleteEvent(eventId:string) {
-    this.eventsService.deleteEvent(eventId);
+  onDeleteEvent(eventId:string,ownerId:string) {
+    this.eventsService.deleteEvent(eventId,ownerId);
     this.onCloseDetails();
   }
 }

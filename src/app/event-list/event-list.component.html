@@ -16,7 +16,7 @@
     [joined]="true"
     (participation)="onLeaveEvent(event.id)"
     (closeDialog)="onCloseDetails()"
-    (deleteEvent)="onDeleteEvent(event.id)"
+    (deleteEvent)="onDeleteEvent(event.id,event.ownerId)"
   ></app-event-details>
   } }
   <mat-label>Other events</mat-label>
@@ -35,6 +35,7 @@
     [joined]="false"
     (participation)="onJoinEvent(event.id)"
     (closeDialog)="onCloseDetails()"
+    (deleteEvent)="onDeleteEvent(event.id,event.ownerId)"
   >
   </app-event-details>
   } }
