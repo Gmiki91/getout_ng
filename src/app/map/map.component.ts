@@ -10,6 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { GoogleMap, MapMarker, } from '@angular/google-maps';
 import { MapService } from '../services/map.service';
 import { EventsService } from '../services/events.service';
+import { Event } from '../models/event.model';
 
 @Component({
   selector: 'app-map',
@@ -72,8 +73,8 @@ export class MapComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onMarkerClick(eventId: string) {
-    this._eventService.selectEvent(eventId);
+  onMarkerClick(event: Event) {
+    this._eventService.selectEvent(event);
   }
 
   private pinSymbol(fill: string, border: string) {

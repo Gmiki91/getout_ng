@@ -1,0 +1,20 @@
+<div class="container">
+  @if(!openForm){ 
+    <mat-label>Your upcoming events</mat-label>
+    <app-event-list [events]="joinedEvents()" (openDetails)="onOpenDetails($event)"></app-event-list>
+    <mat-label>Other events</mat-label>
+    <app-event-list [events]="otherEvents()"  (openDetails)="onOpenDetails($event)"></app-event-list>
+    @if(selectedEvent().id){
+        <app-event-details
+          [event]="selectedEvent()"
+          [joined]="isUserJoined(selectedEvent().id)"
+          (participation)="onChangeParticipation($event,selectedEvent().id)"
+          (closeDialog)="onCloseDetails()"
+          (deleteEvent)="onDeleteEvent(selectedEvent().id, selectedEvent().ownerId)"
+        ></app-event-details>
+        }
+  } @if(openForm){
+  <app-event-form (closing)="onCloseForm()" />
+  }
+  <button mat-button (click)="onCreateEvent()">New event</button>
+</div>

@@ -14,12 +14,12 @@ export class EventsService {
   private _allEvents = signal<Event[]>([]);
   private _yourEvents = signal<Event[]>([]);
   private _otherEvents = signal<Event[]>([]);
-  private _selectedEventId = signal<string>('');
+  private _selectedEvent = signal<Event>({}as Event);
   
   allEvents = this._allEvents.asReadonly();
   yourEvents = this._yourEvents.asReadonly();
   otherEvents = this._otherEvents.asReadonly();
-  selectedEventId = this._selectedEventId.asReadonly();
+  selectedEvent = this._selectedEvent.asReadonly();
 
   addEvent(event: NewEventData): Observable<Event> {
     if (this.userId)
@@ -69,7 +69,7 @@ export class EventsService {
     });
   }
 
-  selectEvent(eventId:string):void{
-    this._selectedEventId.set(eventId);
+  selectEvent(event:Event):void{
+    this._selectedEvent.set(event);
   }
 }
