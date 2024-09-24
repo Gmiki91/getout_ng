@@ -24,8 +24,10 @@ export class EventDetailsComponent implements OnInit {
   closeDialog = output();
   kommentService = inject(KommentService)
   komments = this.kommentService.comments;
+  userId = "";
 
   ngOnInit(): void {
+    this.userId=localStorage.getItem('uuid')!;
       this.kommentService.getKomments(this.event().id);
   }
   onJoin():void{
@@ -48,7 +50,7 @@ export class EventDetailsComponent implements OnInit {
       text:this.kommentRef.nativeElement.value,
       timestamp:new Date().toISOString(),
       eventId:this.event().id,
-      userId:localStorage.getItem('uuid')!
+      userId:this.userId
     }
      this.kommentService.addKomment(komment);
   }

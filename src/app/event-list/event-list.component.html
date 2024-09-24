@@ -1,8 +1,6 @@
-@for(event of events(); track event.id){ @if(currentPosition()){
+@for(event of events(); track event.id){
 <app-event
   (click)="onDetails(event)"
-  (findMarker)="onFindMarker(event.latLng)"
   [event]="event"
-  [currentPosition]="currentPosition()"
 />
-} }
+}

@@ -5,6 +5,7 @@ import {
   ViewChild,
   ElementRef,
   OnDestroy,
+  inject
 } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { EventsService } from '../../services/events.service';
@@ -27,23 +28,28 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
   minPeople = 2;
   autocompleteService: google.maps.places.AutocompleteService;
   autocomplete?: google.maps.places.Autocomplete;
-  address = this.mapService.markerAddress;
+  address
   exactMatch?:string;
   closestMatch?:string;
   bounds?:google.maps.LatLngBoundsLiteral;
   unsubscribe$ = new Subject<void>();
+  private eventsService: EventsService = inject(EventsService);
+  private mapService: MapService = inject(MapService);
 
-  constructor(
-    private eventsService: EventsService,
-    private mapService: MapService
-  ) {
+  constructor() {
     this.autocompleteService = new google.maps.places.AutocompleteService();
+    this.address = this.mapService.markerAddress;
   }
 
   ngAfterViewInit(): void {
     this.initAutocomplete();
     this.subscribeToBoundsChange();
     this.listenToLocationChanges();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   onClose() {
@@ -64,7 +70,7 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
           latLng:this.mapService.markerPosition(),
           time: dateTime,
           min: min,
-          max: max,
+          max: max | min, //max can not be lower than min. If it is 0, min will be set
           info:info
         })
         .subscribe({
@@ -106,7 +112,7 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  getPredictions(input: string) {
+  private getPredictions(input: string) {
     const request = {
       input: input,
       bounds: this.bounds
@@ -126,10 +132,5 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
         this.autocomplete?.setBounds(bounds);
         this.bounds=bounds;
       });
-  }
-  
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 }
