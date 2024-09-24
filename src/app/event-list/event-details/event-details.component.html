@@ -6,6 +6,11 @@
     <span>{{event().location}}</span>
     <span>{{event().participants.length}} / {{event().max}}</span>
     <span>{{event().info}}</span>
+    <textarea #komment ngModel matInput cdkAutosizeMinRows="5"></textarea>
+    <button mat-button (click)="onAddKomment()">Add Comment</button>
+    @for(komment of komments();track komment.id){
+        <div>{{komment.id}} - {{komment.timestamp}}</div>
+    }
     @if (joined()) {
         <button (click)="onLeave()">Leave</button>
     }@else{

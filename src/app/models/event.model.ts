@@ -1,3 +1,4 @@
+import { Komment } from "./komment.model";
 import User from "./user.model";
 export type LatLng={
     lat:number,
@@ -14,6 +15,7 @@ export type Event={
     max:number;
     info:string;
     ownerId:string;
+    komments:Komment[];
 }
 
 export type NewEventData={
