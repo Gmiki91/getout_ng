@@ -9,6 +9,7 @@ export type Event={
     title:string,
     location:string,
     latLng:LatLng,
+    distance:number,
     time:string,
     participants:User[];
     min:number;

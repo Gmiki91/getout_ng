@@ -1,3 +1,7 @@
 <div class="container">
-    <p>filter-bar works!</p>
+  <button mat-button (click)="sortByDistance()">Distance</button>
+  <button mat-button (click)="sortByTime()">Time left</button>
+  <mat-checkbox [checked]="hideFullEvents()" (change)="toggleFullEvents()">
+    Hide full events
+  </mat-checkbox>
 </div>

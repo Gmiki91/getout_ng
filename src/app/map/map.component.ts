@@ -1,16 +1,18 @@
 import {
   AfterViewInit,
   Component,
+  OnDestroy,
   OnInit,
   PLATFORM_ID,
   ViewChild,
-  inject
+  inject,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { GoogleMap, MapMarker, } from '@angular/google-maps';
+import { GoogleMap, MapMarker } from '@angular/google-maps';
 import { MapService } from '../services/map.service';
 import { EventsService } from '../services/events.service';
 import { Event } from '../models/event.model';
+import { forkJoin, from, Subject,takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-map',
@@ -19,12 +21,13 @@ import { Event } from '../models/event.model';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnInit, AfterViewInit {
+export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('map')
   map!: GoogleMap;
   private _mapService = inject(MapService);
   private _eventService = inject(EventsService);
-  mapOptions: google.maps.MapOptions = { };
+  mapOptions: google.maps.MapOptions = {};
+  unsubscribe$ = new Subject<void>();
   currentPosition;
   currentPin;
   selectedPosition;
@@ -42,15 +45,14 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.eventPin = this.pinSymbol('#33db04', '#228B22');
     this.zoom = this._mapService.zoom;
   }
- 
+
   ngOnInit(): void {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const latlng = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      };
-      this._mapService.setCurrentPosition(latlng);
-      this._mapService.setMarkerPosition(latlng);
+    forkJoin({
+      events: this._eventService.getEvents(),
+      position: from(this._mapService.initCurrentPosition())
+    }).pipe(takeUntil(this.unsubscribe$))
+    .subscribe(() => {
+      this._eventService.updateDistances();
       this.initMapOptions();
     });
   }
@@ -60,6 +62,11 @@ export class MapComponent implements OnInit, AfterViewInit {
       const currentZoom = this.map.googleMap!.getZoom();
       if (currentZoom) this._mapService.setZoom(currentZoom);
     });
+  }
+
+  ngOnDestroy(): void {
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
   }
 
   onMapClick(event: google.maps.MapMouseEvent) {
@@ -88,27 +95,26 @@ export class MapComponent implements OnInit, AfterViewInit {
     };
   }
 
-  private initMapOptions():void{
-  this.mapOptions=  {
-    maxZoom: 18,
-    styles: [
-      {
-        featureType: 'poi', // Hide all POIs (points of interest)
-        elementType: 'all',
-        stylers: [{ visibility: 'off' }]
-      },
-      {
-        featureType: 'transit', // Hide all transit stations
-        elementType: 'all',
-        stylers: [{ visibility: 'off' }]
-      },
-      {
-        featureType: 'road', // Hide road labels
-        elementType: 'labels',
-        stylers: [{ visibility: 'off' }]
-      },
-    ],
-  };
-
-}
+  private initMapOptions(): void {
+    this.mapOptions = {
+      maxZoom: 18,
+      styles: [
+        {
+          featureType: 'poi', // Hide all POIs (points of interest)
+          elementType: 'all',
+          stylers: [{ visibility: 'off' }],
+        },
+        {
+          featureType: 'transit', // Hide all transit stations
+          elementType: 'all',
+          stylers: [{ visibility: 'off' }],
+        },
+        {
+          featureType: 'road', // Hide road labels
+          elementType: 'labels',
+          stylers: [{ visibility: 'off' }],
+        },
+      ],
+    };
+  }
 }
