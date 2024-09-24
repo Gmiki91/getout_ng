@@ -1,22 +1,23 @@
 <div (click)="onCloseDialog()" class="backdrop"></div>
 <dialog open>
-<div class="event">
-    <span>{{event().title}}</span>
-    <span>{{event().time | date:'medium'}}</span>
-    <span>{{event().location}}</span>
-    <span>{{event().participants.length}} / {{event().max}}</span>
-    <span>{{event().info}}</span>
+  <div class="event">
+    <span>{{ event().title }}</span>
+    <span>{{ event().time | date : "medium" }}</span>
+    <span>{{ event().location }}</span>
+    <span>{{ event().participants.length }} / {{ event().max }}</span>
+    <span>{{ event().info }}</span>
     <textarea #komment ngModel matInput cdkAutosizeMinRows="5"></textarea>
     <button mat-button (click)="onAddKomment()">Add Comment</button>
     @for(komment of komments();track komment.id){
-        <div>{{komment.id}} - {{komment.timestamp}}</div>
+    <div>{{ komment.id }} - {{ komment.timestamp }}</div>
     }
     @if (joined()) {
-        <button (click)="onLeave()">Leave</button>
+    <button (click)="onLeave()">Leave</button>
     }@else{
-        <button (click)="onJoin()">Join</button>
+    <button (click)="onJoin()">Join</button>
+    } 
+    @if(this.userId === event().ownerId){
+    <button mat-button (click)="onDelete()">Delete</button>
     }
-    <!--if owner-->
-    <button (click)="onDelete()">Delete</button>
-</div>
+  </div>
 </dialog>
