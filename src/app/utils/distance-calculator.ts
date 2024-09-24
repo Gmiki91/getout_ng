@@ -1,0 +1,16 @@
+export class DistanceCalculator{
+    //Spherical Law of Cosines uses trigonometric identities and can be used to calculate distance
+    static calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number):number {
+        const R = 6371;
+        const p1 = lat1 * Math.PI/180;
+        const p2 = lat2 * Math.PI/180;
+        const deltaP = p2 - p1;
+        const deltaLon = lng2 - lng1;
+        const deltaLambda = (deltaLon * Math.PI) / 180;
+        const a = Math.sin(deltaP/2) * Math.sin(deltaP/2) +
+                  Math.cos(p1) * Math.cos(p2) *
+                  Math.sin(deltaLambda/2) * Math.sin(deltaLambda/2);
+        const d = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)) * R;
+        return Math.round(d*100)*10; 
+      }
+}
