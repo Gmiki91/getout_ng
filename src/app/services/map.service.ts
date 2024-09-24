@@ -1,14 +1,15 @@
 import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { LatLng } from '../models/event.model';
+
 @Injectable({ providedIn: 'root' })
 export class MapService {
   private geocoder = new google.maps.Geocoder();
   private _markerAddress = signal<string>('');
-  private _markerPosition = signal<google.maps.LatLngLiteral>({ lat: 0, lng: 0 });
-  private _currentPosition = signal<google.maps.LatLngLiteral>({ lat: 0, lng: 0 });
+  private _markerPosition = signal<LatLng>({ lat: 0, lng: 0 });
+  private _currentPosition = signal<LatLng>({ lat: 0, lng: 0 });
   private _zoom = signal<number>(14);
   private _bounds = new BehaviorSubject<google.maps.LatLngBoundsLiteral | undefined>(undefined);
-
 
   markerAddress = this._markerAddress.asReadonly();
   markerPosition = this._markerPosition.asReadonly();
@@ -16,12 +17,22 @@ export class MapService {
   zoom = this._zoom.asReadonly();
   bounds$ = this._bounds.asObservable();
 
-  public setCurrentPosition(latLng: google.maps.LatLngLiteral): void {
-    this._currentPosition.set(latLng);
-    this.updateBounds(latLng);
+  public initCurrentPosition():Promise<LatLng> {
+    return new Promise<LatLng>((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const result = {lat: position.coords.latitude,lng: position.coords.longitude}
+          this._currentPosition.set(result);
+          this.setMarkerPosition(result)
+          this.updateBounds(result);
+          resolve(result);
+        },
+        (error) => reject(error)
+      );
+    });
   }
 
-  public setMarkerPosition(latLng: google.maps.LatLngLiteral): void {
+  public setMarkerPosition(latLng: LatLng): void {
     this._markerPosition.set(latLng);
   }
 
@@ -33,6 +44,7 @@ export class MapService {
     this._zoom.set(zoom);
   }
 
+  //autofill function should return results within these bounds
   public updateBounds(center: google.maps.LatLngLiteral): void {
     const zoom = this._zoom();
     let kmAdjustment: number;
