@@ -1,6 +1,6 @@
 <mat-card appearance="outlined" class="event">
   <mat-card-content>{{ event().title }} </mat-card-content>
-  <mat-card-content>{{ event().time | timeUntil }} </mat-card-content>
+  <mat-card-content>{{ event().time | timeText:'until' }} </mat-card-content>
   <mat-card-content>{{ event().distance | distanceFormat }}</mat-card-content>
   <mat-card-content
     >{{ event().participants.length }} / {{ event().max }}
