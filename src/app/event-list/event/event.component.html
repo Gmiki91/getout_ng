@@ -1,19 +1,35 @@
 <mat-card appearance="outlined" class="event">
-  <mat-card-content>{{ event().title }} </mat-card-content>
-  <mat-card-content>{{ event().time | timeText:'until' }} </mat-card-content>
-  <mat-card-content>{{ event().distance | distanceFormat }}</mat-card-content>
-  <mat-card-content
-    >{{ event().participants.length }} / {{ event().max }}
-  </mat-card-content>
+  <mat-card-header>
+    <mat-card-title>{{ event().title }}</mat-card-title>
+
+  </mat-card-header>
+
   <mat-card-content>
+    <div class="event-info">
+      <div class="info-item">
+        <mat-icon  [matTooltip]="event().time|date : 'medium'">schedule</mat-icon>
+        <span>{{ event().time | timeText: 'until' }}</span>
+      </div>
+      <div class="info-item">
+        <mat-icon  [matTooltip]="event().location">location_on</mat-icon>
+        <span>{{ event().distance | distanceFormat }}</span>
+      </div>
+      <div class="info-item">
+        <mat-icon matTooltip="Participation">people</mat-icon>
+        <span>{{ event().participants.length }} / {{ event().max }}</span>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <mat-card-footer>
     <mat-icon
+      class="find-marker-icon"
       (click)="onFindMarker($event)"
       fontIcon="not_listed_location"
+      matTooltip="Jump to location"
     ></mat-icon>
-  </mat-card-content>
-  @if(uuid==event().ownerId){
-    <mat-card-content>
-      <i class="material-icons">copyright</i>
-    </mat-card-content>
-  }
+    @if(uuid==event().ownerId){
+      <mat-icon matTooltip="You created this event" class="owner-icon" fontIcon="copyright"></mat-icon>
+    }
+  </mat-card-footer>
 </mat-card>
