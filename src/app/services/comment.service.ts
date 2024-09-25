@@ -12,9 +12,11 @@ export class KommentService {
   comments=this._comments.asReadonly();
 
   public addKomment(komment: NewKommentData){
-    this.http.post(this.url,komment)
+    this.http.post<Komment>(this.url,komment)
     .pipe(tap({error: (err) => console.error('Failed to add comment:', err)}))
-    .subscribe();
+    .subscribe(komment=>{
+      this._comments.update(comments=>[komment,...comments])
+    });
   }
   public getKomments(eventId:string){
     this.http.get<Komment[]>(`${this.url}/${eventId}`).subscribe(result=>this._comments.set(result));
