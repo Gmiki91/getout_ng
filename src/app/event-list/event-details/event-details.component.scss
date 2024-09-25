@@ -1,20 +1,55 @@
 .backdrop {
-    background-color: rgba(0, 0, 0, 0.9);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.event-dialog {
+  width: 90%;
+  max-width: 30rem;
+  background-color: #163658;
+  border-radius: 6px;
+  border: none;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  padding: 1rem;
+  top: 5rem;
+  z-index: 2;
+
+  .event-card {
+    padding: 16px;
+    background-color: #7dafe6;
+
+    .event-details {
+      margin-bottom: 16px;
+    }
+
+    .comment-box {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+    
+    .comment-list {
+      overflow: auto;
+      height: 250px;
+
+      .comment-item {
+        height: auto;
+
+        .comment-text {
+          text-wrap: wrap;
+        }
+      }
+    }
+
+    .event-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 16px;
+    }
   }
-  
-  dialog {
-    width: 90%;
-    max-width: 30rem;
-    background-color: #334252;
-    border-radius: 6px;
-    border: none;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-    overflow: hidden;
-    padding: 1rem;
-    top: 5rem;
-  }
+}

@@ -5,11 +5,17 @@ import { MatButton } from '@angular/material/button';
 import { KommentService } from '../../services/comment.service';
 import { NewKommentData } from '../../models/komment.model';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import {MatCardModule} from '@angular/material/card';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatListModule} from '@angular/material/list';
+import { MatInputModule } from '@angular/material/input';
+import { TimeTextPipe } from '../../pipes/time-until.pipe';
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [DatePipe,MatButton,TextFieldModule],
+  imports: [DatePipe,MatButton,TextFieldModule,MatCardModule,MatDividerModule,MatFormFieldModule,MatListModule,MatInputModule,TimeTextPipe],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss'
 })

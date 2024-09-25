@@ -1,23 +1,62 @@
 <div (click)="onCloseDialog()" class="backdrop"></div>
-<dialog open>
-  <div class="event">
-    <span>{{ event().title }}</span>
-    <span>{{ event().time | date : "medium" }}</span>
-    <span>{{ event().location }}</span>
-    <span>{{ event().participants.length }} / {{ event().max }}</span>
-    <span>{{ event().info }}</span>
-    <textarea #komment ngModel matInput cdkAutosizeMinRows="5"></textarea>
-    <button mat-button (click)="onAddKomment()">Add Comment</button>
-    @for(komment of komments();track komment.id){
-    <div>{{ komment.id }} - {{ komment.timestamp }}</div>
-    }
-    @if (joined()) {
-    <button (click)="onLeave()">Leave</button>
-    }@else{
-    <button (click)="onJoin()">Join</button>
-    } 
-    @if(this.userId === event().ownerId){
-    <button mat-button (click)="onDelete()">Delete</button>
-    }
-  </div>
+<dialog open class="event-dialog">
+  <mat-card class="event-card">
+    <mat-card-header>
+      <mat-card-title>{{ event().title }}</mat-card-title>
+      <mat-card-subtitle>{{
+        event().time | date : "medium"
+      }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="event-details">
+        <div><strong>Location:</strong> {{ event().location }}</div>
+        <div>
+          <strong>Participants:</strong> {{ event().participants.length }} /
+          {{ event().max }}
+        </div>
+        @if(event().info){<div><strong>Info:</strong> {{ event().info }}</div>}
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <mat-form-field appearance="outline" class="comment-box">
+        <textarea
+          matInput
+          placeholder="Add a comment"
+          #komment
+          ngModel
+          cdkAutosizeMinRows="5"
+        ></textarea>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="onAddKomment()">
+        Add Comment
+      </button>
+
+      <mat-list class="comment-list">
+        @for(komment of komments(); track komment.id){
+        <mat-list-item class="comment-item">
+          <strong>{{ komment.userName }}</strong>
+          <br />
+          <i>{{ komment.timestamp | timeText : "since" }}</i>
+          <p class="comment-text">{{ komment.text }}</p>
+        </mat-list-item>
+        }
+      </mat-list>
+
+      <mat-divider></mat-divider>
+    </mat-card-content>
+
+    <mat-card-actions class="event-actions">
+      @if(joined()){
+      <button mat-stroked-button color="warn" (click)="onLeave()">Leave</button>
+      }@else{
+      <button mat-raised-button color="primary" (click)="onJoin()">Join</button>
+      } @if(userId === event().ownerId){
+      <button mat-raised-button color="warn" (click)="onDelete()">
+        Delete
+      </button>
+      }
+    </mat-card-actions>
+  </mat-card>
 </dialog>
