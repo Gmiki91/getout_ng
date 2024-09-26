@@ -14,13 +14,13 @@ export class EventsService {
   private http = inject(HttpClient);
   private _mapService = inject(MapService);
   private isLocalStorageAvailable = typeof localStorage !== 'undefined';
-  private _allEvents = signal<Event[]>([]);
+  private _allEvents = signal<Event[]>([]); 
   private _yourEvents = signal<Event[]>([]);
   private _otherEvents = signal<Event[]>([]);
   private _selectedEvent = signal<Event>({} as Event);
   private _hiddenEvents: Event[] = [];
 
-  allEvents = this._allEvents.asReadonly();
+  allEvents = this._allEvents.asReadonly(); //used by the map component
   yourEvents = this._yourEvents.asReadonly();
   otherEvents = this._otherEvents.asReadonly();
   selectedEvent = this._selectedEvent.asReadonly();
@@ -60,6 +60,9 @@ export class EventsService {
           events.filter((e) => e.id !== eventId)
         );
         this._yourEvents.update((events) =>
+          events.filter((e) => e.id !== eventId)
+        );
+        this._allEvents.update((events) =>
           events.filter((e) => e.id !== eventId)
         );
       });
@@ -105,25 +108,6 @@ export class EventsService {
     this._otherEvents.set(updatedOtherEvents);
     this._yourEvents.set(updatedYourEvents);
   }
-
-  private updateDistanceOfEvents(events: Event[]): Event[] {
-    return events.map((event) => {
-      event.distance = this.addDistance(event.latLng);
-      return event;
-    });
-  }
-
-  private addDistance(latLng: LatLng): number {
-    const currentPosition = this._mapService.currentPosition();
-    const distance = DistanceCalculator.calculateDistance(
-      currentPosition.lat,
-      currentPosition.lng,
-      latLng.lat,
-      latLng.lng
-    );
-    return distance;
-  }
-
   // FILTER METHODS
   sortByDistance(ascending: boolean): void {
     const funk = ascending
@@ -157,8 +141,27 @@ export class EventsService {
       this._otherEvents.update((events) =>
         events.filter((e) => e.max > e.participants.length)
       );
-    }else{
+    } else {
       this._otherEvents.set(this._hiddenEvents);
     }
+  }
+
+  // PRIVATE METHODS
+  private updateDistanceOfEvents(events: Event[]): Event[] {
+    return events.map((event) => {
+      event.distance = this.addDistance(event.latLng);
+      return event;
+    });
+  }
+
+  private addDistance(latLng: LatLng): number {
+    const currentPosition = this._mapService.currentPosition();
+    const distance = DistanceCalculator.calculateDistance(
+      currentPosition.lat,
+      currentPosition.lng,
+      latLng.lat,
+      latLng.lng
+    );
+    return distance;
   }
 }
