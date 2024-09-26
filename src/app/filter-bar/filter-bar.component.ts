@@ -1,7 +1,8 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, computed } from '@angular/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { EventsService } from '../services/events.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-filter-bar',
@@ -15,6 +16,8 @@ export class FilterBarComponent {
   ascendingDistance = true;
   ascendingTime = true;
   eventService = inject(EventsService);
+  userService = inject(UserService);
+  username = computed(()=>this.userService.user().name);
 
   sortByDistance(): void {
     this.eventService.sortByDistance(this.ascendingDistance);
