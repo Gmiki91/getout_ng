@@ -10,14 +10,17 @@ import {
 import { FormsModule, NgForm } from '@angular/forms';
 import { EventsService } from '../../services/events.service';
 import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
+import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatButton } from '@angular/material/button';
 import { MapService } from '../../services/map.service';
 import { debounceTime, distinctUntilChanged, fromEvent, Subject, takeUntil } from 'rxjs';
+import { provideNativeDateAdapter } from '@angular/material/core';
 @Component({
   selector: 'app-event-form',
   standalone: true,
-  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  providers: [provideNativeDateAdapter()],
+  imports: [FormsModule, MatFormField, MatInputModule, MatButton,MatLabel,MatError,MatDatepickerModule],
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.scss',
 })
@@ -33,6 +36,7 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
   closestMatch?:string;
   bounds?:google.maps.LatLngBoundsLiteral;
   unsubscribe$ = new Subject<void>();
+  minDate = new Date();
   private eventsService: EventsService = inject(EventsService);
   private mapService: MapService = inject(MapService);
 

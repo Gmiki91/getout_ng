@@ -1,4 +1,57 @@
-.container {
-    padding: 1rem;
-    width: 25rem;
+.sidebar-container {
+  margin: 1rem;
+  width: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-height: 80vh;
+  overflow-y: auto; /* Ensure vertical scrolling with visible scrollbar */
+  scrollbar-width: thin; /* For Firefox, makes scrollbar visible but thin */
+
+  .sticky-title {
+    background: var(--accent-color);
+    width: 100%;
+    position: sticky;
+    top: 0; /* Stick at the top */
+    z-index: 10; /* Ensure the title stays above content */
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+  button{
+    position: sticky;
+    font-size:large;
+    bottom: 5px; /* Stick to the bottom */
+   
+    width: 50%; /* Ensure the button stretches to full width */
+    display: flex;
+    justify-content: center; /* Center the button */
+    padding: 5px;
+    z-index: 11;
+  }
+}
+
+mat-label {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+mat-divider {
+  margin: 1rem 0;
+}
+
+
+
+@media (max-width: 600px) {
+  .sidebar-container {
+    width: inherit;
+   button{
+    top:0;
+  
+   }
+  }
 }

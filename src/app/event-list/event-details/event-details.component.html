@@ -3,13 +3,11 @@
   <mat-card class="event-card">
     <mat-card-header>
       <mat-card-title>{{ event().title }}</mat-card-title>
-      <mat-card-subtitle>{{
-        event().time | date : "medium"
-      }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
       <div class="event-details">
+        <div><strong>Time:</strong>{{event().time | date : "medium"}}</div>
         <div><strong>Location:</strong> {{ event().location }}</div>
         <div>
           <strong>Participants:</strong> {{ event().participants.length }} /
@@ -19,7 +17,6 @@
       </div>
 
       <mat-divider></mat-divider>
-
       <mat-form-field appearance="outline" class="comment-box">
         <textarea
           matInput
@@ -30,10 +27,10 @@
         ></textarea>
       </mat-form-field>
       <button mat-raised-button color="primary" (click)="onAddKomment()">
-        Add Comment
+        Add comment
       </button>
 
-      <mat-list custom-scroll class="comment-list">
+      <mat-list class="comment-list">
         @for(komment of komments(); track komment.id){
         <mat-list-item class="comment-item">
           <strong>{{ komment.userName }}</strong>
@@ -49,12 +46,12 @@
 
     <mat-card-actions class="event-actions">
       @if(joined()){
-      <button mat-stroked-button color="warn" (click)="onLeave()">Leave</button>
+      <button mat-stroked-button color="warn" (click)="onLeave()">Leave event</button>
       }@else{
-      <button mat-raised-button color="primary" (click)="onJoin()">Join</button>
+      <button mat-raised-button color="primary" (click)="onJoin()">Join event</button>
       } @if(userId === event().ownerId){
       <button mat-raised-button color="warn" (click)="onDelete()">
-        Delete
+        Delete event
       </button>
       }
     </mat-card-actions>

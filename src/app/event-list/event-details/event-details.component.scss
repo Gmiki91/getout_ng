@@ -11,7 +11,7 @@
 .event-dialog {
   width: 90%;
   max-width: 30rem;
-  background-color: #163658;
+  background-color: var(--main-color);
   border-radius: 6px;
   border: none;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
@@ -21,8 +21,8 @@
   z-index: 2;
 
   .event-card {
-    padding: 16px;
-    background-color: #7dafe6;
+    box-shadow:none;
+    background-color: var(--main-color);
 
     .event-details {
       margin-bottom: 16px;
@@ -35,13 +35,16 @@
     
     .comment-list {
       overflow: auto;
-      height: 250px;
+      max-height: 250px;
 
       .comment-item {
         height: auto;
+        color:black;
 
         .comment-text {
           text-wrap: wrap;
+          color:black;
+          
         }
       }
     }

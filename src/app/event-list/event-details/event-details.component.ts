@@ -13,13 +13,12 @@ import { MatButton } from '@angular/material/button';
 import { KommentService } from '../../services/comment.service';
 import { NewKommentData } from '../../models/komment.model';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatListModule } from '@angular/material/list';
-import { MatInputModule } from '@angular/material/input';
+import { MatDivider } from '@angular/material/divider';
+import { MatFormField } from '@angular/material/form-field';
+import { MatList, MatListItem } from '@angular/material/list';
+import { MatInput } from '@angular/material/input';
 import { TimeTextPipe } from '../../pipes/time-until.pipe';
-import { CustomScrollDirective } from '../../custom-scroll.directive';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-event-details',
@@ -29,13 +28,13 @@ import { CustomScrollDirective } from '../../custom-scroll.directive';
     MatButton,
     TextFieldModule,
     MatCardModule,
-    MatDividerModule,
-    MatFormFieldModule,
-    MatListModule,
-    MatInputModule,
-    TimeTextPipe,
-    CustomScrollDirective,
-  ],
+    MatDivider,
+    MatFormField,
+    MatList,
+    MatInput,
+    MatListItem,
+    TimeTextPipe
+    ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',
 })

@@ -1,20 +1,35 @@
-<div class="container">
-  @if(!openForm){ 
-    <mat-label>Your upcoming events</mat-label>
-    <app-event-list [events]="joinedEvents()" (openDetails)="onOpenDetails($event)"></app-event-list>
-    <mat-label>Other events</mat-label>
-    <app-event-list [events]="otherEvents()"  (openDetails)="onOpenDetails($event)"></app-event-list>
-    @if(selectedEvent().id){
-        <app-event-details
-          [event]="selectedEvent()"
-          [joined]="isUserJoined(selectedEvent().id)"
-          (participation)="onChangeParticipation($event,selectedEvent().id)"
-          (closeDialog)="onCloseDetails()"
-          (deleteEvent)="onDeleteEvent(selectedEvent().id, selectedEvent().ownerId)"
-        ></app-event-details>
-        }
-  } @if(openForm){
-  <app-event-form (closing)="onCloseForm()" />
+<div class="sidebar-container">
+ 
+  @if(!openForm){
+  <mat-label class="sticky-title">Your Upcoming Events</mat-label>
+  <app-event-list
+    [events]="joinedEvents()"
+    (openDetails)="onOpenDetails($event)"
+  ></app-event-list>
+
+  <mat-divider></mat-divider>
+
+  <mat-label class="sticky-title">Other Events</mat-label>
+  <app-event-list
+    [events]="otherEvents()"
+    (openDetails)="onOpenDetails($event)"
+  ></app-event-list>
+
+  @if(selectedEvent().id){
+  <app-event-details
+    [event]="selectedEvent()"
+    [joined]="isUserJoined(selectedEvent().id)"
+    (participation)="onChangeParticipation($event, selectedEvent().id)"
+    (closeDialog)="onCloseDetails()"
+    (deleteEvent)="onDeleteEvent(selectedEvent().id, selectedEvent().ownerId)"
+  ></app-event-details>
+  } 
+
+  }@else{
+  <app-event-form (closing)="onCloseForm()"></app-event-form>
   }
-  <button mat-button (click)="onCreateEvent()">New event</button>
+   
+  <button mat-raised-button (click)="onCreateEvent()">
+    Add new event
+  </button>
 </div>

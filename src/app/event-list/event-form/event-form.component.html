@@ -1,63 +1,63 @@
-<div>
-  <h4>New event</h4>
+<div class="event-form">
+  <h4>New Event</h4>
   <form #form="ngForm" (ngSubmit)="onSubmit(form)">
-    <p>
+    
+    <mat-form-field appearance="outline">
       <mat-label for="title">Title</mat-label>
-      <input matInput required type="text" id="title" name="title" ngModel #title="ngModel" />
-      @if (title.invalid && (title.dirty || title.touched)){
-      <span>Title is required</span>
-      }
-  </p>
-  <p>
+      <input matInput required id="title" name="title" ngModel #title="ngModel" />
+      <mat-error >Title is invalid</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
       <mat-label for="location">Location</mat-label>
-      <input #locationField matInput required type="text" id="location" name="location" [ngModel]="address()" #location="ngModel" />
-    </p>
-    @if (location.invalid && (location.dirty || location.touched)){
-    <span>Location is required</span>
-    }
+      <input #locationField matInput required id="location" name="location" ngModel [ngModel]="address()" #location="ngModel" />
+      <mat-error>Location is invalid</mat-error>
+    </mat-form-field>
 
-    <p>
+    <mat-form-field appearance="outline">
       <mat-label for="date">Date</mat-label>
-      <input matInput required type="date" id="date" name="date" ngModel #date="ngModel" />
-    </p>
-    @if (date.invalid && (date.dirty || date.touched)){
-    <span>Date is required</span>
-    }
+      <input matInput [min]="minDate"  [matDatepicker]="picker"  id="date" name="date" ngModel #date="ngModel"/>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error >Date is invalid</mat-error>
+    </mat-form-field>
 
-   <p>
-      <mat-label>Time</mat-label>
+    <mat-form-field appearance="outline">
+      <mat-label for="hour">Hour</mat-label>
       <input matInput required type="number" min="0" max="24" id="hour" name="hour" ngModel #hour="ngModel" />
-      <input matInput required type="number" min="0" max="60" id="minute" name="minute" ngModel #minute="ngModel" />
-    </p>
-    @if (hour.invalid && (hour.dirty || hour.touched)){
-    <span>Invalid hour</span>
-    }
-    @if (minute.invalid && (minute.dirty || minute.touched)){
-    <span>Invalid minute</span>
-    }
+      @if(hour.invalid && (hour.dirty || hour.touched)){
+      <mat-error>Invalid hour</mat-error>}
+    </mat-form-field>
 
-   <p>
-      <mat-label for="min">Minimum people</mat-label>
-      <input matInput type="number" id="min" name="min" min="2" [(ngModel)]="minPeople"
-        #min="ngModel" />
-      </p>
-    @if (min.invalid && (min.dirty || min.touched)){
-    <span>At least 2 people are required</span>
-    }
-   <p>
-      <mat-label for="max">Maximum people</mat-label>
-      <input matInput type="number" id="max" name="max" [min]="minPeople"  ngModel #max="ngModel" />
-    </p>
-    @if (max.invalid && (max.dirty || max.touched)){
-      <span>Cant be lower than the minimum people</span>
-      }
-   <p>
-      <mat-label for="info">Info</mat-label>
-      <textarea matInput  type="text" id="info" name="info" ngModel></textarea>
-    </p>
-    <p class="actions">
-      <button matButton type="button" (click)="onClose()">Cancel</button>
-      <button matButton type="submit">Create</button>
-    </p>
+    <mat-form-field appearance="outline">
+      <mat-label for="minute">Minute</mat-label>
+      <input matInput required type="number" min="0" max="60" id="minute" name="minute" ngModel #minute="ngModel" />
+      @if(minute.invalid && (minute.dirty || minute.touched)){
+      <mat-error >Invalid minute</mat-error>}
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label for="min">Minimum People</mat-label>
+      <input matInput type="number" id="min" name="min" min="2" [(ngModel)]="minPeople" #min="ngModel" />
+      @if (min.invalid && (min.dirty || min.touched)){
+      <mat-error>At least 2 people are required</mat-error>}
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label for="max">Maximum People</mat-label>
+      <input matInput type="number" id="max" name="max" [min]="minPeople || 2" ngModel #max="ngModel" />
+      @if (max.invalid && (max.dirty || max.touched)){
+      <mat-error>That's too few</mat-error>}
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label for="info">Additional Information</mat-label>
+      <textarea matInput id="info" name="info" ngModel></textarea>
+    </mat-form-field>
+
+    <div class="actions">
+      <button mat-button type="button" (click)="onClose()">Cancel</button>
+      <button [disabled]="!form.valid" mat-raised-button color="primary" type="submit">Create</button>
+    </div>
   </form>
 </div>

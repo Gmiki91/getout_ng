@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { MatDivider } from '@angular/material/divider';
+import { MatLabel } from '@angular/material/form-field';
 import { EventFormComponent } from '../event-list/event-form/event-form.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { EventsService } from '../services/events.service';
 import { EventListComponent } from '../event-list/event-list.component';
 import { Event } from '../models/event.model';
@@ -10,8 +12,10 @@ import { EventDetailsComponent } from '../event-list/event-details/event-details
   selector: 'app-event-sidebar',
   standalone: true,
   imports: [
+    MatButton,
+    MatDivider,
+    MatLabel,
     EventFormComponent,
-    MatFormFieldModule,
     EventListComponent,
     EventDetailsComponent,
   ],
