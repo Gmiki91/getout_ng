@@ -1,4 +1,4 @@
-<div class="sidebar-container">
+<div [class]="['sidebar-container',openForm? 'wide' :'']">
  
   @if(!openForm){
   <mat-label class="sticky-title">Your Upcoming Events</mat-label>
@@ -24,12 +24,12 @@
     (deleteEvent)="onDeleteEvent(selectedEvent().id, selectedEvent().ownerId)"
   ></app-event-details>
   } 
-
+<button mat-raised-button (click)="onCreateEvent()">
+    Add new event
+  </button>
   }@else{
   <app-event-form (closing)="onCloseForm()"></app-event-form>
   }
    
-  <button mat-raised-button (click)="onCreateEvent()">
-    Add new event
-  </button>
+  
 </div>
