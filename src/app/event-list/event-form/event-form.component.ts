@@ -16,11 +16,12 @@ import { MatButton } from '@angular/material/button';
 import { MapService } from '../../services/map.service';
 import { debounceTime, distinctUntilChanged, fromEvent, Subject, takeUntil } from 'rxjs';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { DecimalPipe } from '@angular/common';
 @Component({
   selector: 'app-event-form',
   standalone: true,
   providers: [provideNativeDateAdapter()],
-  imports: [FormsModule, MatFormField, MatInputModule, MatButton,MatLabel,MatError,MatDatepickerModule],
+  imports: [FormsModule, MatFormField, MatInputModule, MatButton,MatLabel,MatError,MatDatepickerModule,DecimalPipe],
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.scss',
 })
