@@ -34,7 +34,7 @@ import { MatCardModule } from '@angular/material/card';
     MatInput,
     MatListItem,
     TimeTextPipe
-    ],
+  ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',
 })
@@ -48,13 +48,14 @@ export class EventDetailsComponent implements OnInit {
   closeDialog = output();
   kommentService = inject(KommentService);
   komments = this.kommentService.comments;
+  showBtn = false;
   userId = '';
 
   ngOnInit(): void {
     this.userId = localStorage.getItem('uuid')!;
     this.kommentService.getKomments(this.event().id);
   }
-  
+
   onJoin(): void {
     this.participation.emit(true);
   }
@@ -71,13 +72,25 @@ export class EventDetailsComponent implements OnInit {
     this.closeDialog.emit();
   }
 
-  onAddKomment(): void {
-    const komment: NewKommentData = {
-      text: this.kommentRef.nativeElement.value,
-      timestamp: new Date().toISOString(),
-      eventId: this.event().id,
-      userId: this.userId,
-    };
-    this.kommentService.addKomment(komment);
+  onAddKomment(e: MouseEvent): void {
+    e.stopPropagation();
+    if (this.kommentRef.nativeElement.value.trim().length > 0) {
+      const komment: NewKommentData = {
+        text: this.kommentRef.nativeElement.value,
+        timestamp: new Date().toISOString(),
+        eventId: this.event().id,
+        userId: this.userId,
+      };
+      this.kommentService.addKomment(komment);
+      this.kommentRef.nativeElement.value='';
+      this.showBtn = false;
+    }
   }
+
+  onShowBtn(inFocus: boolean) {
+    if (this.kommentRef.nativeElement.value.trim().length <= 0) {
+        this.showBtn = inFocus;
+    }
+  }
+
 }

@@ -5,7 +5,7 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1;
+  z-index: 21;
 }
 
 .event-dialog {
@@ -18,7 +18,7 @@
   overflow: hidden;
   padding: 1rem;
   top: 5rem;
-  z-index: 2;
+  z-index: 22;
 
   .event-card {
     box-shadow:none;
@@ -31,6 +31,10 @@
     .comment-box {
       width: 100%;
       margin-bottom: 16px;
+
+      button{
+        float: right; 
+      }
     }
     
     .comment-list {

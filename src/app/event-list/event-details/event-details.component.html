@@ -7,13 +7,15 @@
 
     <mat-card-content>
       <div class="event-details">
-        <div><strong>Time:</strong>{{event().time | date : "medium"}}</div>
+        <div><strong>Time:</strong>{{ event().time | date : "medium" }}</div>
         <div><strong>Location:</strong> {{ event().location }}</div>
         <div>
           <strong>Participants:</strong> {{ event().participants.length }} /
           {{ event().max }}
         </div>
-        @if(event().info){<div><strong>Info:</strong> {{ event().info }}</div>}
+        @if(event().info){
+        <div><strong>Info:</strong> {{ event().info }}</div>
+        }
       </div>
 
       <mat-divider></mat-divider>
@@ -23,12 +25,16 @@
           placeholder="Add a comment"
           #komment
           ngModel
+          (focus)="onShowBtn(true)"
+          (blur)="onShowBtn(false)"
           cdkAutosizeMinRows="5"
         ></textarea>
+        @if(showBtn){
+          <button  mat-button (click)="onAddKomment($event)">
+            Add comment
+          </button>
+        }
       </mat-form-field>
-      <button mat-raised-button color="primary" (click)="onAddKomment()">
-        Add comment
-      </button>
 
       <mat-list class="comment-list">
         @for(komment of komments(); track komment.id){
@@ -46,11 +52,15 @@
 
     <mat-card-actions class="event-actions">
       @if(joined()){
-      <button mat-stroked-button color="warn" (click)="onLeave()">Leave event</button>
+      <button mat-button  (click)="onLeave()">
+        Leave event
+      </button>
       }@else{
-      <button mat-raised-button color="primary" (click)="onJoin()">Join event</button>
+      <button mat-button (click)="onJoin()">
+        Join event
+      </button>
       } @if(userId === event().ownerId){
-      <button mat-raised-button color="warn" (click)="onDelete()">
+      <button mat-button (click)="onDelete()">
         Delete event
       </button>
       }
