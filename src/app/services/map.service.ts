@@ -1,76 +1,16 @@
 import { Injectable, signal } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { LatLng } from '../models/event.model';
+import { Event, LatLng } from '../models/event.model';
+import { LngLat, Map } from 'mapbox-gl';
 
 @Injectable({ providedIn: 'root' })
 export class MapService {
   private geocoder = new google.maps.Geocoder();
+  private mapSource: mapboxgl.GeoJSONSource | undefined;
+  private map: Map | undefined;
   private _markerAddress = signal<string>('');
-  private _markerPosition = signal<LatLng>({ lat: 0, lng: 0 });
-  private _currentPosition = signal<LatLng>({ lat: 0, lng: 0 });
-  private _zoom = signal<number>(14);
-  private _bounds = new BehaviorSubject<google.maps.LatLngBoundsLiteral | undefined>(undefined);
-
   markerAddress = this._markerAddress.asReadonly();
-  markerPosition = this._markerPosition.asReadonly();
-  currentPosition = this._currentPosition.asReadonly();
-  zoom = this._zoom.asReadonly();
-  bounds$ = this._bounds.asObservable();
 
-  public initCurrentPosition():Promise<LatLng> {
-    return new Promise<LatLng>((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const result = {lat: position.coords.latitude,lng: position.coords.longitude}
-          this._currentPosition.set(result);
-          this.setMarkerPosition(result)
-          this.updateBounds(result);
-          resolve(result);
-        },
-        (error) => reject(error)
-      );
-    });
-  }
-
-  public setMarkerPosition(latLng: LatLng): void {
-    this._markerPosition.set(latLng);
-  }
-
-  public setAddress(address: string): void {
-    this._markerAddress.set(address);
-  }
-
-  public setZoom(zoom: number): void {
-    this._zoom.set(zoom);
-  }
-
-  //autofill function should return results within these bounds
-  public updateBounds(center: google.maps.LatLngLiteral): void {
-    const zoom = this._zoom();
-    let kmAdjustment: number;
-    if (zoom >= 16) {
-      kmAdjustment = 0.5; // Approx. 1 km at high zoom levels
-    } else if (zoom >= 14) {
-      kmAdjustment = 1.0; // Approx. 2 km
-    } else if (zoom >= 12) {
-      kmAdjustment = 2.0; // Approx. 4 km
-    } else {
-      kmAdjustment = 5.0; // Approx. 10 km
-    }
-
-    // Convert km to degrees (approx. 1 degree = 111 km)
-    const latLngDelta = kmAdjustment / 111;
-
-    const bounds = {
-      north: center.lat + latLngDelta,
-      south: center.lat - latLngDelta,
-      east: center.lng + latLngDelta,
-      west: center.lng - latLngDelta,
-    };
-    this._bounds.next(bounds);
-  }
-
-  public convertLatLngToAddress(latlng: google.maps.LatLng): void {
+  convertLatLngToAddress(latlng: LngLat): void {
     this.geocoder.geocode({ location: latlng }, (results, status) => {
       if (status === 'OK' && results && results[0]) {
         this._markerAddress.set(results[0].formatted_address);
@@ -80,15 +20,68 @@ export class MapService {
     });
   }
 
-  public convertAddressToLatLng(address: string): void {
-    this.geocoder.geocode({ address }, (results, status) => {
-      if (status === 'OK' && results && results[0]) {
-        const lat = results[0].geometry.location.lat();
-        const lng = results[0].geometry.location.lng();
-        this._markerPosition.set({ lat, lng });
-      } else {
-        console.log('Geocoding failed: ' + status);
-      }
+  // to validate the address in the event creator form
+  convertAddressToLatLng(address: string): Promise<{ address: string; position: LatLng }> {
+    return new Promise((resolve, reject) => {
+      this.geocoder.geocode({ address }, (results, status) => {
+        if (status === 'OK' && results && results[0]) {
+          const lat = results[0].geometry.location.lat();
+          const lng = results[0].geometry.location.lng();
+          const result = {
+            address: results[0].formatted_address,
+            position: { lat, lng },
+          };
+          resolve(result);
+        } else {
+          reject(`Geocoding failed: ${status}`);
+        }
+      });
     });
+  }
+
+  setGeoJSONSource(source: mapboxgl.GeoJSONSource): void {
+    this.mapSource = source;
+  }
+
+  setMap(map: Map) {
+    this.map = map;
+  }
+
+  flyTo(position: LatLng) {
+    if (this.map) {
+      this.map.flyTo({ center: position });
+    }
+  }
+
+  addMarker(event: Event): void {
+    if (this.mapSource) {
+      const data = this.mapSource._data as GeoJSON.FeatureCollection;
+      const newMarker: GeoJSON.GeoJSON = {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [event.latLng.lng, event.latLng.lat],
+        },
+        properties: {
+          id: event.id,
+          title: event.title,
+        },
+      };
+      data.features.push(newMarker);
+      this.mapSource.setData(data);
+    }
+  }
+
+  removeMarker(eventId: string): void {
+    if (this.mapSource) {
+      const data = this.mapSource._data as GeoJSON.FeatureCollection;
+      const updatedFeatures = data.features.filter(
+        (feature) => feature.properties?.['id'] !== eventId
+      );
+      this.mapSource.setData({
+        ...data,
+        features: updatedFeatures,
+      });
+    }
   }
 }

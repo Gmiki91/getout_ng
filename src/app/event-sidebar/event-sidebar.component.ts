@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { MatLabel } from '@angular/material/form-field';
-import { EventFormComponent } from '../event-list/event-form/event-form.component';
 import { EventsService } from '../services/events.service';
-import { EventListComponent } from '../event-list/event-list.component';
+import { MapService } from '../services/map.service';
 import { Event } from '../models/event.model';
+import { EventFormComponent } from '../event-list/event-form/event-form.component';
+import { EventListComponent } from '../event-list/event-list.component';
 import { EventDetailsComponent } from '../event-list/event-details/event-details.component';
 
 @Component({
@@ -24,35 +25,36 @@ import { EventDetailsComponent } from '../event-list/event-details/event-details
 })
 export class EventSidebarComponent {
   private eventsService = inject(EventsService);
+  private mapService = inject(MapService);
   joinedEvents = this.eventsService.yourEvents;
   otherEvents = this.eventsService.otherEvents;
   selectedEvent = this.eventsService.selectedEvent;
-  openForm = false;
+  openForm = this.eventsService.isEventFormOpen;
 
-  onCreateEvent() {
-    this.openForm = true;
+  onToggleEventForm() {
+    this.eventsService.toggleEventForm()
   }
-  onCloseForm() {
-    this.openForm = false;
-  }
+
   onOpenDetails(event: Event): void {
+    this.mapService.flyTo(event.latLng);
     this.eventsService.selectEvent(event);
   }
   onCloseDetails(): void {
     this.eventsService.selectEvent({} as Event);
   }
 
-  onChangeParticipation(join: boolean, eventId: string) {
+  onChangeParticipation(join: boolean, eventId: string,distance:number) {
     if (join) {
-      this.eventsService.joinEvent(eventId);
+      this.eventsService.joinEvent(eventId,distance);
     } else {
-      this.eventsService.leaveEvent(eventId);
+      this.eventsService.leaveEvent(eventId,distance);
     }
     this.onCloseDetails();
   }
 
   onDeleteEvent(eventId: string, ownerId: string) {
     this.eventsService.deleteEvent(eventId, ownerId);
+    this.mapService.removeMarker(eventId);
     this.onCloseDetails();
   }
 

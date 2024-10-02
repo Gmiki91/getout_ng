@@ -19,6 +19,7 @@
         <mat-label for="date">Date</mat-label>
         <input
           matInput
+          required
           [min]="minDate"
           [matDatepicker]="picker"
           id="date"
@@ -38,16 +39,16 @@
     <mat-form-field appearance="outline">
       <mat-label for="location">Location</mat-label>
       <input
-        #locationField
+        #locationInput
         matInput
         required
-        id="location"
-        name="location"
-        ngModel
-        [ngModel]="address()"
+        [ngModel]="markerAddress()"
         #location="ngModel"
+        name="location"
+        (blur)="onBlur()"
       />
-      <mat-error>Location is invalid</mat-error>
+      @if( location.invalid && (location.dirty || location.touched)){
+      <mat-error>Invalid address</mat-error>}
     </mat-form-field>
 
     <div class="field-group">
@@ -126,14 +127,7 @@
 
     <div class="actions">
       <button mat-button type="button" (click)="onClose()">Cancel</button>
-      <button
-        [disabled]="!form.valid"
-        mat-raised-button
-        color="primary"
-        type="submit"
-      >
-        Create
-      </button>
+      <button mat-raised-button color="primary" type="submit">Create</button>
     </div>
   </form>
 </div>

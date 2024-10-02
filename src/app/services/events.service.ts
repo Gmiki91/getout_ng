@@ -2,67 +2,68 @@ import { Injectable, signal, inject } from '@angular/core';
 import { NewEventData, Event, LatLng } from '../models/event.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable, tap, map } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { DistanceCalculator } from '../utils/distance-calculator';
-import { MapService } from './map.service';
+import { Map } from 'mapbox-gl';
 
 @Injectable({ providedIn: 'root' })
 export class EventsService {
   private url = environment.url + 'events';
   private bridgeUrl = environment.url + 'user-events';
   private userId = localStorage.getItem('uuid');
-  private http = inject(HttpClient);
-  private _mapService = inject(MapService);
-  private isLocalStorageAvailable = typeof localStorage !== 'undefined';
-  private _allEvents = signal<Event[]>([]); 
+  private _http = inject(HttpClient);
   private _yourEvents = signal<Event[]>([]);
   private _otherEvents = signal<Event[]>([]);
   private _selectedEvent = signal<Event>({} as Event);
+  private _isEventFormOpen = signal<boolean>(false);
   private _hiddenEvents: Event[] = [];
+  private _currentPosition = signal<LatLng>({ lat: 0, lng: 0 });
 
-  allEvents = this._allEvents.asReadonly(); //used by the map component
+  currentPosition = this._currentPosition.asReadonly();
   yourEvents = this._yourEvents.asReadonly();
   otherEvents = this._otherEvents.asReadonly();
   selectedEvent = this._selectedEvent.asReadonly();
+  isEventFormOpen = this._isEventFormOpen.asReadonly();
 
-  addEvent(event: NewEventData): Observable<Event> {
-    if (this.userId) event = { ownerId: this.userId, ...event };
-    return this.http.post<Event>(`${this.bridgeUrl}`, event).pipe(
-      tap((event) => {
-        event.distance = this.addDistance(event.latLng);
-        this._yourEvents.update((events) => [event, ...events]);
-        this._allEvents.update((events) => [event, ...events]);
-      })
-    );
-  }
-
-  getEvents(): Observable<void> {
-    return this.http
+  //save the sorted events for the events list, returns unsorted for the map markers
+  getEvents(): Observable<{ joinedEvents: Event[]; otherEvents: Event[] }> {
+    return this._http
       .get<{ joinedEvents: Event[]; otherEvents: Event[] }>(
         `${this.url}/user/${this.userId}`
       )
       .pipe(
-        tap((response) => {
-          this._allEvents.set(
-            response.joinedEvents.concat(response.otherEvents)
-          );
-          this._yourEvents.set(response.joinedEvents);
-          this._otherEvents.set(response.otherEvents);
-        }),
-        map(() => void 0)
+        tap((result) => {
+          this.setEvents(result.joinedEvents, result.otherEvents);
+        })
       );
+  }
+
+  setEvents(joinedEvents: Event[], otherEvents: Event[]): void {
+    const updatedOtherEvents = this.updateDistanceOfEvents(otherEvents);
+    const updatedYourEvents = this.updateDistanceOfEvents(joinedEvents);
+
+    this._otherEvents.set(updatedOtherEvents);
+    this._yourEvents.set(updatedYourEvents);
+  }
+
+  addEvent(event: NewEventData): Observable<Event> {
+    if (this.userId) event = { ownerId: this.userId, ...event };
+    return this._http.post<Event>(`${this.bridgeUrl}`, event).pipe(
+      tap((event) => {
+        event.distance = this.addDistance(event.latLng);
+        this._yourEvents.update((events) => [event, ...events]);
+      })
+    );
   }
 
   deleteEvent(eventId: string, ownerId: string): void {
     if (this.userId === ownerId) {
-      this.http.delete(`${this.bridgeUrl}/events/${eventId}`).subscribe(() => {
+      this._http.delete(`${this.bridgeUrl}/events/${eventId}`).subscribe(() => {
+        //update both lists
         this._otherEvents.update((events) =>
           events.filter((e) => e.id !== eventId)
         );
         this._yourEvents.update((events) =>
-          events.filter((e) => e.id !== eventId)
-        );
-        this._allEvents.update((events) =>
           events.filter((e) => e.id !== eventId)
         );
       });
@@ -71,11 +72,13 @@ export class EventsService {
     }
   }
 
-  joinEvent(eventId: string): void {
-    this.http
+  // distance param needed because it is not included in database
+  joinEvent(eventId: string,distance:number): void {
+    this._http
       .post<Event>(`${this.bridgeUrl}/${this.userId}/join/${eventId}`, null)
       .subscribe((event) => {
         if (event) {
+          event.distance = distance;
           this._yourEvents.update((events) => [...events, event]);
           this._otherEvents.update((events) =>
             events.filter((e) => e.id !== event.id)
@@ -84,11 +87,13 @@ export class EventsService {
       });
   }
 
-  leaveEvent(eventId: string): void {
-    this.http
+  // distance param needed because it is not included in database
+  leaveEvent(eventId: string,distance:number): void {
+    this._http
       .delete<Event>(`${this.bridgeUrl}/${eventId}/participants/${this.userId}`)
       .subscribe((event) => {
         if (event) {
+          event.distance = distance;
           this._otherEvents.update((events) => [...events, event]);
           this._yourEvents.update((events) =>
             events.filter((e) => e.id !== event.id)
@@ -97,17 +102,32 @@ export class EventsService {
       });
   }
 
+  // the selected event for the details tab
   selectEvent(event: Event): void {
     this._selectedEvent.set(event);
   }
 
-  updateDistances() {
-    const updatedOtherEvents = this.updateDistanceOfEvents(this._otherEvents());
-    const updatedYourEvents = this.updateDistanceOfEvents(this._yourEvents());
-
-    this._otherEvents.set(updatedOtherEvents);
-    this._yourEvents.set(updatedYourEvents);
+  selectEventById(eventId: string): void {
+    const events = this._yourEvents().concat(this._otherEvents());
+    const event = events.find(event => event.id === eventId);
+    if(event){
+      this.selectEvent(event);
+    }else{
+      console.log('event not found')
+    }
   }
+
+  
+  // create new event form
+  toggleEventForm():void{
+    this._isEventFormOpen.set(!this._isEventFormOpen())
+  }
+
+  //for distance calculation and autofill proximity
+  setCurrentPosition(position:LatLng){
+    this._currentPosition.set(position);
+  }
+
   // FILTER METHODS
   sortByDistance(ascending: boolean): void {
     const funk = ascending
@@ -146,7 +166,6 @@ export class EventsService {
     }
   }
 
-  // PRIVATE METHODS
   private updateDistanceOfEvents(events: Event[]): Event[] {
     return events.map((event) => {
       event.distance = this.addDistance(event.latLng);
@@ -155,7 +174,7 @@ export class EventsService {
   }
 
   private addDistance(latLng: LatLng): number {
-    const currentPosition = this._mapService.currentPosition();
+    const currentPosition = this.currentPosition();
     const distance = DistanceCalculator.calculateDistance(
       currentPosition.lat,
       currentPosition.lng,

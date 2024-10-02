@@ -73,7 +73,7 @@ export class EventDetailsComponent implements OnInit {
   }
 
   onAddKomment(e: MouseEvent): void {
-    e.stopPropagation();
+    e.stopPropagation(); //prevent blur effect
     if (this.kommentRef.nativeElement.value.trim().length > 0) {
       const komment: NewKommentData = {
         text: this.kommentRef.nativeElement.value,

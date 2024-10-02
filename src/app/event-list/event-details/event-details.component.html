@@ -51,6 +51,11 @@
     </mat-card-content>
 
     <mat-card-actions class="event-actions">
+      @if(userId === event().ownerId){
+        <button mat-button color="warn" (click)="onDelete()">
+          Delete event
+        </button>
+        }
       @if(joined()){
       <button mat-button  (click)="onLeave()">
         Leave event
@@ -58,10 +63,6 @@
       }@else{
       <button mat-button (click)="onJoin()">
         Join event
-      </button>
-      } @if(userId === event().ownerId){
-      <button mat-button (click)="onDelete()">
-        Delete event
       </button>
       }
     </mat-card-actions>

@@ -26,6 +26,6 @@ export class EventComponent {
 
   onFindMarker(e:MouseEvent):void{
     e.stopPropagation();
-    this.mapService.setMarkerPosition(this.event().latLng);
+    this.mapService.flyTo(this.event().latLng);
   }
 }

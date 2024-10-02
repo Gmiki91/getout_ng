@@ -1,55 +1,63 @@
 import {
   AfterViewInit,
   Component,
-  output,
   ViewChild,
   ElementRef,
   OnDestroy,
-  inject
+  inject,
 } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { EventsService } from '../../services/events.service';
 import { MatInputModule } from '@angular/material/input';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButton } from '@angular/material/button';
 import { MapService } from '../../services/map.service';
-import { debounceTime, distinctUntilChanged, fromEvent, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { DecimalPipe } from '@angular/common';
+import { LatLng } from '../../models/event.model';
+
 @Component({
   selector: 'app-event-form',
   standalone: true,
   providers: [provideNativeDateAdapter()],
-  imports: [FormsModule, MatFormField, MatInputModule, MatButton,MatLabel,MatError,MatDatepickerModule,DecimalPipe],
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatInputModule,
+    MatButton,
+    MatLabel,
+    MatError,
+    MatDatepickerModule,
+    DecimalPipe,
+  ],
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.scss',
 })
 export class EventFormComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('locationField')
-  locationField!: ElementRef;
-  closing = output<boolean>();
+  @ViewChild('locationInput')
+  location!: ElementRef;
   minPeople = 2;
-  autocompleteService: google.maps.places.AutocompleteService;
-  autocomplete?: google.maps.places.Autocomplete;
-  address
-  exactMatch?:string;
-  closestMatch?:string;
-  bounds?:google.maps.LatLngBoundsLiteral;
+  locationResult?: string; //checks if the address input gives geocoded result
+  positionResult?: LatLng; //checks if the address input gives geocoded result
+  minDate = new Date(); // min date is today
   unsubscribe$ = new Subject<void>();
-  minDate = new Date();
   private eventsService: EventsService = inject(EventsService);
   private mapService: MapService = inject(MapService);
-
-  constructor() {
-    this.autocompleteService = new google.maps.places.AutocompleteService();
-    this.address = this.mapService.markerAddress;
-  }
+  markerAddress = this.mapService.markerAddress; // stores address selected from the map
 
   ngAfterViewInit(): void {
-    this.initAutocomplete();
-    this.subscribeToBoundsChange();
-    this.listenToLocationChanges();
+    const autocomplete = new google.maps.places.Autocomplete(
+      this.location.nativeElement
+    );
+    const center = this.eventsService.currentPosition();
+    autocomplete.setBounds({
+      north: center.lat + 0.5,
+      south: center.lat - 0.5,
+      east: center.lng + 0.5,
+      west: center.lng + 0.5,
+    });
   }
 
   ngOnDestroy(): void {
@@ -57,13 +65,28 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  onClose() {
-    this.closing.emit(true);
+  onBlur() {
+    const input = this.location.nativeElement.value;
+    if (input.trim() != '') {
+      this.mapService.convertAddressToLatLng(input).then(
+        (result) => {
+          this.mapService.flyTo(result.position);
+          this.locationResult = result.address;
+          this.positionResult = result.position;
+        },
+        () => {
+          alert('Location not recognized, try selecting it from the map.');
+        }
+      );
+    }
   }
+  onClose() {
+    this.eventsService.toggleEventForm();
+  }
+
   onSubmit(form: NgForm) {
-    if (form.valid) {
-      const { title, location, date, hour, minute, min, max,info } = form.form.value;
-      const myLocation = this.exactMatch || this.closestMatch || location
+    if (form.valid && this.locationResult && this.positionResult) {
+      const { title, date, hour, minute, min, max, info } = form.form.value;
       const time = new Date(date);
       time.setHours(hour);
       time.setMinutes(minute);
@@ -71,15 +94,17 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
       this.eventsService
         .addEvent({
           title: title,
-          location: myLocation,
-          latLng:this.mapService.markerPosition(),
+          location: this.locationResult!,
+          latLng: this.positionResult!,
           time: dateTime,
           min: min,
           max: max | min, //max can not be lower than min. If it is 0, min will be set
-          info:info
+          info: info,
         })
+        .pipe(takeUntil(this.unsubscribe$))
         .subscribe({
-          next: () => {
+          next: (event) => {
+            this.mapService.addMarker(event);
             this.onClose();
           },
           error: (error) => {
@@ -87,55 +112,5 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
           },
         });
     }
-  }
-  
-  private initAutocomplete():void{
-    this.autocomplete = new google.maps.places.Autocomplete(
-      this.locationField.nativeElement
-    );
-    this.autocomplete.addListener('place_changed', () => {
-      const place = this.autocomplete!.getPlace();
-      this.exactMatch = place.formatted_address;
-      const address = this.locationField.nativeElement.value; 
-      this.mapService.setAddress(address);
-      this.mapService.convertAddressToLatLng(address);
-    });
-  }
-
-  private listenToLocationChanges():void{
-    fromEvent(this.locationField.nativeElement, 'input')
-    .pipe(
-      debounceTime(1000), // Wait for 1000ms pause in typing
-      distinctUntilChanged(), // Only call when the value changes
-      takeUntil(this.unsubscribe$) // Cleanup when component is destroyed
-    )
-    .subscribe(() => {
-      const inputValue = this.locationField.nativeElement.value;
-      if (inputValue) {
-        this.getPredictions(inputValue);
-      }
-    });
-  }
-
-  private getPredictions(input: string) {
-    const request = {
-      input: input,
-      bounds: this.bounds
-    };
-
-    this.autocompleteService.getPlacePredictions(request, (predictions, status) => {
-      if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
-        const closestMatch = predictions[0]; // Assuming the first prediction is the closest
-        this.closestMatch=closestMatch.description;
-      }});
-    }
-
-  private subscribeToBoundsChange() {
-    this.mapService.bounds$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((bounds) => {
-        this.autocomplete?.setBounds(bounds);
-        this.bounds=bounds;
-      });
   }
 }
