@@ -1,13 +1,9 @@
-<div [class]="['sidebar-container',openForm()? 'wide' :'']">
- 
-  @if(!openForm()){
+<div class="sidebar-container">
   <mat-label class="sticky-title">Your Upcoming Events</mat-label>
   <app-event-list
     [events]="joinedEvents()"
     (openDetails)="onOpenDetails($event)"
   ></app-event-list>
-
-  <mat-divider></mat-divider>
 
   <mat-label class="sticky-title">Other Events</mat-label>
   <app-event-list
@@ -15,19 +11,8 @@
     (openDetails)="onOpenDetails($event)"
   ></app-event-list>
 
-  @if(selectedEvent().id){
-  <app-event-details
-    [event]="selectedEvent()"
-    [joined]="isUserJoined(selectedEvent().id)"
-    (participation)="onChangeParticipation($event, selectedEvent().id,selectedEvent().distance)"
-    (closeDialog)="onCloseDetails()"
-    (deleteEvent)="onDeleteEvent(selectedEvent().id, selectedEvent().ownerId)"
-  ></app-event-details>
-  } 
 <button mat-raised-button (click)="onToggleEventForm()">
     Add new event
   </button>
-  }@else{
-  <app-event-form></app-event-form>
-  }
+ 
 </div>

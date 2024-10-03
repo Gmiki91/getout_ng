@@ -1,28 +1,26 @@
-.body {
-  display: grid;
-  width: 80vw; /* 80% of the viewport width */
-  height: 80vh;
-  margin: 0 auto;
-  grid-template-areas:
-    "a a a"
-    "b b c";
-    grid-template-columns: 2fr 1fr; /* 2 parts for map and 1 part for event list */
-    grid-template-rows: auto 1fr; /* Auto height for filter bar and remaining height for map and list */
-    
-    app-filter-bar {
-      grid-area: a;
-      border: 1px solid;
-      background-color:rgba(52, 122, 225, 0.7);
+.container {
+  app-header {
+    height: 60px;
+  }
 
-    }
-    app-event-list{
-      grid-area:c;
-      overflow-y: auto;
-      border: 1px solid;
-    }
-    app-map{
-      grid-area:b;
-      border: 1px solid;
-    }
+  .body {
+    display: flex;
+    flex-grow: 1;
+    height: calc(100vh - 60px);
 
+    app-event-sidebar {
+      width: 21rem;
+      display: flex;
+    }
+    app-map {
+      flex-grow: 1; /* The map will take up the remaining space */
+      height: 100%;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .body {
+    display: flex;
+  }
 }
