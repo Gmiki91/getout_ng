@@ -1,5 +1,7 @@
 .container{
-    display:flex;
-    justify-content:center;
-    border: 1px solid;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px;
+  background-color: var(--warn-color);
 }
