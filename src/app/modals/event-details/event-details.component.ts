@@ -20,6 +20,8 @@ import { MatInput } from '@angular/material/input';
 import { TimeTextPipe } from '../../pipes/time-until.pipe';
 import { MatCardModule } from '@angular/material/card';
 import {CdkDrag} from '@angular/cdk/drag-drop'
+import { EventsService } from '../../services/events.service';
+import { MapService } from '../../services/map.service';
 @Component({
   selector: 'app-event-details',
   standalone: true,
@@ -42,14 +44,13 @@ import {CdkDrag} from '@angular/cdk/drag-drop'
 export class EventDetailsComponent implements OnInit {
   @ViewChild('komment')
   kommentRef!: ElementRef;
-  event = input.required<Event>();
-  joined = input.required<boolean>();
-  participation = output<boolean>();
-  deleteEvent = output();
-  closeDialog = output();
   kommentService = inject(KommentService);
+  eventService = inject(EventsService);
+  mapService = inject(MapService);
+  event = this.eventService.selectedEvent;
+  joined = this.eventService.isUserJoined(this.event().id);
   komments = this.kommentService.comments;
-  showBtn = false;
+  showCommentBtn = false;
   userId = '';
 
   ngOnInit(): void {
@@ -58,19 +59,23 @@ export class EventDetailsComponent implements OnInit {
   }
 
   onJoin(): void {
-    this.participation.emit(true);
+    this.eventService.joinEvent(this.event().id,this.event().distance);
+    this.closeDialog();
   }
 
   onLeave(): void {
-    this.participation.emit(false);
+    this.eventService.leaveEvent(this.event().id,this.event().distance);
+    this.closeDialog();
   }
 
   onDelete(): void {
-    this.deleteEvent.emit();
+    this.eventService.deleteEvent(this.event().id, this.event().ownerId);
+    this.mapService.removeMarker(this.event().id);
+    this.closeDialog();
   }
 
-  onCloseDialog(): void {
-    this.closeDialog.emit();
+  closeDialog(): void {
+    this.eventService.selectEvent({} as Event);
   }
 
   onAddKomment(e: MouseEvent): void {
@@ -84,13 +89,13 @@ export class EventDetailsComponent implements OnInit {
       };
       this.kommentService.addKomment(komment);
       this.kommentRef.nativeElement.value='';
-      this.showBtn = false;
+      this.showCommentBtn = false;
     }
   }
 
-  onShowBtn(inFocus: boolean) {
+  onShowCommentBtn(inFocus: boolean) {
     if (this.kommentRef.nativeElement.value.trim().length <= 0) {
-        this.showBtn = inFocus;
+        this.showCommentBtn = inFocus;
     }
   }
 

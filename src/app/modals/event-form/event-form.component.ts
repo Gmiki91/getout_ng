@@ -7,17 +7,18 @@ import {
   inject,
 } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { EventsService } from '../../services/events.service';
+
 import { MatInputModule } from '@angular/material/input';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButton } from '@angular/material/button';
-import { MapService } from '../../services/map.service';
 import { Subject, takeUntil } from 'rxjs';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { DecimalPipe } from '@angular/common';
+import {CdkDrag} from '@angular/cdk/drag-drop'
 import { LatLng } from '../../models/event.model';
-
+import { EventsService } from '../../services/events.service';
+import { MapService } from '../../services/map.service';
 @Component({
   selector: 'app-event-form',
   standalone: true,
@@ -31,6 +32,7 @@ import { LatLng } from '../../models/event.model';
     MatError,
     MatDatepickerModule,
     DecimalPipe,
+    CdkDrag
   ],
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.scss',
@@ -46,6 +48,7 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
   private eventsService: EventsService = inject(EventsService);
   private mapService: MapService = inject(MapService);
   markerAddress = this.mapService.markerAddress; // stores address selected from the map
+  markerPosition = this.mapService.markerPosition; // stores address selected from the map
 
   ngAfterViewInit(): void {
     const autocomplete = new google.maps.places.Autocomplete(
@@ -85,7 +88,7 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
   }
 
   onSubmit(form: NgForm) {
-    if (form.valid && this.locationResult && this.positionResult) {
+    if (form.valid && (this.markerAddress() && this.markerPosition()) || (this.locationResult && this.positionResult)) {
       const { title, date, hour, minute, min, max, info } = form.form.value;
       const time = new Date(date);
       time.setHours(hour);
@@ -94,8 +97,8 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
       this.eventsService
         .addEvent({
           title: title,
-          location: this.locationResult!,
-          latLng: this.positionResult!,
+          location: this.locationResult || this.markerAddress(), //either we got the correct address from the autofill or from map click
+          latLng: this.positionResult || this.markerPosition(),
           time: dateTime,
           min: min,
           max: max | min, //max can not be lower than min. If it is 0, min will be set

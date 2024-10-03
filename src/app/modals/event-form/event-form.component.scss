@@ -1,27 +1,33 @@
 .event-form {
+  display: flex;
+  flex-direction: column;
+  top: 20px;
+  right: 50px;
+  background-color: rgba(var(--main-color-rgb),0.9);
+  border-radius: 6px;
+  border: none;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
   padding: 1rem;
-  border-radius: 8px;
-
+  z-index: 23;
   h4 {
     text-align: center;
     margin-bottom: 1rem;
   }
-  
+
   mat-form-field {
-    width: 100%; 
-    margin-bottom:10px; 
+    width: 100%;
+    margin-bottom: 10px;
   }
 
-  .field-group{
-    display:flex;
+  .field-group {
+    display: flex;
   }
-  
+
   .actions {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
     margin-top: 1.5rem;
-  
   }
 }
 
@@ -30,7 +36,7 @@
     padding: 0.5rem;
     width: 90%;
 
-    .field-group{
+    .field-group {
       flex-direction: column;
     }
   }

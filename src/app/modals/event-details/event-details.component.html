@@ -1,4 +1,4 @@
-<div (click)="onCloseDialog()" class="backdrop"></div>
+<div (click)="closeDialog()" class="backdrop"></div>
 <dialog open class="event-dialog" cdkDrag>
   <mat-card class="event-card">
     <mat-card-header>
@@ -25,11 +25,11 @@
           placeholder="Add a comment"
           #komment
           ngModel
-          (focus)="onShowBtn(true)"
-          (blur)="onShowBtn(false)"
+          (focus)="onShowCommentBtn(true)"
+          (blur)="onShowCommentBtn(false)"
           cdkAutosizeMinRows="5"
         ></textarea>
-        @if(showBtn){
+        @if(showCommentBtn){
           <button  mat-button (click)="onAddKomment($event)">
             Add comment
           </button>
@@ -56,7 +56,7 @@
           Delete event
         </button>
         }
-      @if(joined()){
+      @if(joined){
       <button mat-button  (click)="onLeave()">
         Leave event
       </button>

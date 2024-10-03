@@ -1,4 +1,4 @@
-<div class="event-form">
+<dialog cdkDrag div class="event-form">
   <h4>New Event</h4>
   <form #form="ngForm" (ngSubmit)="onSubmit(form)">
     <div class="field-group">
@@ -93,6 +93,7 @@
         <mat-label for="min">Minimum People</mat-label>
         <input
           matInput
+          required
           type="number"
           id="min"
           name="min"
@@ -127,7 +128,6 @@
 
     <div class="actions">
       <button mat-button type="button" (click)="onClose()">Cancel</button>
-      <button mat-raised-button color="primary" type="submit">Create</button>
+      <button [disabled]="form.invalid" mat-raised-button color="primary" type="submit">Create</button>
     </div>
   </form>
-</div>
