@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable, tap } from 'rxjs';
 import { DistanceCalculator } from '../utils/distance-calculator';
-import { Map } from 'mapbox-gl';
 
 @Injectable({ providedIn: 'root' })
 export class EventsService {
@@ -164,6 +163,10 @@ export class EventsService {
     } else {
       this._otherEvents.set(this._hiddenEvents);
     }
+  }
+
+  isUserJoined(id: string): boolean {
+    return this.yourEvents().some((e) => e.id == id);
   }
 
   private updateDistanceOfEvents(events: Event[]): Event[] {

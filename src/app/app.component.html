@@ -1,7 +1,15 @@
-<div>
+<div class="container">
+  <app-header></app-header>
   <div class="body">
-    <app-filter-bar />
-    <app-map />
     <app-event-sidebar/>
+    <app-map />
   </div>
+  @if(isFormOpen()){
+    <app-event-form></app-event-form>
+    }
+    @if(selectedEvent().id){
+      <app-event-details
+      ></app-event-details>
+      } 
 </div>
+

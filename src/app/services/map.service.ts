@@ -8,12 +8,15 @@ export class MapService {
   private mapSource: mapboxgl.GeoJSONSource | undefined;
   private map: Map | undefined;
   private _markerAddress = signal<string>('');
+  private _markerPosition = signal<LatLng>({}as LatLng);
   markerAddress = this._markerAddress.asReadonly();
+  markerPosition = this._markerPosition.asReadonly();
 
   convertLatLngToAddress(latlng: LngLat): void {
     this.geocoder.geocode({ location: latlng }, (results, status) => {
       if (status === 'OK' && results && results[0]) {
         this._markerAddress.set(results[0].formatted_address);
+        this._markerPosition.set(latlng);
       } else {
         console.log('Geocoding failed: ' + status);
       }
@@ -49,7 +52,7 @@ export class MapService {
 
   flyTo(position: LatLng) {
     if (this.map) {
-      this.map.flyTo({ center: position });
+      this.map.flyTo({ center: position, zoom:14 });
     }
   }
 
