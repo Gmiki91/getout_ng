@@ -19,7 +19,7 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { MatInput } from '@angular/material/input';
 import { TimeTextPipe } from '../../pipes/time-until.pipe';
 import { MatCardModule } from '@angular/material/card';
-
+import {CdkDrag} from '@angular/cdk/drag-drop'
 @Component({
   selector: 'app-event-details',
   standalone: true,
@@ -33,7 +33,8 @@ import { MatCardModule } from '@angular/material/card';
     MatList,
     MatInput,
     MatListItem,
-    TimeTextPipe
+    TimeTextPipe,
+    CdkDrag
   ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',
