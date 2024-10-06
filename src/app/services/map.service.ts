@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { Event, LatLng } from '../models/event.model';
-import { LngLat, Map } from 'mapbox-gl';
+import {  Map } from 'mapbox-gl';
 
 @Injectable({ providedIn: 'root' })
 export class MapService {
@@ -12,7 +12,7 @@ export class MapService {
   markerAddress = this._markerAddress.asReadonly();
   markerPosition = this._markerPosition.asReadonly();
 
-  convertLatLngToAddress(latlng: LngLat): void {
+  convertLatLngToAddress(latlng: LatLng): void {
     this.geocoder.geocode({ location: latlng }, (results, status) => {
       if (status === 'OK' && results && results[0]) {
         this._markerAddress.set(results[0].formatted_address);

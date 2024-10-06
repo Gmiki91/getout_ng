@@ -5,11 +5,13 @@ import {
   ElementRef,
   OnDestroy,
   inject,
+  OnInit,
 } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButton } from '@angular/material/button';
 import { Subject, takeUntil } from 'rxjs';
@@ -19,6 +21,7 @@ import {CdkDrag} from '@angular/cdk/drag-drop'
 import { LatLng } from '../../models/event.model';
 import { EventsService } from '../../services/events.service';
 import { MapService } from '../../services/map.service';
+import {TIMES} from '../../time'
 @Component({
   selector: 'app-event-form',
   standalone: true,
@@ -31,15 +34,18 @@ import { MapService } from '../../services/map.service';
     MatLabel,
     MatError,
     MatDatepickerModule,
+    MatSelectModule,
     DecimalPipe,
     CdkDrag
   ],
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.scss',
 })
-export class EventFormComponent implements AfterViewInit, OnDestroy {
+export class EventFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('locationInput')
   location!: ElementRef;
+  times = TIMES;
+  selectedTime='';
   minPeople = 2;
   locationResult?: string; //checks if the address input gives geocoded result
   positionResult?: LatLng; //checks if the address input gives geocoded result
@@ -49,6 +55,17 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
   private mapService: MapService = inject(MapService);
   markerAddress = this.mapService.markerAddress; // stores address selected from the map
   markerPosition = this.mapService.markerPosition; // stores address selected from the map
+
+  //Set up the current date and time
+  ngOnInit():void{
+    const hour = new Date().getHours();
+    if(hour === 23){
+      this.minDate.setDate(new Date().getDate()+1) //tomorrow
+      this.selectedTime = TIMES[0];
+    }else{
+      this.selectedTime = hour ===0 ? TIMES[1] : TIMES[hour*2];
+    }
+  }
 
   ngAfterViewInit(): void {
     const autocomplete = new google.maps.places.Autocomplete(
@@ -89,10 +106,13 @@ export class EventFormComponent implements AfterViewInit, OnDestroy {
 
   onSubmit(form: NgForm) {
     if (form.valid && (this.markerAddress() && this.markerPosition()) || (this.locationResult && this.positionResult)) {
-      const { title, date, hour, minute, min, max, info } = form.form.value;
+      const { title, date, min, max, info } = form.form.value;
       const time = new Date(date);
+      const hour = +this.selectedTime.substring(0,2);
+      const minute = +this.selectedTime.substring(3);
       time.setHours(hour);
-      time.setMinutes(minute);
+      time.setMinutes(minute)
+      time.setSeconds(0);
       const dateTime = time.toISOString();
       this.eventsService
         .addEvent({

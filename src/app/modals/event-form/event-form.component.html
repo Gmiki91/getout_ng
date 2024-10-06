@@ -1,6 +1,7 @@
 <dialog cdkDrag div class="event-form">
   <h4>New Event</h4>
   <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+
     <div class="field-group">
       <mat-form-field appearance="outline">
         <mat-label for="title">Title</mat-label>
@@ -14,27 +15,6 @@
         />
         <mat-error>Title is invalid</mat-error>
       </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label for="date">Date</mat-label>
-        <input
-          matInput
-          required
-          [min]="minDate"
-          [matDatepicker]="picker"
-          id="date"
-          name="date"
-          ngModel
-          #date="ngModel"
-        />
-        <mat-datepicker-toggle
-          matIconSuffix
-          [for]="picker"
-        ></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error>Date is invalid</mat-error>
-      </mat-form-field>
-    </div>
 
     <mat-form-field appearance="outline">
       <mat-label for="location">Location</mat-label>
@@ -50,43 +30,37 @@
       @if( location.invalid && (location.dirty || location.touched)){
       <mat-error>Invalid address</mat-error>}
     </mat-form-field>
+</div>
+<div class="field-group">
 
-    <div class="field-group">
-      <mat-form-field appearance="outline">
-        <mat-label for="hour">Hour</mat-label>
-        <input
-          matInput
-          required
-          type="number"
-          min="0"
-          max="24"
-          id="hour"
-          name="hour"
-          [ngModel]="hour.value | number : '2.0'"
-          #hour="ngModel"
-        />
-        @if(hour.invalid && (hour.dirty || hour.touched)){
-        <mat-error>Invalid hour</mat-error>}
-      </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label for="date">Date</mat-label>
+    <input
+      matInput
+      required
+      [min]="minDate"
+      [matDatepicker]="picker"
+      id="date"
+      name="date"
+      [ngModel] = "minDate"
+      #date="ngModel"
+    />
+    <mat-datepicker-toggle
+      matIconSuffix
+      [for]="picker"
+    ></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error>Date is invalid</mat-error>
+  </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label for="minute">Minute</mat-label>
-        <input
-          matInput
-          required
-          type="number"
-          min="0"
-          max="60"
-          id="minute"
-          name="minute"
-          [ngModel]="minute.value | number : '2.0'"
-          ngModel
-          #minute="ngModel"
-        />
-        @if(minute.invalid && (minute.dirty || minute.touched)){
-        <mat-error>Invalid minute</mat-error>}
-      </mat-form-field>
-    </div>
+  <mat-form-field appearance="outline">
+    <mat-select  [(value)]="selectedTime">
+      @for (time of times; track time) {
+        <mat-option [value]="time">{{time}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</div>
 
     <div class="field-group">
       <mat-form-field appearance="outline">

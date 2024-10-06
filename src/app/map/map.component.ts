@@ -19,10 +19,12 @@ export class MapComponent implements OnInit {
   ngOnInit(): void {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        this.eventService.setCurrentPosition({
+        const param = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
-        });
+        }
+        this.eventService.setCurrentPosition(param);
+        this.mapService.convertLatLngToAddress(param)
         this.initMap(position.coords);
       },
       (err) => {
@@ -80,11 +82,12 @@ export class MapComponent implements OnInit {
       this.eventService.selectEventById(id);
       setTimeout(() => {
         markerClicked = false;
-      }, 0);
+      }, 1);
     });
 
     map.on('click', (e) => {
-      setTimeout(() => { //timeout so markerClicked flag can set if the other click event has been called
+      setTimeout(() => {
+        //timeout so markerClicked flag can set if the other click event has been called
         if (!markerClicked) {
           // if true, there was no event selected -> the mouse is not on a marker
           this.mapService.convertLatLngToAddress(e.lngLat);
@@ -100,9 +103,10 @@ export class MapComponent implements OnInit {
 
             document
               .getElementById('popupBtn')!
-              .addEventListener('click', () =>
-                this.eventService.toggleEventForm()
-              );
+              .addEventListener('click', () => {
+                this.eventService.toggleEventForm();
+                popup.remove();
+              });
           }
         }
       }, 0);
@@ -124,8 +128,8 @@ export class MapComponent implements OnInit {
       map.getCanvas().style.cursor = '';
     });
 
-     //right click
-     map.on('contextmenu', (e) => {
+    //right click
+    map.on('contextmenu', (e) => {
       popup.remove();
     });
 
