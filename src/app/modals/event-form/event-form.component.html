@@ -17,15 +17,15 @@
       </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label for="location">Location</mat-label>
+      <mat-label for="location">Choose location from the map</mat-label>
       <input
+      disabled
         #locationInput
         matInput
         required
         [ngModel]="markerAddress()"
         #location="ngModel"
         name="location"
-        (blur)="onBlur()"
       />
       @if( location.invalid && (location.dirty || location.touched)){
       <mat-error>Invalid address</mat-error>}

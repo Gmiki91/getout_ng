@@ -1,30 +1,39 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { GoogleMap, MapMarker } from '@angular/google-maps';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MapService } from '../services/map.service';
 import { EventsService } from '../services/events.service';
-import { environment } from '../../environments/environment';
-import mapboxgl, { GeolocateControl, Map, MapMouseEvent } from 'mapbox-gl';
+import * as L from 'leaflet';
+import { Feature, Geometry } from 'geojson';
+import { Subject, takeUntil } from 'rxjs';
+import Geocoder from 'leaflet-control-geocoder';
+import { LatLng } from '../models/event.model';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [GoogleMap, MapMarker],
+  imports: [],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
   private mapService = inject(MapService);
   private eventService = inject(EventsService);
+  unsubscribe$ = new Subject<void>();
+  popup = L.popup();
+  viewbox = '' 
 
+  //Get current location 
   ngOnInit(): void {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const param = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
-        }
+        };
+        // set bounds for the autofill search
+        this.viewbox = `${position.coords.longitude - 0.05},${position.coords.latitude + 0.05},${position.coords.longitude+ 0.05},${position.coords.latitude - 0.05}`
         this.eventService.setCurrentPosition(param);
-        this.mapService.convertLatLngToAddress(param)
+        // update location field in create event form
+        this.mapService.convertLatLngToAddress(param);
         this.initMap(position.coords);
       },
       (err) => {
@@ -33,177 +42,133 @@ export class MapComponent implements OnInit {
       }
     );
   }
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   initMap(coords?: GeolocationCoordinates): void {
-    const map = new mapboxgl.Map({
-      accessToken: environment.mapbox.accessToken,
-      container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: coords
-        ? { lat: coords.latitude, lon: coords.longitude }
-        : { lat: 0, lon: 0 },
-      zoom: 13,
-    });
+    //Create map
+    const map = L.map('map').setView([coords!.latitude, coords!.longitude], 13);
+    //Add tile
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-    const geoLocateControl = this.initGeoLocateControl();
-    this.addControls(map, geoLocateControl);
     this.addListeners(map);
+    if(coords){
+      this.addCurrentLocationIcon(map,coords);
+    }
+   
+
     this.mapService.setMap(map);
+    this.addGeocoder(map);
+    this.addMarkerLayer(map);
+    this.initMarkers();
   }
 
-  initGeoLocateControl(): GeolocateControl {
-    return new mapboxgl.GeolocateControl({
-      positionOptions: { enableHighAccuracy: true },
-      trackUserLocation: true,
-    });
-  }
-
-  initMarkers(): void {
-    this.eventService.getEvents().subscribe((events) => {
-      const allEvents = events.joinedEvents.concat(events.otherEvents);
-      allEvents.forEach((event) => {
-        this.mapService.addMarker(event);
+  addGeocoder(map: L.Map): void {
+    const geocodeControl = new Geocoder({  
+      geocoder: Geocoder.nominatim(),
+      geocodingQueryParams: {
+        viewbox: this.viewbox,
+        bounded: 1 // Limit results to the viewbox
+      },
+      defaultMarkGeocode: false
+    }).addTo(map);
+    geocodeControl.on('markgeocode',  (e:any)=> {
+      this.mapService.flyTo(e.geocode.center);
+      this.createEventPopUp(e.geocode.center,map);
       });
-    });
   }
 
-  addControls(map: Map, geoLocateControl: GeolocateControl) {
-    map.addControl(geoLocateControl);
-    map.addControl(new mapboxgl.NavigationControl());
-  }
-
-  addListeners(map: Map) {
-    let markerClicked = false;
-    let popup: mapboxgl.Popup;
-
-    map.on('click', 'markers', (e: MapMouseEvent) => {
-      markerClicked = true;
-      const id: string = e.features![0].properties!['id'];
-      this.eventService.selectEventById(id);
-      setTimeout(() => {
-        markerClicked = false;
-      }, 1);
-    });
-
-    map.on('click', (e) => {
-      setTimeout(() => {
-        //timeout so markerClicked flag can set if the other click event has been called
-        if (!markerClicked) {
-          // if true, there was no event selected -> the mouse is not on a marker
-          this.mapService.convertLatLngToAddress(e.lngLat);
-          if (!this.eventService.isEventFormOpen()) {
-            //dont show 'create event' popup when we are already creating event
-            popup = new mapboxgl.Popup({
-              closeButton: false,
-              className: 'popup',
-            })
-              .setLngLat(e.lngLat)
-              .setHTML(`<button id='popupBtn'">Create event</button>`)
-              .addTo(map);
-
-            document
-              .getElementById('popupBtn')!
-              .addEventListener('click', () => {
-                this.eventService.toggleEventForm();
-                popup.remove();
-              });
-          }
-        }
-      }, 0);
-    });
-
-    // change cursor to pointer when hovering over a marker
-    map.on('mouseenter', 'markers', (e) => {
-      map.getCanvas().style.cursor = 'pointer';
-      const title = e.features![0].properties!['title'];
-
-      popup = new mapboxgl.Popup({ closeButton: false, className: 'popup' })
-        .setLngLat(e.lngLat)
-        .setText(title)
-        .addTo(map);
-    });
-
-    map.on('mouseleave', 'markers', () => {
-      popup.remove();
-      map.getCanvas().style.cursor = '';
-    });
-
-    //right click
-    map.on('contextmenu', (e) => {
-      popup.remove();
-    });
-
-    map.on('load', () => {
-      this.addGeoJsonSource(map);
-      this.addClusterLayer(map);
-      this.addClusterCountLayer(map); // Add a label for clusters showing the number of points in the cluster
-      this.addPointLayer(map); // Add layer for individual points
-      this.initMarkers();
-    });
-  }
-
-  addGeoJsonSource(map: Map): void {
-    const geojsonData: GeoJSON.GeoJSON = {
+  addMarkerLayer(map: L.Map): void {
+    // to keep track of markers
+    const mapIdObj: { [key: string]: number } = {}; 
+    const featureCollection: GeoJSON.FeatureCollection = {
       type: 'FeatureCollection',
       features: [],
     };
-    map.addSource('event-markers', {
-      type: 'geojson',
-      data: geojsonData,
-      cluster: true, // Enable clustering
-      clusterRadius: 50, // Radius of each cluster when zoomed out
-      clusterMaxZoom: 14, // Max zoom level to cluster points
-    });
-
-    const source = map.getSource('event-markers') as mapboxgl.GeoJSONSource;
-    this.mapService.setGeoJSONSource(source); // Set the GeoJSON source in MapService
+    const markerLayer = L.geoJSON(featureCollection, {
+      onEachFeature: (feature, layer) => {
+        // record the ID of the feature/marker so it can be searched/deleted
+        mapIdObj[feature.properties.id] = L.stamp(layer); 
+        // marker hover and click events
+        this.addMouseEvents(feature, layer, map);
+      },
+    }).addTo(map);
+    this.mapService.setMarkerLayer(markerLayer); 
+    this.mapService.markerIdTracker = mapIdObj;
   }
 
-  addPointLayer(map: Map) {
-    map.addLayer({
-      id: 'markers',
-      type: 'circle',
-      source: 'event-markers',
-      filter: ['!', ['has', 'point_count']],
-      paint: {
-        'circle-color': '#11b4da',
-        'circle-radius': 8,
-      },
+  initMarkers(): void {
+    this.eventService
+      .getEvents()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((events) => {
+        const allEvents = events.joinedEvents.concat(events.otherEvents);
+        allEvents.forEach((event) => {
+          this.mapService.addMarker(event);
+        });
+      });
+  }
+
+  addListeners(map: L.Map) {
+    // Create evemt Popup when clicking on the map
+    map.on('click', (e:L.LeafletMouseEvent) => this.createEventPopUp(e.latlng,map));
+
+    // right click
+    map.on('contextmenu',  ()  => this.popup.remove());
+
+  }
+
+  createEventPopUp(position:LatLng,map:L.Map):void{
+    this.mapService.convertLatLngToAddress(position);
+    if (!this.eventService.isEventFormOpen()) {
+      // dont show 'create event' popup when we are already creating event
+      const popupContent = document.createElement('div');
+      popupContent.innerHTML = `<p style="cursor:pointer" id="popupBtn">Create event</p>`;
+      this.popup.setLatLng(position).setContent(popupContent).openOn(map);
+
+      popupContent.addEventListener('click', () => {
+        this.eventService.toggleEventForm();
+        this.popup.remove();
+      });
+    }
+  }
+
+  addMouseEvents(
+    feature: Feature<Geometry, any>,
+    layer: L.Layer,
+    map: L.Map
+  ): void {
+    const tooltip = new L.Tooltip();
+    layer.on('mouseover', (e) => {
+      tooltip
+        .setLatLng(e.latlng)
+        .setContent(feature.properties.title)
+        .addTo(map);
+    });
+    layer.on('mouseout', () => {
+      map.removeLayer(tooltip);
+    });
+    layer.on('click', () => {
+      const id = feature.properties.id;
+      this.eventService.selectEventById(id);
     });
   }
 
-  addClusterLayer(map: Map): void {
-    map.addLayer({
-      id: 'clusters',
-      type: 'circle',
-      source: 'event-markers',
-      filter: ['has', 'point_count'],
-      paint: {
-        'circle-color': [
-          'step',
-          ['get', 'point_count'],
-          '#51bbd6',
-          100,
-          '#f1f075',
-          750,
-          '#f28cb1',
-        ],
-        'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
-      },
+  addCurrentLocationIcon(map:L.Map,coords:GeolocationCoordinates):void{
+    const greenIcon = new L.Icon({
+      iconUrl:
+        'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+      shadowUrl:
+        'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41],
     });
-  }
-
-  addClusterCountLayer(map: Map): void {
-    map.addLayer({
-      id: 'cluster-count',
-      type: 'symbol',
-      source: 'event-markers',
-      filter: ['has', 'point_count'],
-      layout: {
-        'text-field': '{point_count_abbreviated}',
-        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-        'text-size': 12,
-      },
-    });
+    L.marker([coords!.latitude, coords!.longitude], { icon: greenIcon })
+      .addTo(map)
+      .bindTooltip('Current location');
   }
 }

@@ -1,65 +1,56 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { Event, LatLng } from '../models/event.model';
-import {  Map } from 'mapbox-gl';
+import * as L from 'leaflet';
+import { NominatimService } from './nominatim.service';
 
 @Injectable({ providedIn: 'root' })
 export class MapService {
-  private geocoder = new google.maps.Geocoder();
-  private mapSource: mapboxgl.GeoJSONSource | undefined;
-  private map: Map | undefined;
+  private nominatimService = inject(NominatimService);
+  private markerLayer: L.GeoJSON | undefined;
+  private map: L.Map | undefined;
   private _markerAddress = signal<string>('');
-  private _markerPosition = signal<LatLng>({}as LatLng);
+  private _markerPosition = signal<LatLng>({} as LatLng);
   markerAddress = this._markerAddress.asReadonly();
   markerPosition = this._markerPosition.asReadonly();
+  markerIdTracker: { [key: string]: number } = {};
 
   convertLatLngToAddress(latlng: LatLng): void {
-    this.geocoder.geocode({ location: latlng }, (results, status) => {
-      if (status === 'OK' && results && results[0]) {
-        this._markerAddress.set(results[0].formatted_address);
+    this.nominatimService.reverseLookup(latlng).subscribe((result) => {
+      if (result) {
+        this._markerAddress.set(result.displayName);
         this._markerPosition.set(latlng);
       } else {
-        console.log('Geocoding failed: ' + status);
+        console.log('Geocoding failed');
       }
     });
   }
 
-  // to validate the address in the event creator form
-  convertAddressToLatLng(address: string): Promise<{ address: string; position: LatLng }> {
-    return new Promise((resolve, reject) => {
-      this.geocoder.geocode({ address }, (results, status) => {
-        if (status === 'OK' && results && results[0]) {
-          const lat = results[0].geometry.location.lat();
-          const lng = results[0].geometry.location.lng();
-          const result = {
-            address: results[0].formatted_address,
-            position: { lat, lng },
-          };
-          resolve(result);
-        } else {
-          reject(`Geocoding failed: ${status}`);
-        }
-      });
+  convertAddressToLatLng(address: string): void {
+    this.nominatimService.addressLookup(address).subscribe((results) => {
+      if (results && results[0]) {
+        this._markerAddress.set(results[0].displayName);
+        this._markerPosition.set(results[0].latLng);
+      }
     });
   }
 
-  setGeoJSONSource(source: mapboxgl.GeoJSONSource): void {
-    this.mapSource = source;
+  setMarkerLayer(markerLayer: L.GeoJSON): void {
+    this.markerLayer = markerLayer;
   }
 
-  setMap(map: Map) {
+  setMap(map: L.Map) {
     this.map = map;
   }
 
   flyTo(position: LatLng) {
     if (this.map) {
-      this.map.flyTo({ center: position, zoom:14 });
+      this.map.flyTo(position, 16);
     }
   }
 
   addMarker(event: Event): void {
-    if (this.mapSource) {
-      const data = this.mapSource._data as GeoJSON.FeatureCollection;
-      const newMarker: GeoJSON.GeoJSON = {
+    if (this.markerLayer) {
+      const newMarker: GeoJSON.Feature = {
         type: 'Feature',
         geometry: {
           type: 'Point',
@@ -70,21 +61,19 @@ export class MapService {
           title: event.title,
         },
       };
-      data.features.push(newMarker);
-      this.mapSource.setData(data);
+      this.markerLayer.addData(newMarker);
     }
   }
 
   removeMarker(eventId: string): void {
-    if (this.mapSource) {
-      const data = this.mapSource._data as GeoJSON.FeatureCollection;
-      const updatedFeatures = data.features.filter(
-        (feature) => feature.properties?.['id'] !== eventId
-      );
-      this.mapSource.setData({
-        ...data,
-        features: updatedFeatures,
-      });
+    if (this.markerLayer) {
+      const layerId = this.markerIdTracker[eventId]; // Get the Leaflet layer ID from the feature ID
+      if (layerId) {
+        const layer = this.markerLayer.getLayer(layerId);
+        if (layer) {
+          this.markerLayer.removeLayer(layer); // Remove the layer from the map
+        }
+      }
     }
   }
 }
