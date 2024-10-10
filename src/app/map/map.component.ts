@@ -6,7 +6,8 @@ import { Feature, Geometry } from 'geojson';
 import { Subject, takeUntil } from 'rxjs';
 import Geocoder from 'leaflet-control-geocoder';
 import { LatLng } from '../models/event.model';
-
+const DarkTileUrl = 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
+const LightTileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 @Component({
   selector: 'app-map',
   standalone: true,
@@ -19,7 +20,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private eventService = inject(EventsService);
   unsubscribe$ = new Subject<void>();
   popup = L.popup();
-  viewbox = '' 
+  viewbox = '';
 
   //Get current location 
   ngOnInit(): void {
@@ -51,8 +52,10 @@ export class MapComponent implements OnInit, OnDestroy {
     //Create map
     const map = L.map('map').setView([coords!.latitude, coords!.longitude], 13);
     //Add tile
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    const currentTime = new Date().getHours();
+    let tileLayerUrl= currentTime>18 || currentTime<5 ? DarkTileUrl : LightTileUrl;
 
+    L.tileLayer(tileLayerUrl).addTo(map);
     this.addListeners(map);
     if(coords){
       this.addCurrentLocationIcon(map,coords);
