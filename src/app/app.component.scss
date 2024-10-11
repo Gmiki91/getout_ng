@@ -9,7 +9,7 @@
     height: calc(100vh - 60px);
 
     app-event-sidebar {
-      width: 21rem;
+      width: 25rem;
       display: flex;
     }
     app-map {
@@ -22,5 +22,9 @@
 @media (max-width: 600px) {
   .body {
     display: flex;
+    app-event-sidebar{
+      display: none !important;
+    }
   }
+ 
 }

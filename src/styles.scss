@@ -1,9 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
   --main-color:#D2E0FB;
-  --secondary-color: #FEF9D9;
-  --accent-color: #8EACCD;
+  --main-color-rgb:210, 224, 251; /*so you can add transparancy using rgba()*/
+  --accent-color: #FFA69E;
+  --warn-color: #30ccd4;
 }
+
 html,
 body {
   height: 100%;
@@ -12,6 +14,8 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+
 
 //Scrollbar
 ::-webkit-scrollbar {
