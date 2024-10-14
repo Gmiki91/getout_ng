@@ -3,7 +3,7 @@ import { NewEventData, Event, LatLng } from '../models/event.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable, tap } from 'rxjs';
-import { DistanceCalculator } from '../utils/distance-calculator';
+import { calculateDistance } from '../utils/utils';
 
 @Injectable({ providedIn: 'root' })
 export class EventsService {
@@ -178,7 +178,7 @@ export class EventsService {
 
   private addDistance(latLng: LatLng): number {
     const currentPosition = this.currentPosition();
-    const distance = DistanceCalculator.calculateDistance(
+    const distance = calculateDistance(
       currentPosition.lat,
       currentPosition.lng,
       latLng.lat,

@@ -1,6 +1,6 @@
 import { Component,input,inject} from '@angular/core';
 import { Event } from '../../models/event.model';
-import { TimeTextPipe } from '../../pipes/time-until.pipe';
+import { TimeTextPipe } from '../../pipes/time-text.pipe';
 import {MatIcon} from '@angular/material/icon';
 import { DistanceFormatPipe } from '../../pipes/distance-format.pipe';
 import { MapService } from '../../services/map.service';

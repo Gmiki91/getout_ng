@@ -2,8 +2,6 @@ import {
   Component,
   ElementRef,
   inject,
-  input,
-  output,
   ViewChild,
   OnInit,
 } from '@angular/core';
@@ -17,7 +15,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatFormField } from '@angular/material/form-field';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatInput } from '@angular/material/input';
-import { TimeTextPipe } from '../../pipes/time-until.pipe';
+import { TimeTextPipe } from '../../pipes/time-text.pipe';
 import { MatCardModule } from '@angular/material/card';
 import {CdkDrag} from '@angular/cdk/drag-drop'
 import { EventsService } from '../../services/events.service';

@@ -1,26 +1,35 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/**
+ * Shows how much time passed since - or how much time is left until - date.
+ * @param value  a date as a string value in ISO format (new Date().toISOString())
+ * @param type changes return value based on whether it's a comment or an event (comments are only in the past, events can be in the future and in the past)
+ */
+
 @Pipe({
   name: 'timeText',
   standalone: true,
 })
 export class TimeTextPipe implements PipeTransform {
-  transform(value: string, format: 'until' | 'since'): string {
+  transform(value: string|null|undefined, type: 'comment' | 'event'): string {
+    if(value==null){
+      return 'unknown time'
+    }
     const eventDate = new Date(value);
     const now = new Date();
     const millisecondsDiff =
-      format === 'until'
+      type === 'event'
         ? eventDate.getTime() - now.getTime()
         : now.getTime() - eventDate.getTime();
 
-    //only applicable to until format
+    //only applicable to event type
     if (millisecondsDiff < 0) {
       return 'Started at ' + this.formatTime(eventDate);
     }
 
-    const appendix = format === 'until' ? 'left' : 'ago';
+    const appendix = type === 'event' ? 'left' : 'ago';
 
-    const minutesDiff = Math.round(millisecondsDiff / (1000 * 60));
+    const minutesDiff = Math.floor(millisecondsDiff / (1000 * 60));
     const hoursDiff = Math.floor(minutesDiff / 60);
     const daysDiff = Math.floor(hoursDiff / 24);
 

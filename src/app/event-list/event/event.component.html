@@ -6,7 +6,7 @@
   </mat-card-header>
     <div class="event-info">
       <div class="info-item"  [matTooltip]="event().time|date : 'medium'" matTooltipShowDelay="1000">
-        <span>{{event().time | timeText: 'until'}}</span>
+        <span>{{event().time | timeText: 'event'}}</span>
         <mat-icon >schedule</mat-icon>
       </div>
       <div class="info-item"   [matTooltip]="event().location"  matTooltipShowDelay="1000">
