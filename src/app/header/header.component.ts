@@ -22,7 +22,8 @@ type IconText =  'expand_less'|'unfold_more'|'expand_more';
 })
 export class HeaderComponent {
   hideFullEvents = signal<boolean>(false);
-  ascendingTime = false; //time ascending is the default sort by from the backend
+  //time ascending is the default sort by from the backend, so the first click has to change the direction
+  ascendingTime = false; 
   timeIcon:IconText = 'expand_more';
   ascendingDistance = true;
   distanceIcon :IconText = 'unfold_more';

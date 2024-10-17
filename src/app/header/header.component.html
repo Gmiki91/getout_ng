@@ -1,10 +1,10 @@
 <div class="container">
   <div class="filters">
-    <button mat-button (click)="sortByDistance()"><mat-icon>{{distanceIcon}}</mat-icon> Distance</button>
-    <button mat-button (click)="sortByTime()"><mat-icon>{{timeIcon}}</mat-icon> Date</button>
-    <mat-checkbox [checked]="hideFullEvents()" (change)="toggleFullEvents()">
+    <button class="distance-btn" mat-button (click)="sortByDistance()"><mat-icon>{{distanceIcon}}</mat-icon> Distance</button>
+    <button class="time-btn" mat-button (click)="sortByTime()"><mat-icon>{{timeIcon}}</mat-icon> Date</button>
+    <mat-checkbox class="checkbox" [checked]="hideFullEvents()" (change)="toggleFullEvents()">
       Hide full events
     </mat-checkbox>
   </div>
-  <strong>Hi, {{ username() }}</strong>
+  <strong class="username">Hi, {{ username() }}</strong>
 </div>
