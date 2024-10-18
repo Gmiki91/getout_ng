@@ -10,7 +10,7 @@
         <div><strong>Time:</strong>{{ event().time | date : "medium" }}</div>
         <div><strong>Location:</strong> {{ event().location }}</div>
         <div>
-          <strong>Participants:</strong> {{ event().participants.length }} /
+          <strong>Participants:</strong> {{ event().participants ? event().participants.length:"unknown" }} /
           {{ event().max }}
         </div>
         @if(event().info){
@@ -24,13 +24,14 @@
           matInput
           placeholder="Add a comment"
           #komment
+          class="comment-area"
           ngModel
           (focus)="onShowCommentBtn(true)"
           (blur)="onShowCommentBtn(false)"
           cdkAutosizeMinRows="5"
         ></textarea>
         @if(showCommentBtn){
-          <button  mat-button (click)="onAddKomment($event)">
+          <button class="comment-btn"  mat-button (click)="onAddKomment($event)">
             Add comment
           </button>
         }
@@ -52,16 +53,16 @@
 
     <mat-card-actions class="event-actions">
       @if(userId === event().ownerId){
-        <button mat-button color="warn" (click)="onDelete()">
+        <button class="delete-btn" mat-button color="warn" (click)="onDelete()">
           Delete event
         </button>
         }
       @if(joined){
-      <button mat-button  (click)="onLeave()">
+      <button class="leave-btn" mat-button  (click)="onLeave()">
         Leave event
       </button>
       }@else{
-      <button mat-button (click)="onJoin()">
+      <button class="join-btn" mat-button (click)="onJoin()">
         Join event
       </button>
       }
