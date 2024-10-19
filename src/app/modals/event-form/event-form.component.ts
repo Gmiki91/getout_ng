@@ -51,14 +51,14 @@ export class EventFormComponent implements OnInit, OnDestroy {
   markerAddress = this.mapService.markerAddress; // stores address selected from the map
   markerPosition = this.mapService.markerPosition; // stores address selected from the map
 
-  //Set up the current date and time
+  //Set up the default selected time ~ 30 minutes ahead of now
   ngOnInit():void{
     const hour = new Date().getHours();
     if(hour === 23){
       this.minDate.setDate(new Date().getDate()+1) //tomorrow
       this.selectedTime = TIMES[0];
     }else{
-      this.selectedTime = hour ===0 ? TIMES[1] : TIMES[hour*2+2];
+      this.selectedTime = hour ===0 ? TIMES[1] : TIMES[hour*2+1];
     }
   }
 
