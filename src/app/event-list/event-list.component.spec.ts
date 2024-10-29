@@ -5,45 +5,13 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { createMockEvent } from '../utils/mock.factory';
 
-const mockEvents: Event[] = [
-  {
-    id: '1',
-    title: 'Event 1',
-    time: new Date().toISOString(),
-    location: 'Location 1',
-    participants: [],
-    max: 10,
-    latLng: {
-      lat: 0,
-      lng: 0,
-    },
-    distance: 1200,
-    min: 2,
-    info: 'Info 1',
-    ownerId: '1',
-    komments: [],
-  },
-  {
-    id: '2',
-    title: 'Event 2',
-    time: new Date().toISOString(),
-    location: 'Location 2',
-    participants: [],
-    max: 20,
-    latLng: {
-      lat: 1,
-      lng: 1,
-    },
-    distance: 1500,
-    min: 5,
-    info: 'Info 2',
-    ownerId: '2',
-    komments: [],
-  },
-];
+const mockEvent1: Event = createMockEvent();
+const mockEvent2: Event = createMockEvent({id: '2',title:'Event 2'});
+  const mockEvents = [mockEvent1,mockEvent2];
 
-describe('EventListComponent with Jest', () => {
+describe('EventListComponent', () => {
   let fixture: ComponentFixture<EventListComponent>;
   let component: EventListComponent;
 
@@ -57,6 +25,10 @@ describe('EventListComponent with Jest', () => {
     component = fixture.componentInstance;
     fixture.componentRef.setInput('events', mockEvents); // Pass mock events as input
     fixture.detectChanges(); // Trigger initial data binding
+  });
+
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
   });
 
   // Test Input Binding
