@@ -97,7 +97,7 @@ describe('EventDetailsComponent', () => {
     });
 
     it('should call deleteEvent and removemarker on button click', () => {
-      component.userId = '1'; //same as event.ownerId
+      component.user().id = '1'; //same as event.ownerId
 
       fixture.detectChanges();
 

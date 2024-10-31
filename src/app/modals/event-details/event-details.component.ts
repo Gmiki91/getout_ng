@@ -4,6 +4,7 @@ import {
   inject,
   ViewChild,
   OnInit,
+  signal,
 } from '@angular/core';
 import { Event } from '../../models/event.model';
 import { DatePipe } from '@angular/common';
@@ -20,6 +21,8 @@ import { MatCardModule } from '@angular/material/card';
 import {CdkDrag} from '@angular/cdk/drag-drop'
 import { EventsService } from '../../services/events.service';
 import { MapService } from '../../services/map.service';
+import { UserService } from '../../services/user.service';
+import User from '../../models/user.model';
 @Component({
   selector: 'app-event-details',
   standalone: true,
@@ -45,14 +48,15 @@ export class EventDetailsComponent implements OnInit {
   kommentService = inject(KommentService);
   eventService = inject(EventsService);
   mapService = inject(MapService);
+  userService = inject(UserService);
   event = this.eventService.selectedEvent;
   joined = this.eventService.isUserJoined(this.event().id);
   komments = this.kommentService.comments;
   showCommentBtn = false;
-  userId = '';
+  user= signal<User>({ name: '???', id: '0' });
 
   ngOnInit(): void {
-    this.userId = localStorage.getItem('uuid')!;
+    this.user = this.userService.user;
     this.kommentService.getKomments(this.event().id);
   }
 
@@ -83,7 +87,7 @@ export class EventDetailsComponent implements OnInit {
         text: this.kommentRef.nativeElement.value,
         timestamp: new Date().toISOString(),
         eventId: this.event().id,
-        userId: this.userId,
+        userId: this.user().id,
       };
       this.kommentService.addKomment(komment);
       this.kommentRef.nativeElement.value='';

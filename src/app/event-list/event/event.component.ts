@@ -7,6 +7,7 @@ import { MapService } from '../../services/map.service';
 import {MatTooltip} from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { DatePipe } from '@angular/common';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-event',
@@ -17,11 +18,12 @@ import { DatePipe } from '@angular/common';
 })
 export class EventComponent {
   private mapService = inject(MapService);
+  private userService = inject(UserService);
   event=input.required<Event>();
-  uuid;
+  user;
 
   constructor(){
-    this.uuid = localStorage.getItem('uuid') || '0';  
+    this.user = this.userService.user;  
   }
 
   onFindMarker(e:MouseEvent):void{

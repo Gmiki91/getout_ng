@@ -25,7 +25,7 @@
   <div>
   </div>
 
-  @if(uuid==event().ownerId){
+  @if(user().id==event().ownerId){
     <mat-icon matTooltip="You created this event" matTooltipShowDelay="1000" class="owner-icon" fontIcon="copyright"></mat-icon>
   }
 </mat-card>

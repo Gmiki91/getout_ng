@@ -52,7 +52,7 @@
     </mat-card-content>
 
     <mat-card-actions class="event-actions">
-      @if(userId === event().ownerId){
+      @if(user().id === event().ownerId){
         <button class="delete-btn" mat-button color="warn" (click)="onDelete()">
           Delete event
         </button>

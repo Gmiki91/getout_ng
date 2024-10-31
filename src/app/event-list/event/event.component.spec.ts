@@ -24,7 +24,7 @@ describe('EventComponent', () => {
       } as unknown as jest.Mocked<MapService>;
       await TestBed.configureTestingModule({
         imports: [EventComponent, TimeTextPipe, DistanceFormatPipe], 
-        providers: [{ provide: MapService, useValue: mockMapService }], 
+        providers: [{ provide: MapService, useValue: mockMapService }, provideHttpClient(),provideHttpClientTesting()], 
       }).compileComponents();
 
       fixture = TestBed.createComponent(EventComponent);
@@ -37,8 +37,8 @@ describe('EventComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should retrieve uuid from localStorage', () => {
-      expect(component.uuid).toBe('0'); // Since no 'uuid' is set, the fallback value is '0'
+    it('should retrieve uuid', () => {
+      expect(component.user().id).toBe('0'); // Since no 'uuid' is set, the fallback value is '0'
     });
 
     it('should call mapService.flyTo with the event location on marker click', () => {
