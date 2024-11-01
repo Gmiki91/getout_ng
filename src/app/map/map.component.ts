@@ -6,6 +6,7 @@ import { Feature, Geometry } from 'geojson';
 import { Subject, takeUntil } from 'rxjs';
 import Geocoder from 'leaflet-control-geocoder';
 import { LatLng } from '../models/event.model';
+import { GreenIcon } from '../utils/utils';
 const DarkTileUrl = 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
 const LightTileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 @Component({
@@ -22,7 +23,7 @@ export class MapComponent implements OnInit, OnDestroy {
   popup = L.popup();
   viewbox = '';
 
-  //Get current location 
+  //Get current location
   ngOnInit(): void {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -31,7 +32,11 @@ export class MapComponent implements OnInit, OnDestroy {
           lng: position.coords.longitude,
         };
         // set bounds for the autofill search
-        this.viewbox = `${position.coords.longitude - 0.05},${position.coords.latitude + 0.05},${position.coords.longitude+ 0.05},${position.coords.latitude - 0.05}`
+        this.viewbox = `${position.coords.longitude - 0.05},${
+          position.coords.latitude + 0.05
+        },${position.coords.longitude + 0.05},${
+          position.coords.latitude - 0.05
+        }`;
         this.eventService.setCurrentPosition(param);
         // update location field in create event form
         this.mapService.convertLatLngToAddress(param);
@@ -53,14 +58,14 @@ export class MapComponent implements OnInit, OnDestroy {
     const map = L.map('map').setView([coords!.latitude, coords!.longitude], 13);
     //Add tile
     const currentTime = new Date().getHours();
-    let tileLayerUrl= currentTime>18 || currentTime<5 ? DarkTileUrl : LightTileUrl;
+    let tileLayerUrl =
+      currentTime > 18 || currentTime < 5 ? DarkTileUrl : LightTileUrl;
 
     L.tileLayer(tileLayerUrl).addTo(map);
     this.addListeners(map);
-    if(coords){
-      this.addCurrentLocationIcon(map,coords);
+    if (coords) {
+      this.addCurrentLocationIcon(map, coords);
     }
-   
 
     this.mapService.setMap(map);
     this.addGeocoder(map);
@@ -69,36 +74,40 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   addGeocoder(map: L.Map): void {
-    const geocodeControl = new Geocoder({  
+    const geocodeControl = new Geocoder({
       geocoder: Geocoder.nominatim(),
       geocodingQueryParams: {
         viewbox: this.viewbox,
-        bounded: 1 // Limit results to the viewbox
+        bounded: 1, // Limit results to the viewbox
       },
-      defaultMarkGeocode: false
+      defaultMarkGeocode: false,
     }).addTo(map);
-    geocodeControl.on('markgeocode',  (e:any)=> {
+    geocodeControl.on('markgeocode', (e: any) => {
       this.mapService.flyTo(e.geocode.center);
-      this.createEventPopUp(e.geocode.center,map);
-      });
+      this.createEventPopUp(e.geocode.center, map);
+    });
   }
 
   addMarkerLayer(map: L.Map): void {
     // to keep track of markers
-    const mapIdObj: { [key: string]: number } = {}; 
+    const mapIdObj: { [key: string]: number } = {};
     const featureCollection: GeoJSON.FeatureCollection = {
       type: 'FeatureCollection',
       features: [],
     };
     const markerLayer = L.geoJSON(featureCollection, {
+      // USE THIS FOR CUSTOM MARKERS
+      // pointToLayer: (feature, latlng) => {
+      //   return L.marker(latlng, { icon: defaultIcon });
+      // },
       onEachFeature: (feature, layer) => {
         // record the ID of the feature/marker so it can be searched/deleted
-        mapIdObj[feature.properties.id] = L.stamp(layer); 
+        mapIdObj[feature.properties.id] = L.stamp(layer);
         // marker hover and click events
         this.addMouseEvents(feature, layer, map);
       },
     }).addTo(map);
-    this.mapService.setMarkerLayer(markerLayer); 
+    this.mapService.setMarkerLayer(markerLayer);
     this.mapService.markerIdTracker = mapIdObj;
   }
 
@@ -116,14 +125,15 @@ export class MapComponent implements OnInit, OnDestroy {
 
   addListeners(map: L.Map) {
     // Create evemt Popup when clicking on the map
-    map.on('click', (e:L.LeafletMouseEvent) => this.createEventPopUp(e.latlng,map));
+    map.on('click', (e: L.LeafletMouseEvent) =>
+      this.createEventPopUp(e.latlng, map)
+    );
 
     // right click
-    map.on('contextmenu',  ()  => this.popup.remove());
-
+    map.on('contextmenu', () => this.popup.remove());
   }
 
-  createEventPopUp(position:LatLng,map:L.Map):void{
+  createEventPopUp(position: LatLng, map: L.Map): void {
     this.mapService.convertLatLngToAddress(position);
     if (!this.eventService.isEventFormOpen()) {
       // dont show 'create event' popup when we are already creating event
@@ -153,24 +163,16 @@ export class MapComponent implements OnInit, OnDestroy {
     layer.on('mouseout', () => {
       map.removeLayer(tooltip);
     });
-    layer.on('click', () => {
+    layer.on('click', (e) => {
       const id = feature.properties.id;
       this.eventService.selectEventById(id);
+      this.mapService.flyTo(e.latlng);
+      this.mapService.highlightMarker(id);
     });
   }
 
-  addCurrentLocationIcon(map:L.Map,coords:GeolocationCoordinates):void{
-    const greenIcon = new L.Icon({
-      iconUrl:
-        'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-      shadowUrl:
-        'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41],
-    });
-    L.marker([coords!.latitude, coords!.longitude], { icon: greenIcon })
+  addCurrentLocationIcon(map: L.Map, coords: GeolocationCoordinates): void {
+    L.marker([coords!.latitude, coords!.longitude], { icon: GreenIcon })
       .addTo(map)
       .bindTooltip('Current location');
   }

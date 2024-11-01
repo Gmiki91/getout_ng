@@ -77,6 +77,7 @@ export class EventDetailsComponent implements OnInit {
   }
 
   closeDialog(): void {
+    this.mapService.unhighlightMarker(this.event().id);
     this.eventService.selectEvent({} as Event);
   }
 

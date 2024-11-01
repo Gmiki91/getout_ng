@@ -4,7 +4,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
   z-index: 21;
 }
 
@@ -16,8 +15,9 @@
   border: none;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
   // overflow: hidden;
+  top:25%;
+  left:80rem;
   padding: 1rem;
-  top: 5rem;
   z-index: 22;
 
   .event-card {

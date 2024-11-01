@@ -2,7 +2,7 @@ import { Injectable, signal, inject } from '@angular/core';
 import { Event, LatLng } from '../models/event.model';
 import * as L from 'leaflet';
 import { NominatimService } from './nominatim.service';
-
+import { RedIcon,BlueIcon } from '../utils/utils';
 @Injectable({ providedIn: 'root' })
 export class MapService {
   private nominatimService = inject(NominatimService);
@@ -66,14 +66,34 @@ export class MapService {
   }
 
   removeMarker(eventId: string): void {
+    const layer = this.findMarker(eventId);
+    if (layer) {
+      this.markerLayer!.removeLayer(layer); // Remove the layer from the map
+    }
+  }
+
+  highlightMarker(eventId: string): void {
+    const layer = this.findMarker(eventId);
+    if (layer) {
+      layer.setIcon(RedIcon);
+    }
+  }
+
+  unhighlightMarker(eventId: string): void {
+    console.log(eventId);
+      const layer = this.findMarker(eventId);
+      if(layer){
+        layer.setIcon(BlueIcon);
+      }
+  }
+
+  findMarker(eventId: string): L.Marker | undefined {
     if (this.markerLayer) {
       const layerId = this.markerIdTracker[eventId]; // Get the Leaflet layer ID from the feature ID
       if (layerId) {
-        const layer = this.markerLayer.getLayer(layerId);
-        if (layer) {
-          this.markerLayer.removeLayer(layer); // Remove the layer from the map
-        }
+        return this.markerLayer.getLayer(layerId) as L.Marker;
       }
     }
+    return;
   }
 }

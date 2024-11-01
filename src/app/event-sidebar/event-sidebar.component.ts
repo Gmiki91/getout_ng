@@ -32,6 +32,7 @@ export class EventSidebarComponent {
 
   onOpenDetails(event: Event): void {
     this.mapService.flyTo(event.latLng);
+    this.mapService.highlightMarker(event.id);
     this.eventsService.selectEvent(event);
   }
 
