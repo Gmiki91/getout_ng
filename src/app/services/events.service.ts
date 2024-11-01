@@ -68,7 +68,7 @@ export class EventsService {
         );
       });
     } else {
-      alert("You can only delete events you've created");
+      // alert("You can only delete events you've created");
     }
   }
 

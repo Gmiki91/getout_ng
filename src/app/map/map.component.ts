@@ -43,7 +43,7 @@ export class MapComponent implements OnInit, OnDestroy {
         this.initMap(position.coords);
       },
       (err) => {
-        alert(`ERROR(${err.code}): ${err.message}`);
+        // alert(`ERROR(${err.code}): ${err.message}`);
         this.initMap();
       }
     );

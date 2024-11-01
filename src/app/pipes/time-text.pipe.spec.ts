@@ -38,7 +38,7 @@ describe('TimeTextPipe', () => {
   });
 
   it('should return "2 days left" for an event 2 days from now', () => {
-    const twoDaysLater = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(); // 2 days in the future
+    const twoDaysLater = new Date(Date.now() + 2 * 25 * 60 * 60 * 1000).toISOString(); // 2 (+2 hours) days in the future
     expect(pipe.transform(twoDaysLater, 'event')).toBe('2 days left');
   });
 

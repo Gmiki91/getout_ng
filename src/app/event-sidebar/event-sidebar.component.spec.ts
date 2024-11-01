@@ -22,6 +22,7 @@ describe('Event-sidebar', () => {
     beforeEach(async () => {
       mockMapService = {
         flyTo: jest.fn(),
+        highlightMarker:jest.fn()
       } as unknown as jest.Mocked<MapService>;
       mockEventsService = {
         toggleEventForm: jest.fn(),
@@ -64,10 +65,10 @@ describe('Event-sidebar', () => {
     });
 
     it('should call eventsService.toggleEventForm when the add new event button is clicked', () => {
-      const eventComp = fixture.debugElement.query(
+      const button = fixture.debugElement.query(
         By.css('button.new-event-btn')
       );
-      eventComp.triggerEventHandler('click');
+      button.triggerEventHandler('click');
 
       expect(mockEventsService.toggleEventForm).toHaveBeenCalled();
     });

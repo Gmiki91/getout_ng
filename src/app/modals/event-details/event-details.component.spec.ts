@@ -40,6 +40,7 @@ describe('EventDetailsComponent', () => {
       } as unknown as jest.Mocked<KommentService>;
       mockMapService = {
         removeMarker: jest.fn(),
+        unhighlightMarker: jest.fn(),
       } as unknown as jest.Mocked<MapService>;
 
       await TestBed.configureTestingModule({
