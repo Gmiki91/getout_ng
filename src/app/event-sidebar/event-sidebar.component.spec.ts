@@ -27,7 +27,7 @@ describe('Event-sidebar', () => {
       mockEventsService = {
         toggleEventForm: jest.fn(),
         selectEvent: jest.fn(),
-        yourEvents: jest.fn(),
+        yourEvents: jest.fn().mockReturnValue([]),
         otherEvents: jest.fn(),
       } as unknown as jest.Mocked<EventsService>;
 
