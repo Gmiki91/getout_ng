@@ -1,0 +1,22 @@
+<div class="filters">
+  <div class="group">
+    <button class="sort-by-btn" mat-button [matMenuTriggerFor]="menu"><strong>Sort by: </strong></button>
+    <mat-menu #menu="matMenu">
+      <button class="distance-btn" mat-menu-item (click)="sortByDistance()">
+        <mat-icon>place</mat-icon> <strong>Distance</strong>
+      </button>
+      <button class="time-btn" mat-menu-item (click)="sortByTime()">
+        <mat-icon>watch_later</mat-icon><strong>Time</strong>
+      </button>
+    </mat-menu>
+    @if(sort ==='Time'){
+      <mat-icon>watch_later</mat-icon><strong>Time</strong>
+    }@else{
+      <mat-icon>place</mat-icon> <strong>Distance</strong>
+    }
+  </div>
+  <div class="group">
+  <mat-slide-toggle (change)="toggleFullEvents()"><strong>Full events</strong></mat-slide-toggle>
+</div>
+</div>
+<mat-divider></mat-divider>

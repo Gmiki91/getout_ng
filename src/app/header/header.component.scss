@@ -1,7 +1,7 @@
 .container{
   display:flex;
-  justify-content:space-between;
-  align-items:center;
+  justify-content:end;
   padding:10px;
-  background-color: var(--warn-color);
+  background: rgba(48,204,212,1);
+  background: linear-gradient(170deg, rgba(210,224,251,1)  0%, rgba(48,204,212,1) 100%);
 }

@@ -1,0 +1,12 @@
+.filters{
+    display:flex;
+    padding:5px;
+    .group{
+        display:flex;
+        flex:1;
+        align-items:center;
+        .sort-by-btn{
+            color:black;
+        }
+    }
+}

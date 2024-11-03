@@ -7,6 +7,7 @@ import { EventSidebarComponent } from "./event-sidebar/event-sidebar.component";
 import { EventsService } from './services/events.service';
 import { EventFormComponent } from './modals/event-form/event-form.component';
 import { EventDetailsComponent } from './modals/event-details/event-details.component';
+import { FilterComponent } from './filter/filter.component';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ import { EventDetailsComponent } from './modals/event-details/event-details.comp
     MapComponent,
     EventSidebarComponent,
     EventFormComponent,
-    EventDetailsComponent
+    EventDetailsComponent,
+    FilterComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

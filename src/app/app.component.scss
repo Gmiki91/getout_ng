@@ -8,9 +8,8 @@
     flex-grow: 1;
     height: calc(100vh - 60px);
 
-    app-event-sidebar {
+    .sidebar{
       width: 25rem;
-      display: flex;
     }
     app-map {
       flex-grow: 1; /* The map will take up the remaining space */

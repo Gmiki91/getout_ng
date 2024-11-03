@@ -1,7 +1,10 @@
 <div class="container">
   <app-header></app-header>
   <div class="body">
-    <app-event-sidebar />
+    <div class="sidebar">
+<app-filter/>
+      <app-event-sidebar />
+    </div>
     <app-map />
   </div>
   @if(isFormOpen()){
