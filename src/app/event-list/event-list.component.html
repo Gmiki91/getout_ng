@@ -1,8 +1,5 @@
 <div class="event-list">
-@for(event of events(); track event.id){
-<app-event
-  (click)="onDetails(event)"
-  [event]="event"
-/>
-}
+    @for(event of events(); track event.id){
+    <app-event (click)="onDetails(event)" [event]="event" />
+    }
 </div>

@@ -27,8 +27,8 @@ describe('Event-sidebar', () => {
       mockEventsService = {
         toggleEventForm: jest.fn(),
         selectEvent: jest.fn(),
-        yourEvents: jest.fn().mockReturnValue([]),
-        otherEvents: jest.fn(),
+        yourEvents: jest.fn().mockReturnValue([mockEvent]),
+        otherEvents: jest.fn().mockReturnValue([mockEvent]),
       } as unknown as jest.Mocked<EventsService>;
 
       await TestBed.configureTestingModule({
@@ -90,6 +90,8 @@ describe('Event-sidebar', () => {
       component = fixture.componentInstance;
       mapService = TestBed.inject(MapService);
       eventsService = TestBed.inject(EventsService);
+      const mockEvent = createMockEvent()
+      eventsService.setEvents([mockEvent,mockEvent],[mockEvent]);
       fixture.detectChanges();
     });
 

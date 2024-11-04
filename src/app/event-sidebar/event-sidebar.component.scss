@@ -1,14 +1,14 @@
 .sidebar-container {
-  max-height: 100vh;
+  max-height: 85vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-   overflow-y:auto; /* Ensure vertical scrolling with visible scrollbar */
-   overflow-x:hidden;
-  scrollbar-width: thin; /* For Firefox, makes scrollbar visible but thin */
- 
+  overflow-y: auto; /* Ensure vertical scrolling with visible scrollbar */
+  overflow-x: hidden;
+  scrollbar-width: thin; /*For Firefox, makes scrollbar visible but thin */
+
   .sticky-title {
-    background: var(--accent-color);
+    background: white;
     width: 100%;
     position: sticky;
     top: 0; /* Stick at the top */
@@ -16,31 +16,22 @@
     padding: 0.5rem 0;
     font-weight: bold;
   }
-  button{
-    position: sticky;
-    font-size:large;
-    bottom: 5px; /* Stick to the bottom */
-   
-    width: 50%; /* Ensure the button stretches to full width */
-    display: flex;
-    justify-content: center; /* Center the button */
-    padding: 5px;
-    z-index: 11;
-  }
-}
 
-mat-label {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
+  button {
+    margin-top: 5px;
+  }
+  mat-label {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
 }
 
 @media (max-width: 600px) {
   .sidebar-container {
     width: inherit;
-   button{
-    top:0;
-  
-   }
+    button {
+      top: 0;
+    }
   }
 }
