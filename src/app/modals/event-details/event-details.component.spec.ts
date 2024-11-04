@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { createMockEvent } from '../../utils/mock.factory';
 import { Event } from '../../models/event.model';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import User from '../../models/user.model';
 
 describe('EventDetailsComponent', () => {
   let fixture: ComponentFixture<EventDetailsComponent>;
@@ -22,6 +23,10 @@ describe('EventDetailsComponent', () => {
   let mockMapService: jest.Mocked<MapService>;
 
   const mockEvent: Event = createMockEvent();
+  const fullMockEvent: Event = createMockEvent({
+    max: 2,
+    participants: [{} as User, {} as User],
+  });
 
   describe('Unit tests', () => {
     beforeEach(async () => {
@@ -83,6 +88,15 @@ describe('EventDetailsComponent', () => {
         component.event().distance
       );
     });
+
+    it('should not display join button when event is full', () => {
+      component.joined = false;
+      mockEventsService.selectedEvent.mockReturnValue(fullMockEvent);
+      fixture.detectChanges();
+      const button = fixture.debugElement.query(By.css('.join-btn'));
+      expect(button).toBeFalsy();
+    });
+
     it('should call leaveEvent on button click', () => {
       component.joined = true;
 
@@ -173,6 +187,7 @@ describe('EventDetailsComponent', () => {
 
       mapService = TestBed.inject(MapService);
       eventsService = TestBed.inject(EventsService);
+      eventsService.selectEvent(mockEvent);
       fixture = TestBed.createComponent(EventDetailsComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();

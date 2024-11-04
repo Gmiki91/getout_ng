@@ -61,7 +61,7 @@
       <button class="leave-btn" mat-button  (click)="onLeave()">
         Leave event
       </button>
-      }@else{
+      }@else if(event().max>event().participants.length){
       <button class="join-btn" mat-button (click)="onJoin()">
         Join event
       </button>
