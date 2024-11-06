@@ -1,13 +1,13 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { Event, LatLng } from '../models/event.model';
-import * as L from 'leaflet';
+import {  Map } from 'mapbox-gl';
 import { NominatimService } from './nominatim.service';
-import { RedIcon,BlueIcon } from '../utils/utils';
+
 @Injectable({ providedIn: 'root' })
 export class MapService {
   private nominatimService = inject(NominatimService);
-  private markerLayer: L.GeoJSON | undefined;
-  private map: L.Map | undefined;
+  private mapSource: mapboxgl.GeoJSONSource | undefined;
+  private map: Map | undefined;
   private _markerAddress = signal<string>('');
   private _markerPosition = signal<LatLng>({} as LatLng);
   markerAddress = this._markerAddress.asReadonly();
@@ -25,6 +25,7 @@ export class MapService {
     });
   }
 
+  // legacy function for validating the address in the event creator form
   convertAddressToLatLng(address: string): void {
     this.nominatimService.addressLookup(address).subscribe((results) => {
       if (results && results[0]) {
@@ -34,22 +35,24 @@ export class MapService {
     });
   }
 
-  setMarkerLayer(markerLayer: L.GeoJSON): void {
-    this.markerLayer = markerLayer;
+  
+  setGeoJSONSource(source: mapboxgl.GeoJSONSource): void {
+    this.mapSource = source;
   }
 
-  setMap(map: L.Map) {
+  setMap(map: Map) {
     this.map = map;
   }
 
   flyTo(position: LatLng) {
     if (this.map) {
-      this.map.flyTo(position, 16);
+      this.map.flyTo({center:position, zoom:16});
     }
   }
 
   addMarker(event: Event): void {
-    if (this.markerLayer) {
+    if (this.mapSource) {
+      const data = this.mapSource._data as GeoJSON.FeatureCollection;
       const newMarker: GeoJSON.Feature = {
         type: 'Feature',
         geometry: {
@@ -61,39 +64,37 @@ export class MapService {
           title: event.title,
         },
       };
-      this.markerLayer.addData(newMarker);
+      data.features.push(newMarker);
+      this.mapSource.setData(data);
     }
   }
 
   removeMarker(eventId: string): void {
-    const layer = this.findMarker(eventId);
-    if (layer) {
-      this.markerLayer!.removeLayer(layer); // Remove the layer from the map
+    if (this.mapSource) {
+      const data = this.mapSource._data as GeoJSON.FeatureCollection;
+      const updatedFeatures = data.features.filter(
+        (feature) => feature.properties?.['id'] !== eventId
+      );
+      this.mapSource.setData({
+        ...data,
+        features: updatedFeatures,
+      });
     }
   }
 
   highlightMarker(eventId: string): void {
-    const layer = this.findMarker(eventId);
-    if (layer) {
-      layer.setIcon(RedIcon);
-    }
+    // const layer = this.findMarker(eventId);
+    // if (layer) {
+    //   layer.setIcon(RedIcon);
+    // }
   }
 
   unhighlightMarker(eventId: string): void {
-    console.log(eventId);
-      const layer = this.findMarker(eventId);
-      if(layer){
-        layer.setIcon(BlueIcon);
-      }
+    // console.log(eventId);
+    //   const layer = this.findMarker(eventId);
+    //   if(layer){
+    //     layer.setIcon(BlueIcon);
+    //   }
   }
 
-  findMarker(eventId: string): L.Marker | undefined {
-    if (this.markerLayer) {
-      const layerId = this.markerIdTracker[eventId]; // Get the Leaflet layer ID from the feature ID
-      if (layerId) {
-        return this.markerLayer.getLayer(layerId) as L.Marker;
-      }
-    }
-    return;
-  }
 }

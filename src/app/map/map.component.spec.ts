@@ -3,22 +3,20 @@ import { of } from 'rxjs';
 import { MapComponent } from './map.component';
 import { MapService } from '../services/map.service';
 import { EventsService } from '../services/events.service';
-import { computed } from '@angular/core';
+import {Map} from 'mapbox-gl';
 describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
   let mockMapService: Partial<MapService>;
   let mockEventService: Partial<EventsService>;
-  let mockMap: jest.Mocked<L.Map>;
+  let mockMap: jest.Mocked<Map>;
 
-  const createComputedSignal = (value: boolean) => computed(() => value);
   beforeEach(() => {
     mockMapService = {
       setMap: jest.fn(),
       addMarker: jest.fn(),
       flyTo: jest.fn(),
       convertLatLngToAddress: jest.fn(),
-      setMarkerLayer: jest.fn(),
       markerIdTracker: {}
     };
 
@@ -33,7 +31,7 @@ describe('MapComponent', () => {
     mockMap = {
       openPopup: jest.fn(),
       remove: jest.fn(),
-    } as unknown as jest.Mocked<L.Map>;
+    } as unknown as jest.Mocked<Map>;
     
     TestBed.configureTestingModule({
       imports: [MapComponent],
@@ -61,18 +59,6 @@ describe('MapComponent', () => {
     });
   });
 
-  describe('createEventPopUp', () => {
-    it('should not open popup if event form is already open', () => {
-      mockEventService.isEventFormOpen = createComputedSignal(true);
-  
-      const position = {lat:0, lng:0};
-      component.createEventPopUp(position, mockMap);
-  
-      // Verify popup does not open if form is already open
-      expect(mockMapService.convertLatLngToAddress).toHaveBeenCalledWith(position);
-      expect(mockMap.openPopup).not.toHaveBeenCalled();
-    });
-  });
 });
 
 

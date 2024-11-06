@@ -1,5 +1,3 @@
-import L from "leaflet";
-
 /**
  *  Spherical Law of Cosines uses trigonometric identities and can be used to calculate distance
  * @param lat1 latitude of location#1
@@ -29,25 +27,4 @@ export const calculateDistance = (
   const d = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * R;
   return Math.round(d * 100) * 10;
 };
-export const BlueIcon =  L.icon({
-  iconUrl:
-    'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png', 
-  iconSize: [30, 45], 
-  iconAnchor: [15, 45],
-  popupAnchor: [1, -34],
-  shadowUrl:
-    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-  shadowSize: [45, 45],
-});
-export const GreenIcon =  L.icon({
-  ...BlueIcon,
-  iconUrl:
-    'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png', 
-});
-export const RedIcon =  L.icon({
-  ...BlueIcon,
-  iconUrl:
-    'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
- 
-});
 
