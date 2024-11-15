@@ -9,6 +9,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:ci": "jest --runInBand",
+    "build:ssr": "ng build --configuration production",
+    "serve:ssr": "node dist/getout_ng/server/server.mjs",
     "serve:ssr:getout_ng": "node dist/getout_ng/server/server.mjs"
   },
   "private": true,
