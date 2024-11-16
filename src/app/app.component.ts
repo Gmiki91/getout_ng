@@ -1,5 +1,4 @@
-import { Component, inject,OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject,OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { HeaderComponent } from './header/header.component';
 import { MapComponent } from './map/map.component';
 import { UserService } from './services/user.service';
@@ -13,7 +12,6 @@ import { FilterComponent } from './filter/filter.component';
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet,
     HeaderComponent,
     MapComponent,
     EventSidebarComponent,
@@ -30,8 +28,12 @@ export class AppComponent implements OnInit {
   eventService=inject(EventsService)
   selectedEvent = this.eventService.selectedEvent;
   isFormOpen = this.eventService.isEventFormOpen;
-
-  ngOnInit() {
+  showMap=false;
+  constructor( @Inject(PLATFORM_ID) private _platformId: Object) {}
+  ngOnInit(): void {  
     this.userService.checkUser();
+    if (this._platformId === 'browser') {
+    this.showMap=true;
+    }
   }
 }

@@ -5,7 +5,9 @@
 <app-filter/>
       <app-event-sidebar />
     </div>
-    <app-map />
+    @if(showMap){
+     @defer{<app-map />}
+    }
   </div>
   @if(isFormOpen()){
   <app-event-form></app-event-form>
