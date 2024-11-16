@@ -1,7 +1,6 @@
 <div class="sidebar-container">
   @if(joinedEvents().length>0){
   <mat-label class="sticky-title">Your Upcoming Events</mat-label>
-  <mat-divider></mat-divider>
   <app-event-list
     [events]="joinedEvents()"
     (openDetails)="onOpenDetails($event)"
@@ -9,7 +8,6 @@
   }
   @if(otherEvents().length>0){
   <mat-label class="sticky-title">{{joinedEvents().length>0 ? "Other Events" : "Events"}}</mat-label>
-  <mat-divider></mat-divider>
     <app-event-list
       [events]="otherEvents()"
       (openDetails)="onOpenDetails($event)"

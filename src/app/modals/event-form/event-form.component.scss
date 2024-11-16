@@ -3,7 +3,8 @@
   flex-direction: column;
   top: 20px;
   right: 50px;
-  background-color: rgba(var(--main-color-rgb),0.9);
+  // background-color: rgba(var(--main-color-rgb),0.9);
+  background: var(--transparent-white);
   border-radius: 6px;
   border: none;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);

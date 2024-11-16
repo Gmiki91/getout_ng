@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import { MatDivider } from '@angular/material/divider';
 import { MatLabel } from '@angular/material/form-field';
 import { EventsService } from '../services/events.service';
 import { MapService } from '../services/map.service';
@@ -12,7 +11,6 @@ import { EventListComponent } from '../event-list/event-list.component';
   standalone: true,
   imports: [
     MatButton,
-    MatDivider,
     MatLabel,
     EventListComponent,
   ],

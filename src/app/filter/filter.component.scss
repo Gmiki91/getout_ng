@@ -1,6 +1,8 @@
 .filters{
     display:flex;
     padding:5px;
+    background:var(--transparent-white);
+
     .group{
         display:flex;
         flex:1;

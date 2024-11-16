@@ -6,6 +6,7 @@
   border-radius: 0;
   transition: background-color 0.3s ease;
   z-index: 5;
+  background: var(--transparent-white);
   cursor: pointer;
   &:hover {
     background-color: var(--warn-color);
@@ -48,7 +49,6 @@
       }
     }
   }
-  
   .owner-icon {
     position: absolute;
     top: 5px;
@@ -58,22 +58,11 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .event {
-    display: flex;
-    align-items: center;
+    width: 15rem;
     .event-info {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    mat-card-footer {
-      flex-direction: row;
-      justify-content: space-between;
-    }
-
-    mat-card-title {
-      width: auto;
+      display: none;
     }
   }
 }

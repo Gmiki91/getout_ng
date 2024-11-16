@@ -10,19 +10,18 @@
 .event-dialog {
   width: 90%;
   max-width: 30rem;
-  background-color: var(--main-color);
+  background-color: var(--transparent-white);
   border-radius: 6px;
   border: none;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
   // overflow: hidden;
   top:25%;
-  left:80rem;
   padding: 1rem;
   z-index: 22;
 
   .event-card {
     box-shadow:none;
-    background-color: var(--main-color);
+    background-color: var(--transparent-white);
 
     .event-details {
       margin-bottom: 16px;
@@ -58,5 +57,11 @@
       justify-content: space-between;
       margin-top: 16px;
     }
+  }
+}
+@media (max-width: 768px) {
+  .event-dialog{
+    width:100%;
+    top:0;
   }
 }

@@ -9,7 +9,7 @@
   scrollbar-width: thin; /*For Firefox, makes scrollbar visible but thin */
 
   .sticky-title {
-    background: white;
+    background:var(--transparent-white);
     width: 100%;
     position: sticky;
     top: 0; /* Stick at the top */
@@ -27,12 +27,8 @@
     font-weight: bold;
   }
 }
-
-@media (max-width: 600px) {
-  .sidebar-container {
-    width: inherit;
-    button {
-      top: 0;
-    }
+@media(max-width:768px){
+  button{
+    display:none;
   }
 }
