@@ -65,10 +65,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   addControls(map: Map) {
     const geoLocateControl = this.initGeoLocateControl();
-    const geocoder = new MapboxGeocoder({
-      accessToken: environment.mapbox.accessToken,
-      mapboxgl: mapboxgl as any
-    });
+    const geocoder = this.initGeocoder();
     map.addControl(geocoder);
     map.addControl(geoLocateControl);
     map.addControl(new mapboxgl.NavigationControl());
@@ -81,6 +78,19 @@ export class MapComponent implements OnInit, OnDestroy {
     });
   }
 
+  initGeocoder(): MapboxGeocoder {
+    return new MapboxGeocoder({
+      accessToken: environment.mapbox.accessToken,
+      mapboxgl: mapboxgl as any,
+    }).on('result', (event) => {
+      const location = event.result;
+      this.mapService.setSearchResult(
+        location.place_name,
+        location.geometry.coordinates
+      );
+    });
+  }
+  
   initMarkers(): void {
     this.eventService
       .getEvents()
@@ -223,5 +233,4 @@ export class MapComponent implements OnInit, OnDestroy {
       },
     });
   }
-
 }

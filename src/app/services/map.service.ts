@@ -35,6 +35,10 @@ export class MapService {
     });
   }
 
+  setSearchResult(address:string, location:LatLng){
+    this._markerAddress.set(address);
+    this._markerPosition.set(location);
+  }
   
   setGeoJSONSource(source: mapboxgl.GeoJSONSource): void {
     this.mapSource = source;
