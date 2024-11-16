@@ -88,7 +88,7 @@ export class EventFormComponent implements OnInit, OnDestroy {
           latLng:  this.markerPosition(),
           time: dateTime,
           min: min,
-          max: max | min, //max can not be lower than min. If it is 0, min will be set
+          max: max || min, //max can not be lower than min. If it is 0, min will be set
           info: info,
         })
         .pipe(takeUntil(this.unsubscribe$))
