@@ -35,9 +35,10 @@ export class NominatimService {
   }
 
   createResponse(item: any): NominatimResponse {
+    const {country,city,house_number,road, postcode} = item.address;
     return {
       latLng: { lat: item.lat, lng: item.lon },
-      displayName: item.display_name,
+      displayName: `${city}, ${road} ${house_number}, ${postcode}, ${country}`,
     };
   }
 }
