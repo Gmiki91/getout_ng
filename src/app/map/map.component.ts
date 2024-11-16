@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MapService } from '../services/map.service';
 import { EventsService } from '../services/events.service';
-import mapboxgl, { GeolocateControl, Map, MapMouseEvent, Marker } from 'mapbox-gl';
+import mapboxgl, { GeolocateControl, Map, MapMouseEvent } from 'mapbox-gl';
 import { Subject, takeUntil } from 'rxjs';
 import { environment } from '../../environments/environment';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
@@ -65,7 +65,10 @@ export class MapComponent implements OnInit, OnDestroy {
 
   addControls(map: Map) {
     const geoLocateControl = this.initGeoLocateControl();
-    const geocoder = new MapboxGeocoder({accessToken: environment.mapbox.accessToken});
+    const geocoder = new MapboxGeocoder({
+      accessToken: environment.mapbox.accessToken,
+      mapboxgl: mapboxgl as any
+    });
     map.addControl(geocoder);
     map.addControl(geoLocateControl);
     map.addControl(new mapboxgl.NavigationControl());
