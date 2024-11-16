@@ -1,30 +1,37 @@
 .container {
-  app-header {
-    height: 60px;
-  }
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 
   .body {
-    display: flex;
+    position: relative;
     flex-grow: 1;
-    height: calc(100vh - 60px);
-
-    .sidebar{
+    .sidebar {
+      position: absolute;
       width: 25rem;
-      padding:5px;
+      height: calc(100vh - 60px);
+      transition: transform 0.3s ease;
+      z-index: 20; 
     }
     app-map {
-      flex-grow: 1; /* The map will take up the remaining space */
+      flex-grow: 1; 
       height: 100%;
+    }
+    .hidden {
+      transform: translateX(-100%);
     }
   }
 }
-
-@media (max-width: 600px) {
-  .body {
-    display: flex;
-    app-event-sidebar{
-      display: none !important;
+@media(max-width:768px){
+.container{
+  .body{
+  .sidebar{
+    width:15rem;   
+    app-filter{
+      display:none;
     }
   }
- 
+}
+}
 }

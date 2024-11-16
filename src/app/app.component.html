@@ -1,13 +1,11 @@
 <div class="container">
-  <app-header></app-header>
+  <app-header (toggleSideBar)="toggleSideBar()"></app-header>
   <div class="body">
-    <div class="sidebar">
-<app-filter/>
+    <div class="sidebar" [class]="{'hidden':!showSideBar}">
+      <app-filter />
       <app-event-sidebar />
     </div>
-    @if(showMap){
-     @defer{<app-map />}
-    }
+    @if(showMap){ @defer{<app-map />} }
   </div>
   @if(isFormOpen()){
   <app-event-form></app-event-form>

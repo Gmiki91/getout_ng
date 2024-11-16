@@ -25,15 +25,20 @@ import { FilterComponent } from './filter/filter.component';
 export class AppComponent implements OnInit {
   title = 'getout_ng';
   userService = inject(UserService);
-  eventService=inject(EventsService)
+  eventService=inject(EventsService);
   selectedEvent = this.eventService.selectedEvent;
   isFormOpen = this.eventService.isEventFormOpen;
   showMap=false;
+  showSideBar=true;
   constructor( @Inject(PLATFORM_ID) private _platformId: Object) {}
   ngOnInit(): void {  
     this.userService.checkUser();
     if (this._platformId === 'browser') {
     this.showMap=true;
     }
+  }
+  toggleSideBar():void{
+    this.showSideBar = !this.showSideBar;
+    console.log(this.showSideBar);
   }
 }
