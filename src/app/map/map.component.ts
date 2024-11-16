@@ -86,7 +86,7 @@ export class MapComponent implements OnInit, OnDestroy {
       const location = event.result;
       this.mapService.setSearchResult(
         location.place_name,
-        location.geometry.coordinates
+        {lng:location.geometry.coordinates[0],lat:location.geometry.coordinates[1]}
       );
     });
   }
@@ -158,7 +158,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     //right click
     map.on('contextmenu', (e) => {
-      popup.remove();
+      popup?.remove();
     });
 
     map.on('load', () => {
