@@ -14,7 +14,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButton } from '@angular/material/button';
 import { Subject, takeUntil } from 'rxjs';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { DecimalPipe } from '@angular/common';
 import {CdkDrag} from '@angular/cdk/drag-drop'
 import { EventsService } from '../../services/events.service';
 import { MapService } from '../../services/map.service';
@@ -32,7 +31,6 @@ import {TIMES} from '../../time'
     MatError,
     MatDatepickerModule,
     MatSelectModule,
-    DecimalPipe,
     CdkDrag
   ],
   templateUrl: './event-form.component.html',
@@ -77,15 +75,18 @@ export class EventFormComponent implements OnInit, OnDestroy {
       const time = new Date(date);
       const hour = +this.selectedTime.substring(0,2);
       const minute = +this.selectedTime.substring(3);
+      const location = this.markerAddress();
+      const latLng=this.markerPosition();
       time.setHours(hour);
       time.setMinutes(minute)
       time.setSeconds(0);
       const dateTime = time.toISOString();
+      this.mapService.removeTemporaryMarker();
       this.eventsService
         .addEvent({
           title: title,
-          location:  this.markerAddress(), //correct address from map click
-          latLng:  this.markerPosition(),
+          location: location, //correct address from map click
+          latLng:  latLng,
           time: dateTime,
           min: min,
           max: max || min, //max can not be lower than min. If it is 0, min will be set
@@ -101,6 +102,10 @@ export class EventFormComponent implements OnInit, OnDestroy {
             console.error('Error adding event:', error);
           },
         });
+    }else if(!form.valid){
+      alert("Form is invalid")
+    }else if(this.mapService.markerAddress()==""){
+      alert("Select an address from the map");
     }
   }
 }

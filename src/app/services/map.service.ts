@@ -55,35 +55,30 @@ export class MapService {
   }
 
   addMarker(event: Event): void {
-    if (this.mapSource) {
-      const data = this.mapSource._data as GeoJSON.FeatureCollection;
-      const newMarker: GeoJSON.Feature = {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [event.latLng.lng, event.latLng.lat],
-        },
-        properties: {
-          id: event.id,
-          title: event.title,
-        },
-      };
-      data.features.push(newMarker);
-      this.mapSource.setData(data);
-    }
+    const coordinates: [number, number] = [event.latLng.lng, event.latLng.lat];
+    const properties = {
+      id: event.id,
+      title: event.title,
+      eventType: 1,
+    };
+    this.addFeatureToSource(coordinates, properties);
+  }
+  
+  addTemporaryMarker(latLng: LatLng): void {
+    this.removeTemporaryMarker();
+    const coordinates: [number, number] = [latLng.lng, latLng.lat];
+    const properties = { eventType: 2 };
+    this.addFeatureToSource(coordinates, properties);
   }
 
   removeMarker(eventId: string): void {
-    if (this.mapSource) {
-      const data = this.mapSource._data as GeoJSON.FeatureCollection;
-      const updatedFeatures = data.features.filter(
-        (feature) => feature.properties?.['id'] !== eventId
-      );
-      this.mapSource.setData({
-        ...data,
-        features: updatedFeatures,
-      });
-    }
+    this.removeFeaturesByCondition((feature) => feature.properties?.['id'] === eventId);
+  }
+  
+  removeTemporaryMarker(): void {
+    this._markerAddress.set("");
+    this._markerPosition.set({}as LatLng);
+    this.removeFeaturesByCondition((feature) => feature.properties?.['eventType'] === 2);
   }
 
   highlightMarker(eventId: string): void {
@@ -101,4 +96,30 @@ export class MapService {
     //   }
   }
 
+  addFeatureToSource(coordinates: [number, number], properties: Record<string, any>): void {
+    if (this.mapSource) {
+      const data = this.mapSource._data as GeoJSON.FeatureCollection;
+      const newMarker: GeoJSON.Feature = {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates,
+        },
+        properties,
+      };
+      data.features.push(newMarker);
+      this.mapSource.setData(data);
+    }
+  }
+
+  removeFeaturesByCondition(condition: (feature: GeoJSON.Feature) => boolean): void {
+    if (this.mapSource) {
+      const data = this.mapSource._data as GeoJSON.FeatureCollection;
+      const updatedFeatures = data.features.filter((feature) => !condition(feature));
+      this.mapSource.setData({
+        ...data,
+        features: updatedFeatures,
+      });
+    }
+  }
 }

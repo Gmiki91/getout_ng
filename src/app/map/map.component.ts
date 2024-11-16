@@ -84,13 +84,13 @@ export class MapComponent implements OnInit, OnDestroy {
       mapboxgl: mapboxgl as any,
     }).on('result', (event) => {
       const location = event.result;
-      this.mapService.setSearchResult(
-        location.place_name,
-        {lng:location.geometry.coordinates[0],lat:location.geometry.coordinates[1]}
-      );
+      this.mapService.setSearchResult(location.place_name, {
+        lng: location.geometry.coordinates[0],
+        lat: location.geometry.coordinates[1],
+      });
     });
   }
-  
+
   initMarkers(): void {
     this.eventService
       .getEvents()
@@ -119,22 +119,24 @@ export class MapComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         //timeout so markerClicked flag can set if the other click event has been called
         if (!markerClicked) {
+          this.mapService.addTemporaryMarker(e.lngLat);
           // if true, there was no event selected -> the mouse is not on a marker
           this.mapService.convertLatLngToAddress(e.lngLat);
           if (!this.eventService.isEventFormOpen()) {
             //dont show 'create event' popup when we are already creating event
             popup = new mapboxgl.Popup({
               closeButton: false,
-              className: 'popup',
+              className: 'popup_w_btn',
             })
               .setLngLat(e.lngLat)
+              .setOffset(10)
               .setHTML(`<button id='popupBtn'">Create event</button>`)
               .addTo(map);
             document
               .getElementById('popupBtn')!
               .addEventListener('click', () => {
                 this.eventService.toggleEventForm();
-                popup.remove();
+                document.getElementsByClassName('popup_w_btn')[0].remove();
               });
           }
         }
@@ -145,9 +147,17 @@ export class MapComponent implements OnInit, OnDestroy {
     map.on('mouseenter', 'markers', (e) => {
       map.getCanvas().style.cursor = 'pointer';
       const title = e.features![0].properties!['title'];
+      let text = title;
+      let offset = 10;
+      if (!title) {
+        text = this.mapService.markerAddress();
+        offset = 60;
+      }
+      let coordinates = (e.features![0].geometry as GeoJSON.Point).coordinates;
       popup = new mapboxgl.Popup({ closeButton: false, className: 'popup' })
-        .setLngLat(e.lngLat)
-        .setText(title)
+        .setLngLat({ lng: coordinates[0], lat: coordinates[1] })
+        .setOffset(offset)
+        .setText(text)
         .addTo(map);
     });
 
@@ -158,7 +168,8 @@ export class MapComponent implements OnInit, OnDestroy {
 
     //right click
     map.on('contextmenu', (e) => {
-      popup?.remove();
+      document.getElementsByClassName('popup_w_btn')[0]?.remove();
+      this.mapService.removeTemporaryMarker();
     });
 
     map.on('load', () => {
@@ -193,8 +204,33 @@ export class MapComponent implements OnInit, OnDestroy {
       source: 'event-markers',
       filter: ['!', ['has', 'point_count']],
       paint: {
-        'circle-color': '#11b4da',
-        'circle-radius': 8,
+        // Dynamic color based on a feature property or gradient
+        'circle-color': [
+          'interpolate',
+          ['linear'],
+          ['get', 'eventType'],
+          1,
+          'red', // Example: Event type 1 = red
+          2,
+          'orange', 
+          3,
+          '#3357ff', 
+        ],
+        // Circle size dynamically based on zoom level
+        'circle-radius': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          2.5,
+          2.5,
+          5,
+          6, 
+          7.5,
+          10, 
+        ],
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#ffffff', 
+        'circle-opacity': 0.8,
       },
     });
   }
@@ -209,7 +245,7 @@ export class MapComponent implements OnInit, OnDestroy {
         'circle-color': [
           'step',
           ['get', 'point_count'],
-          '#51bbd6',
+          'red',
           100,
           '#f1f075',
           750,
