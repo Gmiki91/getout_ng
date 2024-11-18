@@ -61,7 +61,7 @@
 }
 @media (max-width: 768px) {
   .event-dialog{
-    width:100%;
-    top:0;
+    max-width: 20rem;
+    margin: 0 auto;
   }
 }
