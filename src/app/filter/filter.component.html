@@ -10,9 +10,9 @@
       </button>
     </mat-menu>
     @if(sort ==='Time'){
-      <mat-icon>watch_later</mat-icon><strong>Time</strong>
+      <mat-icon [matMenuTriggerFor]="menu">watch_later</mat-icon><strong [matMenuTriggerFor]="menu">Time</strong>
     }@else{
-      <mat-icon>place</mat-icon> <strong>Distance</strong>
+      <mat-icon [matMenuTriggerFor]="menu">place</mat-icon> <strong [matMenuTriggerFor]="menu">Distance</strong>
     }
   </div>
   <div class="group">
