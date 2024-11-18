@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { MatButton } from '@angular/material/button';
 import { MatLabel } from '@angular/material/form-field';
 import { EventsService } from '../services/events.service';
 import { MapService } from '../services/map.service';
@@ -10,7 +9,6 @@ import { EventListComponent } from '../event-list/event-list.component';
   selector: 'app-event-sidebar',
   standalone: true,
   imports: [
-    MatButton,
     MatLabel,
     EventListComponent,
   ],
@@ -24,14 +22,10 @@ export class EventSidebarComponent {
   otherEvents = this.eventsService.otherEvents;
   selectedEvent = this.eventsService.selectedEvent;
 
-  onToggleEventForm() {
-    this.eventsService.toggleEventForm()
-  }
 
   onOpenDetails(event: Event): void {
     this.mapService.flyTo(event.latLng);
     this.mapService.highlightMarker(event.id);
     this.eventsService.selectEvent(event);
   }
-
 }

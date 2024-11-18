@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom:5px; /* Ensure scroll only visible when necessary */
+  padding-bottom:10px; /* Ensure scroll only visible when necessary */
   overflow-y: auto; /* Ensure vertical scrolling with visible scrollbar */
   overflow-x: hidden;
   scrollbar-width: thin; /*For Firefox, makes scrollbar visible but thin */
@@ -17,18 +17,10 @@
     padding: 0.5rem 0;
     font-weight: bold;
   }
-
-  button {
-    margin-top: 5px;
-  }
+  
   mat-label {
     text-align: center;
     font-size: 1.5rem;
     font-weight: bold;
-  }
-}
-@media(max-width:768px){
-  button{
-    display:none;
   }
 }

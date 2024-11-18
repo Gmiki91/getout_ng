@@ -5,10 +5,12 @@ import mapboxgl, { GeolocateControl, Map, MapMouseEvent } from 'mapbox-gl';
 import { Subject, takeUntil } from 'rxjs';
 import { environment } from '../../environments/environment';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [],
+  imports: [MatIconModule,MatButtonModule],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
@@ -81,6 +83,8 @@ export class MapComponent implements OnInit, OnDestroy {
   initGeocoder(): MapboxGeocoder {
     return new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
+      collapsed:true,
+      marker:false,
       mapboxgl: mapboxgl as any,
     }).on('result', (event) => {
       const location = event.result;
@@ -103,6 +107,9 @@ export class MapComponent implements OnInit, OnDestroy {
       });
   }
 
+  onToggleEventForm():void{
+      this.eventService.toggleEventForm()
+  }
   addListeners(map: Map) {
     let markerClicked = false;
     let popup: mapboxgl.Popup;
