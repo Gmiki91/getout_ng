@@ -1,8 +1,9 @@
 .event-form {
   display: flex;
   flex-direction: column;
-  top: 0;
-  // background-color: rgba(var(--main-color-rgb),0.9);
+  top:50px;
+  left:auto;
+  margin-right:50px;
   background: var(--transparent-white);
   border-radius: 6px;
   border: none;
@@ -34,11 +35,7 @@
 @media (max-width: 600px) {
   .event-form {
     width: 20rem;
-    top:60px;
-    margin: 0 auto;
-
-    .field-group {
-      flex-direction: column;
-    }
+    background: white;
+    margin: auto;
   }
 }
