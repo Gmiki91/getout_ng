@@ -10,12 +10,11 @@
     .sidebar {
       position: absolute;
       width: 25rem;
-      height: calc(100vh - 60px);
       transition: transform 0.3s ease;
-      z-index: 20; 
+      z-index: 20;
     }
     app-map {
-      flex-grow: 1; 
+      flex-grow: 1;
       height: 100%;
     }
     .hidden {
@@ -23,15 +22,12 @@
     }
   }
 }
-@media(max-width:768px){
-.container{
-  .body{
-  .sidebar{
-    width:15rem;   
-    app-filter{
-      display:none;
+@media (max-width: 768px) {
+  .container {
+    .body {
+      .sidebar {
+        width: 15rem;
+      }
     }
   }
-}
-}
 }

@@ -40,6 +40,5 @@ export class AppComponent implements OnInit {
   }
   toggleSideBar():void{
     this.showSideBar = !this.showSideBar;
-    console.log(this.showSideBar);
   }
 }
