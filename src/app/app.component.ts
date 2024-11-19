@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
   eventService=inject(EventsService);
   selectedEvent = this.eventService.selectedEvent;
   isFormOpen = this.eventService.isEventFormOpen;
+  areEventsLoaded = this.eventService.areEventsLoaded;
   showMap=false;
   showSideBar=true;
   constructor( @Inject(PLATFORM_ID) private _platformId: Object) {}

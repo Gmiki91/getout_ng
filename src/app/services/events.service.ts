@@ -15,25 +15,28 @@ export class EventsService {
   private _otherEvents = signal<Event[]>([]);
   private _selectedEvent = signal<Event>({} as Event);
   private _isEventFormOpen = signal<boolean>(false);
+  private _areEventsLoaded = signal<boolean>(false);
   private _hiddenEvents: Event[] = [];
   private _currentPosition = signal<LatLng>({ lat: 0, lng: 0 });
-  private userService = inject(UserService);
-  private user = this.userService.user;
+  private _userService = inject(UserService);
+  private _user = this._userService.user;
   currentPosition = this._currentPosition.asReadonly();
   yourEvents = this._yourEvents.asReadonly();
   otherEvents = this._otherEvents.asReadonly();
   selectedEvent = this._selectedEvent.asReadonly();
   isEventFormOpen = this._isEventFormOpen.asReadonly();
+  areEventsLoaded = this._areEventsLoaded.asReadonly();
 
   //save the sorted events for the events list, returns unsorted for the map markers
   getEvents(): Observable<{ joinedEvents: Event[]; otherEvents: Event[] }> {
     return this._http
       .get<{ joinedEvents: Event[]; otherEvents: Event[] }>(
-        `${this.url}/user/${this.user().id}`
+        `${this.url}/user/${this._user().id}`
       )
       .pipe(
         tap((result) => {
           this.setEvents(result.joinedEvents, result.otherEvents);
+          this._areEventsLoaded.set(true);
         })
       );
   }
@@ -47,7 +50,7 @@ export class EventsService {
   }
 
   addEvent(event: NewEventData): Observable<Event> {
-    if (this.user().id) event = { ownerId: this.user().id, ...event };
+    if (this._user().id) event = { ownerId: this._user().id, ...event };
     return this._http.post<Event>(`${this.bridgeUrl}`, event).pipe(
       tap((event) => {
         event.distance = this.addDistance(event.latLng);
@@ -57,7 +60,7 @@ export class EventsService {
   }
 
   deleteEvent(eventId: string, ownerId: string): void {
-    if (this.user().id === ownerId) {
+    if (this._user().id === ownerId) {
       this._http.delete(`${this.bridgeUrl}/events/${eventId}`).subscribe(() => {
         //update both lists
         this._otherEvents.update((events) =>
@@ -75,7 +78,7 @@ export class EventsService {
   // distance param needed because it is not included in database
   joinEvent(eventId: string,distance:number): void {
     this._http
-      .post<Event>(`${this.bridgeUrl}/${this.user().id}/join/${eventId}`, null)
+      .post<Event>(`${this.bridgeUrl}/${this._user().id}/join/${eventId}`, null)
       .subscribe((event) => {
         if (event) {
           event.distance = distance;
@@ -90,7 +93,7 @@ export class EventsService {
   // distance param needed because it is not included in database
   leaveEvent(eventId: string,distance:number): void {
     this._http
-      .delete<Event>(`${this.bridgeUrl}/${eventId}/participants/${this.user().id}`)
+      .delete<Event>(`${this.bridgeUrl}/${eventId}/participants/${this._user().id}`)
       .subscribe((event) => {
         if (event) {
           event.distance = distance;

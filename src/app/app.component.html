@@ -1,7 +1,7 @@
 <div class="container">
   <app-header (toggleSideBar)="toggleSideBar()"></app-header>
   <div class="body">
-    <div class="sidebar" [class]="{'hidden':!showSideBar}">
+    <div class="sidebar" [class]="{'hidden':!showSideBar || !areEventsLoaded()}">
       <app-filter />
       <app-event-sidebar />
     </div>
