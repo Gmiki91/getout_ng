@@ -11,9 +11,12 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class TimeTextPipe implements PipeTransform {
-  transform(value: string|null|undefined, type: 'comment' | 'event'): string {
-    if(value==null){
-      return 'unknown time'
+  transform(
+    value: string | null | undefined,
+    type: 'comment' | 'event'
+  ): string {
+    if (value == null) {
+      return 'unknown time';
     }
     const eventDate = new Date(value);
     const now = new Date();
@@ -22,11 +25,10 @@ export class TimeTextPipe implements PipeTransform {
         ? eventDate.getTime() - now.getTime()
         : now.getTime() - eventDate.getTime();
 
-    //only applicable to event type
+    //only applicable for event in the past
     if (millisecondsDiff < 0) {
-      return 'Started at ' + this.formatTime(eventDate);
+      return this.eventInThePast(millisecondsDiff);
     }
-
     const appendix = type === 'event' ? 'left' : 'ago';
 
     const minutesDiff = Math.floor(millisecondsDiff / (1000 * 60));
@@ -49,10 +51,29 @@ export class TimeTextPipe implements PipeTransform {
         ? `1 minute ${appendix}`
         : `${minutesDiff} minutes ${appendix}`;
     }
-    return 'just now'
+    return 'just now';
   }
 
   private formatTime(date: Date): string {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  private eventInThePast(millisecondsDiff: number): string {
+    const minutesDiff = Math.floor(Math.abs(millisecondsDiff) / (1000 * 60));
+    const hoursDiff = Math.floor(minutesDiff / 60);
+
+    if (hoursDiff >= 1) {
+      return hoursDiff === 1
+        ? `Started 1 hour ago`
+        : `Started ${hoursDiff} hours ago`;
+    }
+
+    if (minutesDiff >= 1) {
+      return minutesDiff === 1
+        ? `Started 1 minute ago`
+        : `Started ${minutesDiff} minutes ago`;
+    }
+
+    return 'Started just now';
   }
 }
