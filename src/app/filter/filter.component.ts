@@ -1,5 +1,4 @@
 import { Component, signal, inject } from '@angular/core';
-import { MatCheckbox } from '@angular/material/checkbox';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { EventsService } from '../services/events.service';
@@ -10,7 +9,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 @Component({
   selector: 'app-filter',
   standalone: true,
-  imports: [MatButton,MatCheckbox,MatIcon, MatDivider,MatMenuModule, MatSlideToggleModule],
+  imports: [MatButton,MatIcon, MatDivider,MatMenuModule, MatSlideToggleModule],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.scss'
 })

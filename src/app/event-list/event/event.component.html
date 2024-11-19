@@ -6,20 +6,20 @@
   </mat-card-header>
     <div class="event-info">
       <div class="info-item"  [matTooltip]="event().time|date : 'medium'" matTooltipShowDelay="1000">
-        <span>{{event().time | timeText: 'event'}}</span>
         <mat-icon >schedule</mat-icon>
+        <span>{{event().time | timeText: 'event'}}</span>
       </div>
       <div class="info-item"   [matTooltip]="event().location"  matTooltipShowDelay="1000">
-        <span>{{event().distance | distanceFormat}}</span>
         <mat-icon
         class="find-marker-icon"
         (click)="onFindMarker($event)"
         fontIcon="not_listed_location"
-      ></mat-icon>
+        ></mat-icon>
+        <span>{{event().distance | distanceFormat}}</span>
       </div>
       <div class="info-item"  matTooltip="Participation" matTooltipShowDelay="1000">
-        <span>{{event().participants.length}}/{{event().max}}</span>
         <mat-icon>people</mat-icon>
+        <span>{{event().participants.length}}/{{event().max}}</span>
       </div>
     </div>
   <div>
