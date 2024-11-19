@@ -19,8 +19,8 @@
 
   .event-info {
     padding: 10px;
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
     .info-item {
       display: flex;
       align-items: center;
