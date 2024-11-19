@@ -137,7 +137,7 @@ export class MapComponent implements OnInit, OnDestroy {
             })
               .setLngLat(e.lngLat)
               .setOffset(10)
-              .setHTML(`<button id='popupBtn'">Create event</button>`)
+              .setHTML(`<button style="background-color: rgb(48, 204, 212,0.8); font-weight: bold; border-radius: 8px;  border-width: thin;" id='popupBtn'">Create event</button>`)
               .addTo(map);
             document
               .getElementById('popupBtn')!
