@@ -1,9 +1,9 @@
 <dialog cdkDrag div class="event-form">
-  <h4>New Event</h4>
+  <h4  [class]="{'hidden':locationSelectMode}">New Event</h4>
   <form #form="ngForm" (ngSubmit)="onSubmit(form)">
 
-    <div class="field-group">
-      <mat-form-field appearance="outline">
+    <div class="field-group"  [class]="{'hidden':locationSelectMode}">
+      <mat-form-field appearance="outline" >
         <mat-label for="title">Title</mat-label>
         <input
           matInput
@@ -15,24 +15,26 @@
         />
         <mat-error>Title is invalid</mat-error>
       </mat-form-field>
-
+    </div>
+    <div class="field-group">
     <mat-form-field appearance="outline">
-      <mat-label for="location">Choose location from the map</mat-label>
+      <mat-label for="location">Choose a location</mat-label>
       <input
-      disabled
+      readonly
         #locationInput
         matInput
         required
         [ngModel]="markerAddress()"
         #location="ngModel"
         name="location"
+        (focus)="toggleLocationSelect()"
       />
       @if( location.invalid && (location.dirty || location.touched)){
       <mat-error>Invalid address</mat-error>}
     </mat-form-field>
 </div>
-<div class="field-group">
 
+<div class="field-group" [class]="{'hidden':locationSelectMode}">
   <mat-form-field appearance="outline">
     <mat-label for="date">Date</mat-label>
     <input
@@ -62,7 +64,7 @@
   </mat-form-field>
 </div>
 
-    <div class="field-group">
+    <div class="field-group"  [class]="{'hidden':locationSelectMode}">
       <mat-form-field appearance="outline">
         <mat-label for="min">Minimum People</mat-label>
         <input
@@ -95,13 +97,20 @@
       </mat-form-field>
     </div>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline"  [class]="{'hidden':locationSelectMode}">
       <mat-label for="info">Additional Information</mat-label>
       <textarea matInput id="info" name="info" ngModel></textarea>
     </mat-form-field>
 
+    @if(locationSelectMode){
+      <div class="actions">
+        <button class="cancel-btn" mat-button type="button" (click)="onClose()">Cancel</button>
+        <button mat-button type="button" (click)="toggleLocationSelect()">Ok</button>
+      </div>
+  }@else{
     <div class="actions">
       <button class="cancel-btn" mat-button type="button" (click)="onClose()">Cancel</button>
       <button [disabled]="form.invalid" mat-raised-button color="primary" type="submit">Create</button>
     </div>
+  }
   </form>

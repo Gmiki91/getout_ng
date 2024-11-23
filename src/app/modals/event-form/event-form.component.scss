@@ -1,4 +1,5 @@
 .event-form {
+  width:25rem;
   display: flex;
   flex-direction: column;
   top:50px;
@@ -30,12 +31,14 @@
     gap: 1rem;
     margin-top: 1.5rem;
   }
+  .hidden{
+    display:none;
+  }
 }
 
 @media (max-width: 600px) {
   .event-form {
     width: 20rem;
     background: white;
-    margin: auto;
   }
 }
