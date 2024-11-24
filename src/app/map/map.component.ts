@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [MatIconModule,MatButtonModule],
+  imports: [MatIconModule, MatButtonModule],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
@@ -29,11 +29,9 @@ export class MapComponent implements OnInit, OnDestroy {
           lng: position.coords.longitude,
         };
         // set bounds for the autofill search
-        this.viewbox = `${position.coords.longitude - 0.05},${
-          position.coords.latitude + 0.05
-        },${position.coords.longitude + 0.05},${
-          position.coords.latitude - 0.05
-        }`;
+        this.viewbox = `${position.coords.longitude - 0.05},${position.coords.latitude + 0.05
+          },${position.coords.longitude + 0.05},${position.coords.latitude - 0.05
+          }`;
         this.eventService.setCurrentPosition(param);
         // update location field in create event form
         this.mapService.convertLatLngToAddress(param);
@@ -80,18 +78,18 @@ export class MapComponent implements OnInit, OnDestroy {
     });
   }
 
-  initGeocoder(map:Map): MapboxGeocoder {
+  initGeocoder(map: Map): MapboxGeocoder {
     return new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
-      collapsed:true,
-      marker:false,
+      collapsed: true,
+      marker: false,
       mapboxgl: mapboxgl as any,
     }).on('result', (event) => {
       const location = event.result;
-      const latLng = {lng: location.geometry.coordinates[0],lat: location.geometry.coordinates[1]} as LngLat;
-      this.createEventPopup(map,latLng);
+      const latLng = { lng: location.geometry.coordinates[0], lat: location.geometry.coordinates[1] } as LngLat;
+      this.createEventPopup(map, latLng);
       this.mapService.addTemporaryMarker(latLng);
-      this.mapService.setSearchResult(location.place_name,latLng);
+      this.mapService.setSearchResult(location.place_name, latLng);
     });
   }
 
@@ -107,24 +105,23 @@ export class MapComponent implements OnInit, OnDestroy {
       });
   }
 
-  onToggleEventForm():void{
-      this.eventService.toggleEventForm()
+  onToggleEventForm(): void {
+    this.eventService.toggleEventForm()
   }
   addListeners(map: Map) {
     let markerClicked = false;
-    let popup: mapboxgl.Popup;
     map.on('click', 'markers', (e: MapMouseEvent) => {
       const id: string = e.features![0].properties!['id'];
       markerClicked = true;
-      if(id){
+      if (id) {
         this.eventService.selectEventById(id);
-      }else{
+      } else {
         //temporary marker selected, remove previous marker if any
         this.mapService.removeTemporaryMarker();
       }
-        setTimeout(() => {
-          markerClicked = false;
-        }, 1);
+      setTimeout(() => {
+        markerClicked = false;
+      }, 1);
     });
 
     map.on('click', (e) => {
@@ -134,7 +131,7 @@ export class MapComponent implements OnInit, OnDestroy {
           this.mapService.addTemporaryMarker(e.lngLat);
           // if true, there was no event selected -> the mouse is not on a marker
           this.mapService.convertLatLngToAddress(e.lngLat);
-         this.createEventPopup(map,e.lngLat);
+          this.createEventPopup(map, e.lngLat);
         }
       }, 0);
     });
@@ -142,23 +139,9 @@ export class MapComponent implements OnInit, OnDestroy {
     // change cursor to pointer when hovering over a marker
     map.on('mouseenter', 'markers', (e) => {
       map.getCanvas().style.cursor = 'pointer';
-      const title = e.features![0].properties!['title'];
-      let text = title;
-      let offset = 10;
-      if (!title) {
-        text = this.mapService.markerAddress();
-        offset = 60;
-      }
-      let coordinates = (e.features![0].geometry as GeoJSON.Point).coordinates;
-      popup = new mapboxgl.Popup({ closeButton: false, className: 'popup' })
-        .setLngLat({ lng: coordinates[0], lat: coordinates[1] })
-        .setOffset(offset)
-        .setText(text)
-        .addTo(map);
     });
 
     map.on('mouseleave', 'markers', () => {
-      popup.remove();
       map.getCanvas().style.cursor = '';
     });
 
@@ -169,10 +152,15 @@ export class MapComponent implements OnInit, OnDestroy {
     });
 
     map.on('load', () => {
+      map.loadImage(
+        'https://getoutimages.blob.core.windows.net/symbol1/location-mark.png',
+        (error, image) => {
+          if (error) throw error;
+          //@ts-ignore
+          map.addImage('custom-marker', image);
+        });
       this.addGeoJsonSource(map);
-      this.addClusterLayer(map);
-      this.addClusterCountLayer(map); // Add a label for clusters showing the number of points in the cluster
-      this.addPointLayer(map); // Add layer for individual points
+      this.addSymbolLayer(map);
       this.initMarkers();
     });
   }
@@ -193,99 +181,67 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mapService.setGeoJSONSource(source); // Set the GeoJSON source in MapService
   }
 
-  addPointLayer(map: Map) {
+  addSymbolLayer(map: Map) {
     map.addLayer({
-      id: 'markers',
-      type: 'circle',
-      source: 'event-markers',
-      filter: ['!', ['has', 'point_count']],
-      paint: {
-        // Dynamic color based on a feature property or gradient
-        'circle-color': [
-          'interpolate',
-          ['linear'],
-          ['get', 'eventType'],
-          1,
-          'red', // Example: Event type 1 = red
-          2,
-          'orange', 
-          3,
-          '#3357ff', 
+      'id': 'markers',
+      'type': 'symbol',
+      'source': 'event-markers',
+      'layout': {
+        'icon-image': 'custom-marker',
+        'icon-anchor':'bottom',
+        // get the title name from the source's "title" property
+        'text-field': ['get', 'title'],
+        'text-font': [
+          'Open Sans Semibold',
+          'Arial Unicode MS Bold'
         ],
-        // Circle size dynamically based on zoom level
-        'circle-radius': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          2.5,
-          2.5,
-          5,
-          6, 
-          7.5,
-          10, 
-        ],
-        'circle-stroke-width': 2,
-        'circle-stroke-color': '#ffffff', 
-        'circle-opacity': 0.8,
-      },
+        'text-offset': [0, 0.25],
+        'text-anchor': 'top'
+      }
     });
   }
 
-  addClusterLayer(map: Map): void {
-    map.addLayer({
-      id: 'clusters',
-      type: 'circle',
-      source: 'event-markers',
-      filter: ['has', 'point_count'],
-      paint: {
-        'circle-color': [
-          'step',
-          ['get', 'point_count'],
-          'red',
-          100,
-          '#f1f075',
-          750,
-          '#f28cb1',
-        ],
-        'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
-      },
-    });
-  }
-
-  addClusterCountLayer(map: Map): void {
-    map.addLayer({
-      id: 'cluster-count',
-      type: 'symbol',
-      source: 'event-markers',
-      filter: ['has', 'point_count'],
-      layout: {
-        'text-field': '{point_count_abbreviated}',
-        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-        'text-size': 12,
-      },
-    });
-  }
-
-  createEventPopup(map:Map, lngLat:LngLat){
+  createEventPopup(map: Map, lngLat: LngLat) {
     if (!this.eventService.isEventFormOpen()) {
       //dont show 'create event' popup when we are already creating event
 
       //remove previous popup
       document.getElementsByClassName('popup_w_btn')[0]?.remove();
-     let popup = new mapboxgl.Popup({
+      const popup = new mapboxgl.Popup({
         closeButton: false,
         className: 'popup_w_btn',
       })
         .setLngLat(lngLat)
-        .setOffset(10)
-        .setHTML(`<button style="background-color: rgb(48, 204, 212,0.8); font-weight: bold; border-radius: 8px;  border-width: thin; cursor:pointer" id='popupBtn'">Create event</button>`)
+        .setOffset(-50)
+        .setHTML(`<span style="font-weight: bold; font-size:16px; cursor:pointer" id='popupBtn'">Create event</span>`)
         .addTo(map);
+
+      this.stylePopup(popup);
+
       document
         .getElementById('popupBtn')!
         .addEventListener('click', () => {
           this.eventService.toggleEventForm();
+          this.mapService.removeTemporaryMarker();
           document.getElementsByClassName('popup_w_btn')[0].remove();
         });
+    }
+  }
+  stylePopup(popup: mapboxgl.Popup): void {
+    const popupContent = popup.getElement()!.querySelector('.mapboxgl-popup-content')as HTMLElement;
+    const popupTip = popup.getElement()!.querySelector('.mapboxgl-popup-tip')as HTMLElement;
+    if (popupContent  && popupTip) {
+      popupTip.style.display ='none';
+      popupContent.style.borderRadius = '16px';
+      popupContent.style.opacity = '0';
+      popupContent.style.background = 'linear-gradient(135deg, rgb(207, 36, 75,0.5), rgba(232, 61, 88,0.5))';
+      popupContent.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+   
+      // Trigger the fade-in after a short delay (to allow rendering)
+      setTimeout(() => {
+        popupContent.style.transition = 'opacity 0.5s ease-in-out'; 
+        popupContent.style.opacity = '1';
+      }, 100);
     }
   }
 }
