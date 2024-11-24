@@ -269,6 +269,9 @@ export class MapComponent implements OnInit, OnDestroy {
   createEventPopup(map:Map, lngLat:LngLat){
     if (!this.eventService.isEventFormOpen()) {
       //dont show 'create event' popup when we are already creating event
+
+      //remove previous popup
+      document.getElementsByClassName('popup_w_btn')[0]?.remove();
      let popup = new mapboxgl.Popup({
         closeButton: false,
         className: 'popup_w_btn',
