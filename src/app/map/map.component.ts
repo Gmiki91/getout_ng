@@ -7,10 +7,11 @@ import { environment } from '../../environments/environment';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule],
+  imports: [MatIconModule, MatButtonModule, MatTooltip],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
