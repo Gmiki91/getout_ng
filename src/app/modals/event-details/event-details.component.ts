@@ -61,7 +61,7 @@ export class EventDetailsComponent implements OnInit {
   }
 
   onJoin(): void {
-    if(this.event().max>this.event().participants.length)
+    if(this.event().max>this.event().participants.length || this.event().max==0)
     this.eventService.joinEvent(this.event().id,this.event().distance);
     this.closeDialog();
   }

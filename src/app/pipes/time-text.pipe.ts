@@ -64,16 +64,16 @@ export class TimeTextPipe implements PipeTransform {
 
     if (hoursDiff >= 1) {
       return hoursDiff === 1
-        ? `Started 1 hour ago`
-        : `Started ${hoursDiff} hours ago`;
+        ? `1 hour ago`
+        : `${hoursDiff} hours ago`;
     }
 
     if (minutesDiff >= 1) {
       return minutesDiff === 1
-        ? `Started 1 minute ago`
-        : `Started ${minutesDiff} minutes ago`;
+        ? `1 minute ago`
+        : `${minutesDiff} minutes ago`;
     }
 
-    return 'Started just now';
+    return 'Just now';
   }
 }

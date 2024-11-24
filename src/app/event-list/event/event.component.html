@@ -17,9 +17,9 @@
         ></mat-icon>
         <span>{{event().distance | distanceFormat}}</span>
       </div>
-      <div class="info-item"  matTooltip="Participation" matTooltipShowDelay="1000">
+      <div class="info-item last-item"  matTooltip="Participation" matTooltipShowDelay="1000">
         <mat-icon>people</mat-icon>
-        <span>{{event().participants.length}}/{{event().max}}</span>
+        <span>{{event().participants.length}}{{event().max>0? "/"+event().max : ""}}</span>
       </div>
     </div>
   <div>
