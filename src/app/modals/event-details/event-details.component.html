@@ -11,8 +11,9 @@
         <div><strong>Time:</strong>{{ event().time | date : "medium" }}</div>
         <div><strong>Location:</strong> {{ event().location }}</div>
         <div>
-          <strong>Participants:</strong> {{ event().participants ? event().participants.length:"unknown" }} /
-          {{ event().max }}
+          <strong>Participants:</strong> 
+          {{ event().participants ? event().participants.length:"unknown"}}
+          {{event().max>0? "/"+event().max : ""}}
         </div>
         @if(event().info){
         <div><strong>Info:</strong> {{ event().info }}</div>
@@ -21,27 +22,20 @@
 
       <mat-divider></mat-divider>
       <mat-form-field appearance="outline" class="comment-box">
-        <textarea
-          matInput
-          #komment
-          class="comment-area"
-          ngModel
-          (focus)="onShowCommentBtn(true)"
-          (blur)="onShowCommentBtn(false)"
-          cdkAutosizeMinRows="5"
-        ></textarea>
-      
+        <textarea matInput #komment class="comment-area" ngModel (focus)="onShowCommentBtn(true)"
+          (blur)="onShowCommentBtn(false)" cdkAutosizeMinRows="5"></textarea>
+
       </mat-form-field>
-   
-        <button class="comment-btn" [disabled]="!showCommentBtn" mat-button (click)="onAddKomment($event)">
-          Add comment
-        </button>
-      
+
+      <button class="comment-btn" [disabled]="!showCommentBtn" mat-button (click)="onAddKomment($event)">
+        Add comment
+      </button>
+
       <mat-list class="comment-list">
         @for(komment of komments(); track komment.id){
         <mat-list-item class="comment-item">
           <strong>{{ komment.userName }}</strong>
-          
+
           <i>{{ komment.timestamp | timeText : "comment" }}</i>
           <p class="comment-text">{{ komment.text }}</p>
         </mat-list-item>
@@ -52,12 +46,12 @@
 
     <mat-card-actions class="event-actions">
       @if(user().id === event().ownerId){
-        <button class="delete-btn" mat-button color="warn" (click)="onDelete()">
-          Delete event
-        </button>
-        }
+      <button class="delete-btn" mat-button (click)="onDelete()">
+        Delete event
+      </button>
+      }
       @if(joined){
-      <button class="leave-btn" mat-button  (click)="onLeave()">
+      <button class="leave-btn" mat-button (click)="onLeave()">
         Leave event
       </button>
       }@else if(event().max==0 || event().max>event().participants.length){
