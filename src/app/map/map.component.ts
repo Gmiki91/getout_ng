@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MapService } from '../services/map.service';
 import { EventsService } from '../services/events.service';
-import mapboxgl, { GeolocateControl, Map, MapMouseEvent } from 'mapbox-gl';
+import mapboxgl, { GeolocateControl, LngLat, Map, MapMouseEvent } from 'mapbox-gl';
 import { Subject, takeUntil } from 'rxjs';
 import { environment } from '../../environments/environment';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
@@ -67,7 +67,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   addControls(map: Map) {
     const geoLocateControl = this.initGeoLocateControl();
-    const geocoder = this.initGeocoder();
+    const geocoder = this.initGeocoder(map);
     map.addControl(geocoder);
     map.addControl(geoLocateControl);
     map.addControl(new mapboxgl.NavigationControl());
@@ -80,7 +80,7 @@ export class MapComponent implements OnInit, OnDestroy {
     });
   }
 
-  initGeocoder(): MapboxGeocoder {
+  initGeocoder(map:Map): MapboxGeocoder {
     return new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
       collapsed:true,
@@ -88,10 +88,10 @@ export class MapComponent implements OnInit, OnDestroy {
       mapboxgl: mapboxgl as any,
     }).on('result', (event) => {
       const location = event.result;
-      this.mapService.setSearchResult(location.place_name, {
-        lng: location.geometry.coordinates[0],
-        lat: location.geometry.coordinates[1],
-      });
+      const latLng = {lng: location.geometry.coordinates[0],lat: location.geometry.coordinates[1]} as LngLat;
+      this.createEventPopup(map,latLng);
+      this.mapService.addTemporaryMarker(latLng);
+      this.mapService.setSearchResult(location.place_name,latLng);
     });
   }
 
@@ -114,12 +114,17 @@ export class MapComponent implements OnInit, OnDestroy {
     let markerClicked = false;
     let popup: mapboxgl.Popup;
     map.on('click', 'markers', (e: MapMouseEvent) => {
-      markerClicked = true;
       const id: string = e.features![0].properties!['id'];
-      this.eventService.selectEventById(id);
-      setTimeout(() => {
-        markerClicked = false;
-      }, 1);
+      markerClicked = true;
+      if(id){
+        this.eventService.selectEventById(id);
+      }else{
+        //temporary marker selected, remove previous marker if any
+        this.mapService.removeTemporaryMarker();
+      }
+        setTimeout(() => {
+          markerClicked = false;
+        }, 1);
     });
 
     map.on('click', (e) => {
@@ -129,23 +134,7 @@ export class MapComponent implements OnInit, OnDestroy {
           this.mapService.addTemporaryMarker(e.lngLat);
           // if true, there was no event selected -> the mouse is not on a marker
           this.mapService.convertLatLngToAddress(e.lngLat);
-          if (!this.eventService.isEventFormOpen()) {
-            //dont show 'create event' popup when we are already creating event
-            popup = new mapboxgl.Popup({
-              closeButton: false,
-              className: 'popup_w_btn',
-            })
-              .setLngLat(e.lngLat)
-              .setOffset(10)
-              .setHTML(`<button style="background-color: rgb(48, 204, 212,0.8); font-weight: bold; border-radius: 8px;  border-width: thin;" id='popupBtn'">Create event</button>`)
-              .addTo(map);
-            document
-              .getElementById('popupBtn')!
-              .addEventListener('click', () => {
-                this.eventService.toggleEventForm();
-                document.getElementsByClassName('popup_w_btn')[0].remove();
-              });
-          }
+         this.createEventPopup(map,e.lngLat);
         }
       }, 0);
     });
@@ -275,5 +264,25 @@ export class MapComponent implements OnInit, OnDestroy {
         'text-size': 12,
       },
     });
+  }
+
+  createEventPopup(map:Map, lngLat:LngLat){
+    if (!this.eventService.isEventFormOpen()) {
+      //dont show 'create event' popup when we are already creating event
+     let popup = new mapboxgl.Popup({
+        closeButton: false,
+        className: 'popup_w_btn',
+      })
+        .setLngLat(lngLat)
+        .setOffset(10)
+        .setHTML(`<button style="background-color: rgb(48, 204, 212,0.8); font-weight: bold; border-radius: 8px;  border-width: thin; cursor:pointer" id='popupBtn'">Create event</button>`)
+        .addTo(map);
+      document
+        .getElementById('popupBtn')!
+        .addEventListener('click', () => {
+          this.eventService.toggleEventForm();
+          document.getElementsByClassName('popup_w_btn')[0].remove();
+        });
+    }
   }
 }
