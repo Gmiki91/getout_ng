@@ -6,10 +6,10 @@
   border-radius: 0;
   transition: background-color 0.3s ease;
   z-index: 5;
-  background: var(--transparent-white);
+  background: var(--main-color);
   cursor: pointer;
   &:hover {
-    background-color: var(--warn-color);
+    background-color: var(--accent-color);
   }
 
   .header {

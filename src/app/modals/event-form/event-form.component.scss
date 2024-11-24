@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   width:25rem;
-  background: var(--transparent-white);
+  background: var(--main-color);
   top:0;
   left:auto;
   border-radius: 6px;
@@ -13,8 +13,11 @@
 
 .event-card{
   box-shadow: none;
-  background-color: var(--transparent-white);
+  background-color: var(--main-color);
 
+  .bold{
+    font-weight: bold;
+  }
   h4 {
     text-align: center;
     margin-bottom: 1rem;

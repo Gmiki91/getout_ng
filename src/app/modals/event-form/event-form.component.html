@@ -62,13 +62,13 @@
 
       @if(locationSelectMode){
       <div class="actions">
-        <button class="cancel-btn" mat-button type="button" (click)="onClose()">Cancel</button>
-        <button mat-button type="button" (click)="toggleLocationSelect()">Ok</button>
+        <button mat-button type="button" (click)="onClose()">Cancel</button>
+        <button mat-button type="button" (click)="toggleLocationSelect()" class="bold">Ok</button>
       </div>
       }@else{
       <div class="actions">
-        <button class="cancel-btn" mat-button type="button" (click)="onClose()">Cancel</button>
-        <button [disabled]="form.invalid" mat-raised-button color="primary" type="submit">Create</button>
+        <button mat-button type="button" (click)="onClose()">Cancel</button>
+        <button mat-button type="submit" class="bold" [disabled]="form.invalid" >Create</button>
       </div>
       }
     </form>

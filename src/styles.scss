@@ -1,10 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --main-color:#D2E0FB;
-  --main-color-rgb:210, 224, 251; /*so you can add transparancy using rgba()*/
-  --accent-color: #FFA69E;
-  --warn-color: #30ccd4;
-  --transparent-white: rgba(255, 255, 255, 0.8); 
+  --main-color: rgba(255, 255, 255, 0.8); 
+  --accent-color: rgb(232, 61, 88);
+  --warn-color:rgb(207, 36, 75);
 }
 
 html,
