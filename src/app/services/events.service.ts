@@ -108,6 +108,8 @@ export class EventsService {
   // the selected event for the details tab
   selectEvent(event: Event): void {
     this._selectedEvent.set(event);
+     //close eventform if open
+     if(this._isEventFormOpen()){this._isEventFormOpen.set(false)}
   }
 
   selectEventById(eventId: string): void {
@@ -118,12 +120,16 @@ export class EventsService {
     }else{
       console.log('event not found')
     }
+    //close eventform if open
+    if(this._isEventFormOpen()){this._isEventFormOpen.set(false)}
   }
 
   
   // create new event form
   toggleEventForm():void{
     this._isEventFormOpen.set(!this._isEventFormOpen())
+    //close event details if open
+    if(this._selectedEvent().id){this._selectedEvent.set({}as Event);}
   }
 
   //for distance calculation and autofill proximity

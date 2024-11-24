@@ -1,5 +1,5 @@
 .sidebar-container {
-  max-height: 85vh;
+  max-height:80vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,7 +9,7 @@
   scrollbar-width: thin; /*For Firefox, makes scrollbar visible but thin */
 
   .sticky-title {
-    background:var(--transparent-white);
+    background:white;
     width: 100%;
     position: sticky;
     top: 0; /* Stick at the top */

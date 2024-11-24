@@ -1,107 +1,76 @@
-<dialog cdkDrag div class="event-form">
-  <h4>New Event</h4>
-  <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+<dialog open class="event-dialog">
+  <mat-card class="event-card">
+    <h4 [class]="{'hidden':locationSelectMode}">New Event</h4>
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
 
-    <div class="field-group">
-      <mat-form-field appearance="outline">
-        <mat-label for="title">Title</mat-label>
-        <input
-          matInput
-          required
-          id="title"
-          name="title"
-          ngModel
-          #title="ngModel"
-        />
-        <mat-error>Title is invalid</mat-error>
+      <div class="field-group" [class]="{'hidden':locationSelectMode}">
+        <mat-form-field appearance="outline">
+          <mat-label for="title">Title</mat-label>
+          <input matInput required id="title" name="title" ngModel #title="ngModel" />
+          <mat-error>Title is invalid</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="field-group">
+        <mat-form-field appearance="outline">
+          <mat-label for="location">Choose a location</mat-label>
+          <input readonly #locationInput matInput required [ngModel]="markerAddress()" #location="ngModel"
+            name="location" (focus)="toggleLocationSelect()" />
+          @if( location.invalid && (location.dirty || location.touched)){
+          <mat-error>Invalid address</mat-error>}
+        </mat-form-field>
+      </div>
+
+      <div class="field-group" [class]="{'hidden':locationSelectMode}">
+        <mat-form-field appearance="outline">
+          <mat-label for="date">Date</mat-label>
+          <input matInput required [min]="minDate" [matDatepicker]="picker" id="date" name="date" [ngModel]="minDate"
+            #date="ngModel" />
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error>Date is invalid</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-select [(value)]="selectedTime">
+            @for (time of times; track time) {
+            <mat-option [value]="time">{{time}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="field-group" [class]="{'hidden':locationSelectMode}">
+        <mat-form-field appearance="outline">
+          <mat-label for="min">Minimum People</mat-label>
+          <input matInput required type="number" id="min" name="min" min="2" [(ngModel)]="minPeople" #min="ngModel" />
+          @if (min.invalid && (min.dirty || min.touched)){
+          <mat-error>At least 2 people are required</mat-error>}
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label for="max">Maximum People</mat-label>
+          <input matInput type="number" id="max" name="max" [min]="minPeople || 2" ngModel #max="ngModel" />
+          @if (max.invalid && (max.dirty || max.touched)){
+          <mat-error>That's too few</mat-error>}
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" [class]="{'hidden':locationSelectMode}">
+        <mat-label for="info">Additional Information</mat-label>
+        <textarea matInput id="info" name="info" ngModel></textarea>
       </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label for="location">Choose location from the map</mat-label>
-      <input
-      disabled
-        #locationInput
-        matInput
-        required
-        [ngModel]="markerAddress()"
-        #location="ngModel"
-        name="location"
-      />
-      @if( location.invalid && (location.dirty || location.touched)){
-      <mat-error>Invalid address</mat-error>}
-    </mat-form-field>
-</div>
-<div class="field-group">
-
-  <mat-form-field appearance="outline">
-    <mat-label for="date">Date</mat-label>
-    <input
-      matInput
-      required
-      [min]="minDate"
-      [matDatepicker]="picker"
-      id="date"
-      name="date"
-      [ngModel] = "minDate"
-      #date="ngModel"
-    />
-    <mat-datepicker-toggle
-      matIconSuffix
-      [for]="picker"
-    ></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-    <mat-error>Date is invalid</mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-select  [(value)]="selectedTime">
-      @for (time of times; track time) {
-        <mat-option [value]="time">{{time}}</mat-option>
+      @if(locationSelectMode){
+      <div class="actions">
+        <button class="cancel-btn" mat-button type="button" (click)="onClose()">Cancel</button>
+        <button mat-button type="button" (click)="toggleLocationSelect()">Ok</button>
+      </div>
+      }@else{
+      <div class="actions">
+        <button class="cancel-btn" mat-button type="button" (click)="onClose()">Cancel</button>
+        <button [disabled]="form.invalid" mat-raised-button color="primary" type="submit">Create</button>
+      </div>
       }
-    </mat-select>
-  </mat-form-field>
-</div>
-
-    <div class="field-group">
-      <mat-form-field appearance="outline">
-        <mat-label for="min">Minimum People</mat-label>
-        <input
-          matInput
-          required
-          type="number"
-          id="min"
-          name="min"
-          min="2"
-          [(ngModel)]="minPeople"
-          #min="ngModel"
-        />
-        @if (min.invalid && (min.dirty || min.touched)){
-        <mat-error>At least 2 people are required</mat-error>}
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label for="max">Maximum People</mat-label>
-        <input
-          matInput
-          type="number"
-          id="max"
-          name="max"
-          [min]="minPeople || 2"
-          ngModel
-          #max="ngModel"
-        />
-        @if (max.invalid && (max.dirty || max.touched)){
-        <mat-error>That's too few</mat-error>}
-      </mat-form-field>
-    </div>
-
-    <mat-form-field appearance="outline">
-      <mat-label for="info">Additional Information</mat-label>
-      <textarea matInput id="info" name="info" ngModel></textarea>
-    </mat-form-field>
-
-    <div class="actions">
-      <button class="cancel-btn" mat-button type="button" (click)="onClose()">Cancel</button>
-      <button [disabled]="form.invalid" mat-raised-button color="primary" type="submit">Create</button>
-    </div>
-  </form>
+    </form>
+  </mat-card>
+</dialog>

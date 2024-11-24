@@ -14,10 +14,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButton } from '@angular/material/button';
 import { Subject, takeUntil } from 'rxjs';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import {CdkDrag} from '@angular/cdk/drag-drop'
 import { EventsService } from '../../services/events.service';
 import { MapService } from '../../services/map.service';
 import {TIMES} from '../../time'
+import { MatCard } from '@angular/material/card';
 @Component({
   selector: 'app-event-form',
   standalone: true,
@@ -31,7 +31,7 @@ import {TIMES} from '../../time'
     MatError,
     MatDatepickerModule,
     MatSelectModule,
-    CdkDrag
+    MatCard
   ],
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.scss',
@@ -40,6 +40,7 @@ export class EventFormComponent implements OnInit, OnDestroy {
   @ViewChild('locationInput')
   location!: ElementRef;
   times = TIMES;
+  locationSelectMode = false;
   selectedTime='';
   minPeople = 2;
   minDate = new Date(); // min date is today
@@ -69,6 +70,9 @@ export class EventFormComponent implements OnInit, OnDestroy {
     this.eventsService.toggleEventForm();
   }
 
+  toggleLocationSelect(){
+    this.locationSelectMode = !this.locationSelectMode;
+  }
   onSubmit(form: NgForm) {
     if (form.valid && (this.markerAddress() && this.markerPosition())) {
       const { title, date, min, max, info } = form.form.value;
@@ -89,7 +93,7 @@ export class EventFormComponent implements OnInit, OnDestroy {
           latLng:  latLng,
           time: dateTime,
           min: min,
-          max: max || min, //max can not be lower than min. If it is 0, min will be set
+          max: max,
           info: info,
         })
         .pipe(takeUntil(this.unsubscribe$))

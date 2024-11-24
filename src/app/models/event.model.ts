@@ -25,7 +25,7 @@ export type NewEventData={
     latLng:{lat:number,lng:number},
     time:string,
     min:number;
-    max:number;
+    max?:number;
     info?:string;
     ownerId?:string
 }

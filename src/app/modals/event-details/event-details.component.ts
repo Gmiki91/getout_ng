@@ -18,26 +18,26 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { MatInput } from '@angular/material/input';
 import { TimeTextPipe } from '../../pipes/time-text.pipe';
 import { MatCardModule } from '@angular/material/card';
-import {CdkDrag} from '@angular/cdk/drag-drop'
 import { EventsService } from '../../services/events.service';
 import { MapService } from '../../services/map.service';
 import { UserService } from '../../services/user.service';
 import User from '../../models/user.model';
+import { MatIcon } from '@angular/material/icon';
 @Component({
   selector: 'app-event-details',
   standalone: true,
   imports: [
     DatePipe,
-    MatButton,
     TextFieldModule,
+    MatButton,
     MatCardModule,
     MatDivider,
     MatFormField,
     MatList,
     MatInput,
+    MatIcon,
     MatListItem,
-    TimeTextPipe,
-    CdkDrag
+    TimeTextPipe
   ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',

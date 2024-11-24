@@ -6,10 +6,11 @@
       <app-event-sidebar />
     </div>
     @if(showMap){ @defer{<app-map />} }
+    @if(isFormOpen()){
+    <app-event-form></app-event-form>
+    } @if(selectedEvent().id){
+    <app-event-details></app-event-details>
+    }
   </div>
-  @if(isFormOpen()){
-  <app-event-form></app-event-form>
-  } @if(selectedEvent().id){
-  <app-event-details></app-event-details>
-  }
+
 </div>
