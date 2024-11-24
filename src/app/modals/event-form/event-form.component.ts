@@ -14,10 +14,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButton } from '@angular/material/button';
 import { Subject, takeUntil } from 'rxjs';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import {CdkDrag} from '@angular/cdk/drag-drop'
 import { EventsService } from '../../services/events.service';
 import { MapService } from '../../services/map.service';
 import {TIMES} from '../../time'
+import { MatCard } from '@angular/material/card';
 @Component({
   selector: 'app-event-form',
   standalone: true,
@@ -31,7 +31,7 @@ import {TIMES} from '../../time'
     MatError,
     MatDatepickerModule,
     MatSelectModule,
-    CdkDrag
+    MatCard
   ],
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.scss',

@@ -8,47 +8,53 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+mat-card-header{
+  display:flex;
+  justify-content: space-between;
+  mat-icon{
+    cursor:pointer;
+  }
+}
+
 .event-dialog {
-  max-width: 30rem;
-  background-color: var(--transparent-white);
+  top: 0;
+  left: auto;
   border-radius: 6px;
   border: none;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-  top:50px;
-  left:auto;
-  margin-right:50px;
+  background: var(--transparent-white);
   padding: 1rem;
   z-index: 22;
 
   .event-card {
-    box-shadow:none;
+    box-shadow: none;
     background-color: var(--transparent-white);
 
-    .event-details {
-      margin-bottom: 16px;
+    .comment-btn {
+     width: 100%;
     }
 
     .comment-box {
       width: 100%;
-      margin-bottom: 16px;
-
-      button{
-        float: right; 
-      }
     }
-    
+
     .comment-list {
       overflow: auto;
       max-height: 250px;
 
       .comment-item {
         height: auto;
-        color:black;
+        color: black;
+
+        i{
+          font-size:10px;
+          float:right;
+        }
 
         .comment-text {
           text-wrap: wrap;
-          color:black;
-          
+          color: black;
+
         }
       }
     }
@@ -56,13 +62,6 @@
     .event-actions {
       display: flex;
       justify-content: space-between;
-      margin-top: 16px;
     }
-  }
-}
-@media (max-width: 768px) {
-  .event-dialog{
-    max-width: 20rem;
-    margin: 0 auto;
   }
 }

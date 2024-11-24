@@ -1,6 +1,6 @@
 <div class="sidebar-container">
   @if(joinedEvents().length>0){
-  <mat-label class="sticky-title">Your Upcoming Events</mat-label>
+  <mat-label class="sticky-title">Your Events</mat-label>
   <app-event-list
     [events]="joinedEvents()"
     (openDetails)="onOpenDetails($event)"

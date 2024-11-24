@@ -1,16 +1,20 @@
-.event-form {
-  width:25rem;
+.event-dialog {
   display: flex;
   flex-direction: column;
-  top:50px;
-  left:auto;
-  margin-right:50px;
+  width:25rem;
   background: var(--transparent-white);
+  top:0;
+  left:auto;
   border-radius: 6px;
   border: none;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
   padding: 1rem;
   z-index: 23;
+
+.event-card{
+  box-shadow: none;
+  background-color: var(--transparent-white);
+
   h4 {
     text-align: center;
     margin-bottom: 1rem;
@@ -31,14 +35,18 @@
     gap: 1rem;
     margin-top: 1.5rem;
   }
+}
   .hidden{
-    display:none;
+    display:none !important;
   }
 }
 
-@media (max-width: 600px) {
-  .event-form {
-    width: 20rem;
-    background: white;
+@media (max-width: 768px) {
+  .event-dialog {
+    height: 100vh; /* Fallback */
+    width:100vw; /* Fallback */
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+ 
   }
 }
