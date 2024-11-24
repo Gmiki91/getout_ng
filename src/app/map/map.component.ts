@@ -223,7 +223,6 @@ export class MapComponent implements OnInit, OnDestroy {
         .getElementById('popupBtn')!
         .addEventListener('click', () => {
           this.eventService.toggleEventForm();
-          this.mapService.removeTemporaryMarker();
           document.getElementsByClassName('popup_w_btn')[0].remove();
         });
     }
