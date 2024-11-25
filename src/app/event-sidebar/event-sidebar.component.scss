@@ -3,13 +3,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom:10px; /* Ensure scroll only visible when necessary */
   overflow-y: auto; /* Ensure vertical scrolling with visible scrollbar */
   overflow-x: hidden;
-  scrollbar-width: thin; /*For Firefox, makes scrollbar visible but thin */
 
   .sticky-title {
     background:var(--accent-color);
+    color:white;
     width: 100%;
     position: sticky;
     top: 0; /* Stick at the top */

@@ -214,7 +214,7 @@ export class MapComponent implements OnInit, OnDestroy {
       })
         .setLngLat(lngLat)
         .setOffset(-50)
-        .setHTML(`<span style="font-weight: bold; font-size:16px; cursor:pointer" id='popupBtn'">Create event</span>`)
+        .setHTML(`<span style="font-weight: bold; font-size:16px; cursor:pointer; color:white" id='popupBtn'">Create event</span>`)
         .addTo(map);
 
       this.stylePopup(popup);

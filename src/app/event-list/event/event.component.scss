@@ -1,7 +1,6 @@
 .event {
   display: flex;
   width: 25rem;
-  height: 5rem;
   flex-direction: column;
   border-radius: 0;
   transition: background-color 0.3s ease;
@@ -10,6 +9,7 @@
   cursor: pointer;
   &:hover {
     background-color: var(--secondary-color);
+    color:white;
   }
 
   .header {
