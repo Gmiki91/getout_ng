@@ -231,10 +231,11 @@ export class MapComponent implements OnInit, OnDestroy {
     const popupContent = popup.getElement()!.querySelector('.mapboxgl-popup-content')as HTMLElement;
     const popupTip = popup.getElement()!.querySelector('.mapboxgl-popup-tip')as HTMLElement;
     if (popupContent  && popupTip) {
+      popupContent.style.animation = 'bounce-in 0.5s ease';
       popupTip.style.display ='none';
       popupContent.style.borderRadius = '16px';
       popupContent.style.opacity = '0';
-      popupContent.style.background = 'linear-gradient(135deg, rgb(207, 36, 75,0.5), rgba(232, 61, 88,0.5))';
+      popupContent.style.background = 'linear-gradient(135deg, rgb(207, 36, 75,0.9), rgba(232, 61, 88,0.9))';
       popupContent.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
    
       // Trigger the fade-in after a short delay (to allow rendering)
