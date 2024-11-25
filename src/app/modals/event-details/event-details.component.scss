@@ -11,6 +11,9 @@
 mat-card-header{
   display:flex;
   justify-content: space-between;
+ mat-card-title{
+  font-weight: bold;
+ }
   mat-icon{
     cursor:pointer;
   }
@@ -33,16 +36,8 @@ mat-card-header{
     button{
       font-weight: bold;
     }
-    .leave-btn,
-    .join-btn{
-      color:black;
-    }
     .comment-btn {
-     width: 100%;
-     color:black;
-     &:disabled{
-      color:grey;
-     }
+     width: 100%; 
     }
 
     .comment-box {

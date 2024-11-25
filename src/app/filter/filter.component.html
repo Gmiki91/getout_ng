@@ -10,13 +10,12 @@
       </button>
     </mat-menu>
     @if(sort ==='Time'){
-      <mat-icon [matMenuTriggerFor]="menu">watch_later</mat-icon><strong [matMenuTriggerFor]="menu">Time</strong>
+    <mat-icon [matMenuTriggerFor]="menu">watch_later</mat-icon><strong [matMenuTriggerFor]="menu">Time</strong>
     }@else{
-      <mat-icon [matMenuTriggerFor]="menu">place</mat-icon> <strong [matMenuTriggerFor]="menu">Distance</strong>
+    <mat-icon [matMenuTriggerFor]="menu">place</mat-icon> <strong [matMenuTriggerFor]="menu">Distance</strong>
     }
   </div>
   <div class="group">
-  <mat-slide-toggle (change)="toggleFullEvents()"><strong>Hide full events</strong></mat-slide-toggle>
+    <mat-slide-toggle checked (change)="toggleFullEvents()"><strong>Full events</strong></mat-slide-toggle>
+  </div>
 </div>
-</div>
-<mat-divider></mat-divider>

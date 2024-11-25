@@ -9,7 +9,7 @@
   background: var(--main-color);
   cursor: pointer;
   &:hover {
-    background-color: var(--accent-color);
+    background-color: var(--secondary-color);
   }
 
   .header {
@@ -34,6 +34,10 @@
     .last-item {
       justify-content: right;
     }
+  }
+
+  mat-card-title{
+    overflow-wrap:anywhere;
   }
 
   mat-card-footer {
@@ -63,7 +67,7 @@
 
 @media (max-width: 768px) {
   .event {
-    width: 15rem;
+    width: 12rem;
     height: auto;
     .event-info {
       display: flex;

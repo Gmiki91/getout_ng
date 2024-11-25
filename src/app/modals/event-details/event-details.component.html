@@ -27,7 +27,7 @@
 
       </mat-form-field>
 
-      <button class="comment-btn" [disabled]="!showCommentBtn" mat-button (click)="onAddKomment($event)">
+      <button class="comment-btn" [disabled]="!showCommentBtn" mat-raised-button (click)="onAddKomment($event)">
         Add comment
       </button>
 
@@ -46,16 +46,16 @@
 
     <mat-card-actions class="event-actions">
       @if(user().id === event().ownerId){
-      <button class="delete-btn" mat-button (click)="onDelete()">
+      <button class="delete-btn" mat-flat-button (click)="onDelete()">
         Delete event
       </button>
       }
       @if(joined){
-      <button class="leave-btn" mat-button (click)="onLeave()">
+      <button class="leave-btn" mat-flat-button (click)="onLeave()">
         Leave event
       </button>
       }@else if(event().max==0 || event().max>event().participants.length){
-      <button class="join-btn" mat-button (click)="onJoin()">
+      <button class="join-btn" mat-flat-button (click)="onJoin()">
         Join event
       </button>
       }

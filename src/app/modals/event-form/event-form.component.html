@@ -1,6 +1,6 @@
 <dialog open class="event-dialog" [class]="{'fit-height':locationSelectMode}">
   <mat-card class="event-card">
-    <h4 [class]="{'hidden':locationSelectMode}">New Event</h4>
+    <h4 [class]="{'hidden':locationSelectMode}">new event</h4>
     <form #form="ngForm" (ngSubmit)="onSubmit(form)">
 
       <div class="field-group" [class]="{'hidden':locationSelectMode}">
@@ -62,13 +62,13 @@
 
       @if(locationSelectMode){
       <div class="actions">
-        <button mat-button type="button" (click)="onClose()">Cancel</button>
-        <button mat-button type="button" (click)="toggleLocationSelect()" class="bold">Ok</button>
+        <button mat-raised-button type="button" (click)="onClose()">Cancel</button>
+        <button mat-flat-button type="button" (click)="toggleLocationSelect()" class="bold">Ok</button>
       </div>
       }@else{
       <div class="actions">
-        <button mat-button type="button" (click)="onClose()">Cancel</button>
-        <button mat-button type="submit" class="bold" [disabled]="form.invalid" >Create</button>
+        <button mat-raised-button type="button" (click)="onClose()">Cancel</button>
+        <button mat-flat-button type="submit" class="bold" [disabled]="form.invalid" >Create</button>
       </div>
       }
     </form>

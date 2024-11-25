@@ -2,14 +2,13 @@ import { Component, signal, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { EventsService } from '../services/events.service';
-import { MatDivider } from '@angular/material/divider';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-filter',
   standalone: true,
-  imports: [MatButton,MatIcon, MatDivider,MatMenuModule, MatSlideToggleModule],
+  imports: [MatButton,MatIcon,MatMenuModule, MatSlideToggleModule],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.scss'
 })
