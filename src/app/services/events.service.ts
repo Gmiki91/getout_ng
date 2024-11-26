@@ -168,7 +168,7 @@ export class EventsService {
     if (hide) {
       this._hiddenEvents = this._otherEvents().slice();
       this._otherEvents.update((events) =>
-        events.filter((e) => e.max > e.participants.length)
+        events.filter((e) => e.max==0 || e.max > e.participants.length)
       );
     } else {
       this._otherEvents.set(this._hiddenEvents);
