@@ -1,24 +1,26 @@
-import { Component, signal, inject } from '@angular/core';
-import { MatButton } from '@angular/material/button';
+import { Component, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { EventsService } from '../services/events.service';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-
+import {MatSliderModule} from '@angular/material/slider';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-filter',
   standalone: true,
-  imports: [MatButton,MatIcon,MatMenuModule, MatSlideToggleModule],
+  imports: [MatIcon,MatMenuModule, MatSlideToggleModule,MatSliderModule,FormsModule],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.scss'
 })
 export class FilterComponent {
-  hideFullEvents = signal<boolean>(false);
   //time ascending is the default sort by from the backend, so the first click has to change the direction
   ascendingTime = false; 
   ascendingDistance = true;
   eventService = inject(EventsService);
   sort:'Time' | 'Distance' = 'Time';
+  maxDistance = 10;
+  hideFullEvents = false
+  
   
   sortByDistance(): void {
     this.eventService.sortByDistance(this.ascendingDistance);
@@ -33,7 +35,11 @@ export class FilterComponent {
   }
 
   toggleFullEvents(): void {
-    this.hideFullEvents.set(!this.hideFullEvents());
-    this.eventService.hideFullEvents(this.hideFullEvents());
+    this.hideFullEvents = !this.hideFullEvents;
+    this.eventService.applyFilters(this.hideFullEvents,this.maxDistance);
+  }
+
+  onSliderDragEnd():void{
+   this.eventService.applyFilters(this.hideFullEvents,this.maxDistance)
   }
 }

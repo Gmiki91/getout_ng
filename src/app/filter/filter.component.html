@@ -1,21 +1,43 @@
 <div class="filters">
-  <div class="group">
-    <button class="sort-by-btn" mat-button [matMenuTriggerFor]="menu"><strong>Sort by: </strong></button>
-    <mat-menu #menu="matMenu">
-      <button class="distance-btn" mat-menu-item (click)="sortByDistance()">
-        <mat-icon>place</mat-icon> <strong>Distance</strong>
-      </button>
-      <button class="time-btn" mat-menu-item (click)="sortByTime()">
-        <mat-icon>watch_later</mat-icon><strong>Time</strong>
-      </button>
-    </mat-menu>
-    @if(sort ==='Time'){
-    <mat-icon [matMenuTriggerFor]="menu">watch_later</mat-icon><strong [matMenuTriggerFor]="menu">Time</strong>
-    }@else{
-    <mat-icon [matMenuTriggerFor]="menu">place</mat-icon> <strong [matMenuTriggerFor]="menu">Distance</strong>
-    }
+  <div class="row">
+    <div class="group">
+      <strong class="sort-by" [matMenuTriggerFor]="menu">Sort by:</strong>
+      <mat-menu #menu="matMenu">
+        <button class="distance-btn" mat-menu-item (click)="sortByDistance()">
+          <mat-icon>place</mat-icon> <strong>Distance</strong>
+        </button>
+        <button class="time-btn" mat-menu-item (click)="sortByTime()">
+          <mat-icon>watch_later</mat-icon><strong>Time</strong>
+        </button>
+      </mat-menu>
+      @if(sort ==='Time'){
+      <mat-icon [matMenuTriggerFor]="menu">watch_later</mat-icon
+      ><strong [matMenuTriggerFor]="menu">Time</strong>
+      }@else{
+      <mat-icon [matMenuTriggerFor]="menu">place</mat-icon>
+      <strong [matMenuTriggerFor]="menu">Distance</strong>
+      }
+    </div>
+    <div class="group">
+
+      <mat-slide-toggle
+      checked
+      (change)="toggleFullEvents()"
+      ></mat-slide-toggle>
+            <strong>Full events</strong>
+    </div>
   </div>
-  <div class="group">
-    <mat-slide-toggle checked (change)="toggleFullEvents()"><strong>Full events</strong></mat-slide-toggle>
+  <div class="row">
+    <div class="slider-group">
+      <mat-slider
+      min="1"
+      max="25"
+      step="1"
+      discrete
+      >
+      <input matSliderThumb (dragEnd)="onSliderDragEnd()" [(ngModel)]="maxDistance" />
+    </mat-slider>
+    <strong>Max distance: {{ maxDistance }} km </strong>
+    </div>
   </div>
 </div>

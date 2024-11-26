@@ -16,10 +16,11 @@ export class EventsService {
   private _selectedEvent = signal<Event>({} as Event);
   private _isEventFormOpen = signal<boolean>(false);
   private _areEventsLoaded = signal<boolean>(false);
-  private _hiddenEvents: Event[] = [];
   private _currentPosition = signal<LatLng>({ lat: 0, lng: 0 });
   private _userService = inject(UserService);
   private _user = this._userService.user;
+  private _unfilteredEvents: Event[] = [];
+
   currentPosition = this._currentPosition.asReadonly();
   yourEvents = this._yourEvents.asReadonly();
   otherEvents = this._otherEvents.asReadonly();
@@ -45,6 +46,7 @@ export class EventsService {
     const updatedOtherEvents = this.updateDistanceOfEvents(otherEvents);
     const updatedYourEvents = this.updateDistanceOfEvents(joinedEvents);
 
+    this._unfilteredEvents = updatedOtherEvents;
     this._otherEvents.set(updatedOtherEvents);
     this._yourEvents.set(updatedYourEvents);
   }
@@ -76,7 +78,7 @@ export class EventsService {
   }
 
   // distance param needed because it is not included in database
-  joinEvent(eventId: string,distance:number): void {
+  joinEvent(eventId: string, distance: number): void {
     this._http
       .post<Event>(`${this.bridgeUrl}/${this._user().id}/join/${eventId}`, null)
       .subscribe((event) => {
@@ -91,7 +93,7 @@ export class EventsService {
   }
 
   // distance param needed because it is not included in database
-  leaveEvent(eventId: string,distance:number): void {
+  leaveEvent(eventId: string, distance: number): void {
     this._http
       .delete<Event>(`${this.bridgeUrl}/${eventId}/participants/${this._user().id}`)
       .subscribe((event) => {
@@ -123,7 +125,6 @@ export class EventsService {
     //close eventform if open
     if(this._isEventFormOpen()){this._isEventFormOpen.set(false)}
   }
-
   
   // create new event form
   toggleEventForm():void{
@@ -164,15 +165,14 @@ export class EventsService {
     });
   }
 
-  hideFullEvents(hide: boolean): void {
-    if (hide) {
-      this._hiddenEvents = this._otherEvents().slice();
-      this._otherEvents.update((events) =>
-        events.filter((e) => e.max==0 || e.max > e.participants.length)
-      );
-    } else {
-      this._otherEvents.set(this._hiddenEvents);
-    }
+  applyFilters(hide: boolean, distance: number): void {
+    this._otherEvents.set(
+      this._unfilteredEvents.filter((event) => {
+        const passesFullFilter = !hide || (event.max == 0 || event.max > event.participants.length);
+        const passesDistanceFilter = event.distance <= distance * 1000;
+        return passesFullFilter && passesDistanceFilter;
+      })
+    );
   }
 
   isUserJoined(id: string): boolean {
