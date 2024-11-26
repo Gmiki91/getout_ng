@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
   isFormOpen = this.eventService.isEventFormOpen;
   areEventsLoaded = this.eventService.areEventsLoaded;
   showMap=false;
+  showFilter = false;
   showSideBar=true;
   constructor( @Inject(PLATFORM_ID) private _platformId: Object) {}
   ngOnInit(): void {  
@@ -41,4 +42,8 @@ export class AppComponent implements OnInit {
   toggleSideBar():void{
     this.showSideBar = !this.showSideBar;
   }
+  toggleFilter():void{
+    this.showFilter = !this.showFilter;
+  }
+
 }

@@ -106,9 +106,6 @@ export class MapComponent implements OnInit, OnDestroy {
       });
   }
 
-  onToggleEventForm(): void {
-    this.eventService.toggleEventForm()
-  }
   addListeners(map: Map) {
     let markerClicked = false;
     map.on('click', 'markers', (e: MapMouseEvent) => {

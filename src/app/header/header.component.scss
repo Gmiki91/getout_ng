@@ -4,19 +4,29 @@
   height: 30px;
   padding: 10px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-  background: linear-gradient(170deg,var(--secondary-color) 0%,var(--accent-color) 100%);
+  background: linear-gradient(
+    170deg,
+    var(--secondary-color) 0%,
+    var(--accent-color) 100%
+  );
 
-  button {
-    align-self: center;
+  .left {
+    display: flex;
   }
+  
   .username {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
       "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji",
       "Segoe UI Symbol", sans-serif;
-    font-size: 1.5rem; 
-    font-weight: bold; 
-    color:white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
   }
+}
+
+button {
+  align-self: center;
+  margin: 5px;
 }
 
 @media (max-width: 768px) {

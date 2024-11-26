@@ -1,4 +1,12 @@
 <div class="container">
-  <button mat-mini-fab  (click)="onToggleSideBar()"> <mat-icon>menu</mat-icon></button>
-  <span class="username">Hi, {{ username() }}</span>
+  <div class="left">
+    <button mat-mini-fab matTooltip="Toggle events" matTooltipShowDelay="1000"  (click)="onToggleSideBar()"> <mat-icon>menu</mat-icon></button>
+    <button mat-mini-fab matTooltip="Toggle filter" matTooltipShowDelay="1000"  (click)="onToggleFilter()"> <mat-icon>filter_alt</mat-icon></button>
+    <button mat-mini-fab matTooltip="Create new event" matTooltipShowDelay="1000" class="new-event-btn" (click)="onToggleEventForm()">
+      <mat-icon>add_circle</mat-icon>
+    </button>
+  </div>
+  <div class="right">
+    <span class="username">Hi, {{ username() }}</span>
+  </div>
 </div>

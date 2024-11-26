@@ -10,27 +10,72 @@
   .body {
     position: relative;
     flex-grow: 1;
-    .sidebar {
+
+    .event-sidebar{
       position: absolute;
       width: 25rem;
       transition: transform 0.3s ease;
       z-index: 20;
+
+      &.hidden {
+        transform: translateY(-100%);
+      }
+    }
+    .filter-container {
+      position: absolute;
+      width:20rem;
+      left: 26rem;
+      transition: transform 0.3s ease;
+      z-index: 10;
+      border-radius: 15px;
+
+      &.hidden {
+        transform: translatey(-100%);
+      }
     }
     app-map {
       flex-grow: 1;
       height: 100%;
     }
-    .hidden {
-      transform: translateX(-100%);
+    app-event-form{
+      transition: transform 0.3s ease;
+      transform: translatey(-100%);
+    
     }
+    app-event-details{
+      transition: transform 0.3s ease;
+      &.hidden {
+        transform: translatey(-100%);
+      }
+    }
+   
   }
 }
 @media (max-width: 768px) {
-  .container {
+.container{
     .body {
-      .sidebar {
+      .event-sidebar {
         width: 12rem;
+      }  
+      .filter-container{
+        left:auto;
+        right:0;
+        width: 11rem;
       }
     }
   }
 }
+@media (max-width: 360px) {
+  .container{
+      .body {
+        .event-sidebar {
+          width: 12rem;
+        }  
+        .filter-container{
+          left:auto;
+          right:0;
+          width: 9rem;
+        }
+      }
+    }
+  }
