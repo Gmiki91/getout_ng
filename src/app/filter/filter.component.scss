@@ -1,22 +1,24 @@
 .filters {
   padding: 5px;
   background: var(--main-color);
-
-  .row{
+  border-radius: 15px;
+  .row {
     display: flex;
 
     .group {
       display: flex;
       flex: 1;
       align-items: center;
-   
-      gap:5px;
-      strong,
-      mat-icon {
-        cursor: pointer;
+
+      gap: 5px;
+      .icon-group {
+        display: flex;
+        mat-icon {
+          cursor: pointer;
+        }
       }
     }
-    .slider-group{
+    .slider-group {
       display: flex;
       flex-direction: column;
       width: 100%;
@@ -25,9 +27,9 @@
   }
 }
 @media (max-width: 768px) {
-  .row{
+  .row {
     flex-direction: column;
-    row-gap:5px;
+    row-gap: 5px;
   }
   .sort-by {
     display: none;
