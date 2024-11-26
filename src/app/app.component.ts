@@ -7,6 +7,7 @@ import { EventsService } from './services/events.service';
 import { EventFormComponent } from './modals/event-form/event-form.component';
 import { EventDetailsComponent } from './modals/event-details/event-details.component';
 import { FilterComponent } from './filter/filter.component';
+import { dumbParent } from './utils/utils';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ import { FilterComponent } from './filter/filter.component';
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  animations:[dumbParent]
 })
 export class AppComponent implements OnInit {
   title = 'getout_ng';

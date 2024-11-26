@@ -1,4 +1,4 @@
-<dialog open class="event-dialog" [class]="{'fit-height':locationSelectMode}">
+<dialog open class="event-dialog" [class]="{'fit-height':locationSelectMode}" @slideDown>
   <mat-card class="event-card">
     <h4 [class]="{'hidden':locationSelectMode}">new event</h4>
     <form #form="ngForm" (ngSubmit)="onSubmit(form)">

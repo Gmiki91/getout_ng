@@ -18,6 +18,7 @@ import { EventsService } from '../../services/events.service';
 import { MapService } from '../../services/map.service';
 import {TIMES} from '../../time'
 import { MatCard } from '@angular/material/card';
+import { slideDown } from '../../utils/utils';
 @Component({
   selector: 'app-event-form',
   standalone: true,
@@ -35,6 +36,7 @@ import { MatCard } from '@angular/material/card';
   ],
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.scss',
+  animations:[slideDown]
 })
 export class EventFormComponent implements OnInit, OnDestroy {
   @ViewChild('locationInput')

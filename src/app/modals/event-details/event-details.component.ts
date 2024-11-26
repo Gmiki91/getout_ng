@@ -23,6 +23,8 @@ import { MapService } from '../../services/map.service';
 import { UserService } from '../../services/user.service';
 import User from '../../models/user.model';
 import { MatIcon } from '@angular/material/icon';
+import { slideDown } from '../../utils/utils';
+
 @Component({
   selector: 'app-event-details',
   standalone: true,
@@ -41,6 +43,7 @@ import { MatIcon } from '@angular/material/icon';
   ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',
+  animations:[slideDown] 
 })
 export class EventDetailsComponent implements OnInit {
   @ViewChild('komment')
