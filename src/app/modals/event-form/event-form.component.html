@@ -6,7 +6,7 @@
   <mat-card class="event-card">
     <mat-card-header>
       <mat-card-title [class]="{ hidden: locationSelectMode }">new event</mat-card-title>
-      <mat-icon (click)="onClose()">cancel</mat-icon>
+      <button mat-icon-button  (click)="onClose()"><mat-icon>cancel</mat-icon></button>
     </mat-card-header>
     <form #form="ngForm" (ngSubmit)="onSubmit(form)">
       <div class="field-group" [class]="{ hidden: locationSelectMode }">
@@ -24,7 +24,7 @@
       </div>
       <div class="field-group">
         <mat-form-field appearance="outline">
-          <mat-label for="location">Choose a location</mat-label>
+          <mat-label for="location">Location</mat-label>
           <input
             readonly
             #locationInput
@@ -110,9 +110,9 @@
       >
         {{ isEndTime ? "Remove end date and time" : "Add end date and time" }}
       </div>
-      <mat-label>Recurring event?</mat-label>
+      <mat-label>Recurring event</mat-label>
       <div class="field-group" [class]="{ hidden: locationSelectMode }">
-      <mat-radio-group name="recurring" ngModel #recurring="ngModel">
+      <mat-radio-group class="radio-group" name="recurring" ngModel #recurring="ngModel">
         <mat-radio-button value="never">Nope</mat-radio-button>
         <mat-radio-button value="daily" [disabled] ="durationInDays>1">Daily</mat-radio-button>
         <mat-radio-button value="weekly" [disabled] ="durationInDays>7">Weekly</mat-radio-button>

@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatButton } from '@angular/material/button';
+import { MatButton,MatIconButton } from '@angular/material/button';
 import { Subject, takeUntil } from 'rxjs';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { EventsService } from '../../services/events.service';
@@ -32,6 +32,7 @@ import { Recurrence } from '../../models/event.model';
     MatFormField,
     MatInputModule,
     MatButton,
+    MatIconButton,
     MatLabel,
     MatError,
     MatDatepickerModule,

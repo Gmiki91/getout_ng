@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Event } from '../../models/event.model';
 import { DatePipe } from '@angular/common';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { KommentService } from '../../services/comment.service';
 import { NewKommentData } from '../../models/komment.model';
 import { TextFieldModule } from '@angular/cdk/text-field';
@@ -22,8 +22,8 @@ import { EventsService } from '../../services/events.service';
 import { MapService } from '../../services/map.service';
 import { UserService } from '../../services/user.service';
 import User from '../../models/user.model';
-import { MatIcon } from '@angular/material/icon';
 import { slideDown } from '../../utils/utils';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-event-details',
@@ -37,9 +37,11 @@ import { slideDown } from '../../utils/utils';
     MatFormField,
     MatList,
     MatInput,
-    MatIcon,
+    MatButton,
     MatListItem,
-    TimeTextPipe
+    TimeTextPipe,
+    MatIconButton,
+    MatIcon
   ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',
