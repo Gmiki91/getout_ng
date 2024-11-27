@@ -21,6 +21,7 @@ import { MatCardModule } from '@angular/material/card';
 import { slideDown } from '../../utils/utils';
 import { MatIcon } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { Recurrence } from '../../models/event.model';
 
 @Component({
@@ -40,6 +41,7 @@ import { Recurrence } from '../../models/event.model';
     MatCardModule,
     MatIcon,
     MatRadioModule,
+    MatCheckboxModule
   ],
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.scss',
@@ -59,9 +61,10 @@ export class EventFormComponent implements OnInit, OnDestroy {
   startDate = new Date();
   endingDate = new Date();
   durationInDays = 0;
+  repeats =false
   unsubscribe$ = new Subject<void>();
-  private eventsService: EventsService = inject(EventsService);
-  private mapService: MapService = inject(MapService);
+  eventsService: EventsService = inject(EventsService);
+  mapService: MapService = inject(MapService);
   markerAddress = this.mapService.markerAddress; // stores address selected from the map
   markerPosition = this.mapService.markerPosition; // stores address selected from the map
 
@@ -177,7 +180,7 @@ export class EventFormComponent implements OnInit, OnDestroy {
     if (
       (durationInDays > 1 && recurring == 'daily') ||
       (durationInDays > 7 && recurring == 'weekly') ||
-      (durationInDays > 28 && recurring == 'monthly')
+      (durationInDays > 28 && recurring == 'monthly') || !recurring
     ) {
       return 'never';
     }

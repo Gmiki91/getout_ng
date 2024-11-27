@@ -110,15 +110,7 @@
       >
         {{ isEndTime ? "Remove end date and time" : "Add end date and time" }}
       </div>
-      <mat-label>Recurring event</mat-label>
-      <div class="field-group" [class]="{ hidden: locationSelectMode }">
-      <mat-radio-group class="radio-group" name="recurring" ngModel #recurring="ngModel">
-        <mat-radio-button value="never">Nope</mat-radio-button>
-        <mat-radio-button value="daily" [disabled] ="durationInDays>1">Daily</mat-radio-button>
-        <mat-radio-button value="weekly" [disabled] ="durationInDays>7">Weekly</mat-radio-button>
-        <mat-radio-button value="monthly" [disabled] ="durationInDays>28">Monthly</mat-radio-button>
-      </mat-radio-group>
-    </div>
+
       <div class="field-group" [class]="{ hidden: locationSelectMode }">
         <mat-form-field appearance="outline">
           <mat-label for="min">Minimum People</mat-label>
@@ -160,7 +152,28 @@
         <textarea matInput id="info" name="info" ngModel></textarea>
       </mat-form-field>
 
-      @if(locationSelectMode){
+      <mat-checkbox [(ngModel)]="repeats" name="isRepeat">Repeats</mat-checkbox>
+      @if(repeats){
+      <div class="field-group" [class]="{ hidden: locationSelectMode }">
+        <mat-radio-group
+          class="radio-group"
+          name="recurring"
+          ngModel
+          #recurring="ngModel"
+        >
+
+          <mat-radio-button value="daily" [disabled]="durationInDays > 1"
+            >Daily</mat-radio-button
+          >
+          <mat-radio-button value="weekly" [disabled]="durationInDays > 7"
+            >Weekly</mat-radio-button
+          >
+          <mat-radio-button value="monthly" [disabled]="durationInDays > 28"
+            >Monthly</mat-radio-button
+          >
+        </mat-radio-group>
+      </div>
+      } @if(locationSelectMode){
       <mat-card-actions class="actions">
         <button mat-raised-button type="button" (click)="onClose()">
           Cancel
