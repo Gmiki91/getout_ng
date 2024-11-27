@@ -4,6 +4,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { EventsService } from '../services/events.service';
 import { MatTooltip } from '@angular/material/tooltip';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -26,6 +27,9 @@ export class HeaderComponent {
     this.toggleFilter.emit();
   }
   onToggleEventForm(): void {
-    this.eventService.toggleEventForm()
+    this.eventService.toggleEventForm();
+  }
+  onRefresh():void{
+    this.eventService.getEvents().pipe(take(1)).subscribe();
   }
 }
