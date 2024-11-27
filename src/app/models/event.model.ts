@@ -11,6 +11,7 @@ export type Event={
     latLng:LatLng,
     distance:number,
     time:string,
+    endTime:string,
     participants:User[];
     min:number;
     max:number;
@@ -24,6 +25,7 @@ export type NewEventData={
     location:string,
     latLng:{lat:number,lng:number},
     time:string,
+    endTime:string,
     min:number;
     max?:number;
     info?:string;
