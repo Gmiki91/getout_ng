@@ -9,8 +9,11 @@
       display: flex;
       flex: 1;
       align-items: center;
-
       gap: 5px;
+
+      .sort-by{
+        cursor: pointer;
+      }
       .icon-group {
         display: flex;
         mat-icon {
@@ -30,8 +33,5 @@
   .row {
     flex-direction: column;
     row-gap: 5px;
-  }
-  .sort-by {
-    display: none;
   }
 }

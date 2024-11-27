@@ -58,23 +58,18 @@
         width: 12rem;
       }  
       .filter-container{
-        left:auto;
-        right:0;
         width: 11rem;
+        left:12rem;
       }
     }
   }
 }
-@media (max-width: 360px) {
+@media (max-width: 400px) {
   .container{
       .body {
-        .event-sidebar {
-          width: 12rem;
-        }  
         .filter-container{
-          left:auto;
-          right:0;
           width: 9rem;
+        
         }
       }
     }

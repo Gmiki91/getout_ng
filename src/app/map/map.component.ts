@@ -7,11 +7,10 @@ import { environment } from '../../environments/environment';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTooltip } from '@angular/material/tooltip';
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatTooltip],
+  imports: [MatIconModule, MatButtonModule],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
@@ -53,7 +52,7 @@ export class MapComponent implements OnInit, OnDestroy {
     const map = new mapboxgl.Map({
       accessToken: environment.mapbox.accessToken,
       container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v11',
+      style: 'mapbox://styles/mapbox/streets-v12',
       center: coords
         ? { lat: coords.latitude, lon: coords.longitude }
         : { lat: 0, lon: 0 },
