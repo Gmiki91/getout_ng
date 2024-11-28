@@ -3,15 +3,20 @@
   <mat-card class="event-card">
     <mat-card-header>
       <mat-card-title>{{ event().title }}</mat-card-title>
+      @if(event().recurring !='never'){
+        <mat-card-subtitle>{{event().recurring}} event</mat-card-subtitle>
+      }
       <button mat-icon-button  (click)="closeDialog()"><mat-icon>cancel</mat-icon></button>
     </mat-card-header>
-
+    <br>
     <mat-card-content>
       <div class="event-details">
-        <div><strong>Starts:</strong> {{ event().time | date:"MMM dd, hh:mm a"  }}</div>
-        @if(event().endTime !==event().time){
-          <div><strong>Ends:</strong> {{ event().endTime | date:"MMM dd, hh:mm a"  }}</div>
-        }
+        <div class="group">
+          <div><strong>Starts:</strong> {{ event().time | date:"MMM dd, hh:mm a"  }}</div>
+          @if(event().endTime !==event().time){
+            <div><strong>Ends:</strong> {{ event().endTime | date:"MMM dd, hh:mm a"  }}</div>
+          }
+        </div>
         <div><strong>Location:</strong> {{ event().location }}</div>
         <div>
           <strong>Participants:</strong> {{ event().participants ?event().participants.length:"unknown"}}{{event().max>0? "/"+event().max : ""}}
@@ -27,7 +32,6 @@
         }
       </div>
 
-      <mat-divider></mat-divider>
       <mat-form-field appearance="outline" class="comment-box">
         <textarea matInput #komment class="comment-area" ngModel (focus)="onShowCommentBtn(true)"
           (blur)="onShowCommentBtn(false)" cdkAutosizeMinRows="5"></textarea>

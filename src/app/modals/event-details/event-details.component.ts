@@ -12,7 +12,6 @@ import { MatButton, MatIconButton } from '@angular/material/button';
 import { KommentService } from '../../services/comment.service';
 import { NewKommentData } from '../../models/komment.model';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { MatDivider } from '@angular/material/divider';
 import { MatFormField } from '@angular/material/form-field';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatInput } from '@angular/material/input';
@@ -35,7 +34,6 @@ import { MatTooltip } from '@angular/material/tooltip';
     TextFieldModule,
     MatButton,
     MatCardModule,
-    MatDivider,
     MatFormField,
     MatList,
     MatInput,
@@ -61,7 +59,7 @@ export class EventDetailsComponent implements OnInit {
   joined = this.eventService.isUserJoined(this.event().id);
   komments = this.kommentService.comments;
   showCommentBtn = false;
-  user= signal<User>({ name: '???', id: '0' });
+  user= signal<User>(MockUser);
 
   ngOnInit(): void {
     this.user = this.userService.user;
