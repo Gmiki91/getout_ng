@@ -8,6 +8,7 @@ import { EventFormComponent } from './modals/event-form/event-form.component';
 import { EventDetailsComponent } from './modals/event-details/event-details.component';
 import { FilterComponent } from './filter/filter.component';
 import { dumbParent } from './utils/utils';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -34,11 +35,12 @@ export class AppComponent implements OnInit {
   showMap=false;
   showFilter = false;
   showSideBar=true;
-  constructor( @Inject(PLATFORM_ID) private _platformId: Object) {}
-  ngOnInit(): void {  
-    this.userService.checkUser();
-    if (this._platformId === 'browser') {
-    this.showMap=true;
+  constructor( @Inject(PLATFORM_ID) private platformId: Object) {}
+
+  async ngOnInit(): Promise<void> {
+    if (isPlatformBrowser(this.platformId)) {
+      await this.userService.initializeUser();
+      this.showMap=true;
     }
   }
   toggleSideBar():void{
