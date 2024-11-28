@@ -3,6 +3,7 @@ export type Komment={
     text:string;
     timestamp:string;
     userName:string;
+    userAvatarUrl:string;
 }
 export type NewKommentData={
     text:string;

@@ -1,4 +1,4 @@
-import { Component, inject, computed, output } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,7 +17,7 @@ import { MatMenuModule } from '@angular/material/menu';
 export class HeaderComponent {
   userService = inject(UserService);
   eventService = inject(EventsService);
-  username = computed(()=>this.userService.user().name);
+  user = this.userService.user;
   toggleSideBar=output();
   toggleFilter=output();
 

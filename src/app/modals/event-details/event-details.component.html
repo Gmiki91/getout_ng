@@ -18,7 +18,7 @@
           <br>
           <span>
           @for(user of event().participants; track user.id; let last = $last){
-            {{user.name}}@if(!last){, }
+            <img class="avatar" [src]="user.avatarUrl" alt="no img :*("  [matTooltip]="user.name" matTooltipShowDelay="500"/> 
           }
         </span>
         </div>
@@ -39,10 +39,10 @@
       <mat-list class="comment-list">
         @for(komment of komments(); track komment.id){
         <mat-list-item class="comment-item">
-          <strong>{{ komment.userName }}</strong>
-
-          <i>{{ komment.timestamp | timeText : "comment" }}</i>
-          <p class="comment-text">{{ komment.text }}</p>
+            <img class="avatar" [src]="komment.userAvatarUrl" alt="no img :*("/>
+            <strong>{{ komment.userName }}</strong>
+            <i>{{ komment.timestamp | timeText : "comment" }}</i>
+            <p class="comment-text">{{ komment.text }}</p>
         </mat-list-item>
         }
       </mat-list>

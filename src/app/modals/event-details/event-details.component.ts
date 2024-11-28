@@ -24,6 +24,8 @@ import { UserService } from '../../services/user.service';
 import User from '../../models/user.model';
 import { slideDown } from '../../utils/utils';
 import { MatIcon } from '@angular/material/icon';
+import { MockUser } from '../../utils/mock.factory';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-event-details',
@@ -41,7 +43,8 @@ import { MatIcon } from '@angular/material/icon';
     MatListItem,
     TimeTextPipe,
     MatIconButton,
-    MatIcon
+    MatIcon,
+    MatTooltip
   ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',

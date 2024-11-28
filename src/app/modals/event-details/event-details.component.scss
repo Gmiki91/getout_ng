@@ -40,6 +40,17 @@ mat-card-header{
       width: 100%;
     }
 
+    .group {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .avatar{
+      width:25px;
+      height:25px;
+      border-radius: 20px;
+      margin-right:5px;
+    }
     .comment-list {
       overflow: auto;
       max-height: 250px;
@@ -49,8 +60,14 @@ mat-card-header{
         color: black;
 
         i{
-          font-size:10px;
-          float:right;
+          font-size: 12px;
+          float: right;
+        }
+
+        .avatar{
+          width:20px;
+          height:20px;
+          border-radius: 10px;
         }
 
         .comment-text {

@@ -8,7 +8,10 @@
     </button>
   </div>
   <div class="right">
-    <button mat-raised-button class="username" [matMenuTriggerFor]="menu">Hi, {{ username() }}</button>
+    <span class="username">
+      Hi {{ user().name }}
+    </span>
+    <img  class="avatar" [src]="user().avatarUrl" alt="no img :*("  [matMenuTriggerFor]="menu" matTooltip="That's you!" matTooltipShowDelay="500"/>
     <mat-menu class="menu" #menu="matMenu" >
       <div mat-menu-item>
         <mat-icon>login</mat-icon> <strong>Sign in</strong>
