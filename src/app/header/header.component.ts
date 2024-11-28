@@ -5,10 +5,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { EventsService } from '../services/events.service';
 import { MatTooltip } from '@angular/material/tooltip';
 import { take } from 'rxjs';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-header',
-  imports:[MatIcon,MatButtonModule,MatTooltip],
+  imports:[MatIcon,MatButtonModule,MatTooltip,MatMenuModule],
   standalone: true,
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'

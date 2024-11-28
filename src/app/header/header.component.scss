@@ -1,6 +1,7 @@
 .container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   height: 30px;
   padding: 10px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
@@ -20,7 +21,6 @@
       "Segoe UI Symbol", sans-serif;
     font-size: 1.5rem;
     font-weight: bold;
-    color: white;
   }
 }
 

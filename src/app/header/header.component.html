@@ -8,6 +8,14 @@
     </button>
   </div>
   <div class="right">
-    <span class="username">Hi, {{ username() }}</span>
+    <button mat-raised-button class="username" [matMenuTriggerFor]="menu">Hi, {{ username() }}</button>
+    <mat-menu class="menu" #menu="matMenu" >
+      <div mat-menu-item>
+        <mat-icon>login</mat-icon> <strong>Sign in</strong>
+      </div>
+      <div mat-menu-item>
+     <mat-icon>person_add</mat-icon> <strong >Sign up</strong>
+    </div>
+    </mat-menu>
   </div>
 </div>
