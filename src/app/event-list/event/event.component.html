@@ -5,11 +5,11 @@
     </mat-card-title>
   </mat-card-header>
     <div class="event-info">
-      <div class="info-item"  [matTooltip]="event().time|date : 'medium'" matTooltipShowDelay="1000">
+      <div class="info-item"  [matTooltip]="event().time|date : 'medium'" matTooltipShowDelay="500">
         <mat-icon >timelapse</mat-icon>
         <span>{{event().time | timeText: 'event'}}</span>
       </div>
-      <div class="info-item"   [matTooltip]="event().location"  matTooltipShowDelay="1000">
+      <div class="info-item"   [matTooltip]="event().location"  matTooltipShowDelay="500">
         <mat-icon
         class="find-marker-icon"
         (click)="onFindMarker($event)"
@@ -17,7 +17,7 @@
         ></mat-icon>
         <span>{{event().distance | distanceFormat}}</span>
       </div>
-      <div class="info-item last-item"  matTooltip="Participation" matTooltipShowDelay="1000">
+      <div class="info-item last-item"  matTooltip="Participation" matTooltipShowDelay="500">
         <mat-icon>people</mat-icon>
         <span>{{event().participants.length}}{{event().max>0? "/"+event().max : ""}}</span>
       </div>

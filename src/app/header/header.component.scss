@@ -37,7 +37,7 @@
 
 button {
   align-self: center;
-  margin: 5px;
+  color:white
 }
 
 @media (max-width: 768px) {
@@ -45,9 +45,8 @@ button {
     .username {
       font-size: 1rem;
     }
-    button{
-      transform: scale(0.8);
-      margin:0;
+    .avatar{
+      margin-left: 0
     }
   }
 }
