@@ -11,15 +11,19 @@
     <br>
     <mat-card-content>
       <div class="event-details">
-        <div class="group">
+        <div class="time">
           <div><strong>Starts:</strong> {{ event().time | date:"MMM dd, hh:mm a"  }}</div>
           @if(event().endTime !==event().time){
             <div><strong>Ends:</strong> {{ event().endTime | date:"MMM dd, hh:mm a"  }}</div>
           }
         </div>
-        <div><strong>Location:</strong> {{ event().location }}</div>
-        <div>
+        <div class="location"><strong>Location:</strong> {{ event().location }}</div>
+        <div class="clickable-text" (click)="toggleLocationPopup()">
+          wrong location?
+        </div>
+        <div class="participants">
           <strong>Participants:</strong> {{ event().participants ?event().participants.length:"unknown"}}{{event().max>0? "/"+event().max : ""}}
+      
           <br>
           <span>
           @for(user of event().participants; track user.id; let last = $last){
@@ -28,7 +32,7 @@
         </span>
         </div>
         @if(event().info){
-        <div><strong>Info:</strong> {{ event().info }}</div>
+        <div class="additional-info"><strong>Info:</strong> {{ event().info }}</div>
         }
       </div>
 
@@ -71,3 +75,6 @@
     </mat-card-actions>
   </mat-card>
 </dialog>
+@if(showLocationInfo){
+  <app-location-info  (close)="toggleLocationPopup()"></app-location-info>
+}

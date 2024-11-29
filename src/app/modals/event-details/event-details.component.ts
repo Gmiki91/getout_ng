@@ -25,11 +25,13 @@ import { slideDown } from '../../utils/utils';
 import { MatIcon } from '@angular/material/icon';
 import { MockUser } from '../../utils/mock.factory';
 import { MatTooltip } from '@angular/material/tooltip';
+import { LocationInfoComponent } from '../location-info/location-info.component';
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
   imports: [
+    LocationInfoComponent,
     DatePipe,
     TextFieldModule,
     MatButton,
@@ -59,6 +61,7 @@ export class EventDetailsComponent implements OnInit {
   joined = this.eventService.isUserJoined(this.event().id);
   komments = this.kommentService.comments;
   showCommentBtn = false;
+  showLocationInfo = false;
   user= signal<User>(MockUser);
 
   ngOnInit(): void {
@@ -69,7 +72,6 @@ export class EventDetailsComponent implements OnInit {
   onJoin(): void {
     if(this.event().max>this.event().participants.length || this.event().max==0)
     this.eventService.joinEvent(this.event().id,this.event().distance);
-    this.closeDialog();
   }
 
   onLeave(): void {
@@ -107,6 +109,10 @@ export class EventDetailsComponent implements OnInit {
     if (this.kommentRef.nativeElement.value.trim().length <= 0) {
         this.showCommentBtn = inFocus;
     }
+  }
+
+  toggleLocationPopup(){
+    this.showLocationInfo=!this.showLocationInfo;
   }
 
 }

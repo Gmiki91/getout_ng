@@ -23,6 +23,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { Recurrence } from '../../models/event.model';
+import { LocationInfoComponent } from "../location-info/location-info.component";
 
 @Component({
   selector: 'app-event-form',
@@ -41,8 +42,9 @@ import { Recurrence } from '../../models/event.model';
     MatCardModule,
     MatIcon,
     MatRadioModule,
-    MatCheckboxModule
-  ],
+    MatCheckboxModule,
+    LocationInfoComponent
+],
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.scss',
   animations: [slideDown],
@@ -51,6 +53,7 @@ export class EventFormComponent implements OnInit, OnDestroy {
   @ViewChild('locationInput')
   location!: ElementRef;
   locationSelectMode = false;
+  showLocationInfo = false;
   minPeople = 2;
   times = TIMES;
   endTimes: string[] = [];
@@ -93,6 +96,10 @@ export class EventFormComponent implements OnInit, OnDestroy {
 
   toogleEndTime() {
     this.isEndTime = !this.isEndTime;
+  }
+
+  toggleLocationPopup(){
+    this.showLocationInfo=!this.showLocationInfo;
   }
 
   checkEndTimeHours() {

@@ -36,11 +36,20 @@ mat-card-header{
       font-weight: bold;
     }
 
+    .clickable-text{
+      text-align: right;
+      font-size: 10px;
+      height: 0;
+      cursor: pointer;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
     .comment-box {
       width: 100%;
     }
 
-    .group {
+    .time {
       display: flex;
       justify-content: space-between;
     }

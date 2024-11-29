@@ -18,9 +18,19 @@
     .bold {
       font-weight: bold;
     }
-    .toggle-end-btn{
+    .clickable-text{
       margin-top:-20px;
-      text-align: right;
+      font-size:10px;
+      width: 85px;
+      height: 0;
+      float:right;
+      cursor: pointer;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+    .end-date-trigger{
+      margin:-20px 0 10px;
       cursor: pointer;
       &:hover{
         text-decoration: underline;
