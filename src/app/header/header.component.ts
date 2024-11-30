@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, output } from '@angular/core';
+import { Component, computed, inject, output } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,7 +23,7 @@ import { TimeTextPipe } from '../pipes/time-text.pipe';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   userService = inject(UserService);
   eventService = inject(EventsService);
   user = this.userService.user;
@@ -31,7 +31,6 @@ export class HeaderComponent implements OnInit {
   toggleSideBar = output();
   toggleFilter = output();
 
-  ngOnInit() {}
   onToggleSideBar(): void {
     this.toggleSideBar.emit();
   }

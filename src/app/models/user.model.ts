@@ -1,12 +1,8 @@
-export type Notification={
-    eventId:string;
-updateInfo:string;
-updateStamp:string;
-read:boolean;
-}
+import { MyNotification } from "./my-notification.model";
+
 export default interface User{
     id:string;
     name:string;
     avatarUrl:string;
-    notifications:Notification[];
+    notifications:MyNotification[];
 }

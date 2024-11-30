@@ -1,5 +1,6 @@
 import { Event } from "../models/event.model";
-import User, { Notification } from "../models/user.model";
+import { MyNotification } from "../models/my-notification.model";
+import User from "../models/user.model";
 const defaultMockEvent: Event = {
     id: '1',
     title: 'Event 1',
@@ -28,5 +29,5 @@ export const MockUser: User={
   id: "1",
   name: "???",
   avatarUrl: "https://getoutimages.blob.core.windows.net/avatars/1.png",
-  notifications:[]as Notification[]
+  notifications:[]as MyNotification[]
 }
