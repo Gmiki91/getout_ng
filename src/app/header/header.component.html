@@ -8,11 +8,15 @@
     </button>
   </div>
   <div class="right">
-    <button mat-icon-button matTooltip="Events" matTooltipShowDelay="500"  [matMenuTriggerFor]="notifications"> <mat-icon>notifications</mat-icon></button>
-    <mat-menu class="menu" #notifications="matMenu" >
-      <div>
-       <strong>Nothing happened</strong>
-      </div>
+    <button [matBadge]="unseenNotifications()" [matBadgeHidden]="unseenNotifications()==0"  
+    mat-icon-button matTooltip="Events" matTooltipShowDelay="500"  [matMenuTriggerFor]="notifications" (menuOpened)="menuOpened()"> <mat-icon>notifications</mat-icon></button>
+    <mat-menu   #notifications="matMenu" >
+     @for(notific of user().notifications;track $index){
+      <div style="cursor:pointer" (click)="onToggleEventDetails(notific.eventId)">
+       <span [style]="{'font-weight':notific.read ? 'normal' : 'bold'}">{{notific.updateInfo}}</span>
+       <i>{{notific.updateStamp| timeText : "comment"}}</i>
+      </div>}
+      
     </mat-menu>
     <span class="username">
       Hi {{ user().name }}

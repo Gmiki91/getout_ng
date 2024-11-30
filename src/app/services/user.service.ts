@@ -35,6 +35,10 @@ export class UserService {
     });
   }
 
+  readNotifications(){
+    this.http.put<User>(`${this.url}/clearNotifications/${this.user().id}`,{}).subscribe(user=>this.setUser(user));
+  }
+
   private setUser(user: User): void {
     if (user && isPlatformBrowser(this.platformId)) {
       this.user.set(user);
