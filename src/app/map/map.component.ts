@@ -1,8 +1,7 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { MapService } from '../services/map.service';
 import { EventsService } from '../services/events.service';
 import mapboxgl, { GeolocateControl, LngLat, Map, MapMouseEvent } from 'mapbox-gl';
-import { Subject, takeUntil } from 'rxjs';
 import { environment } from '../../environments/environment';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,10 +13,10 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnInit, OnDestroy {
+export class MapComponent implements OnInit {
   private mapService = inject(MapService);
   private eventService = inject(EventsService);
-  unsubscribe$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
   viewbox = '';
 
   //Get current location
@@ -42,10 +41,6 @@ export class MapComponent implements OnInit, OnDestroy {
         this.initMap();
       }
     );
-  }
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
   initMap(coords?: GeolocationCoordinates): void {
@@ -94,15 +89,15 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   initMarkers(): void {
-    this.eventService
+    const sub = this.eventService
       .getEvents()
-      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((events) => {
         const allEvents = events.joinedEvents.concat(events.otherEvents);
         allEvents.forEach((event) => {
           this.mapService.addMarker(event);
         });
       });
+      this.destroyRef.onDestroy(()=>sub.unsubscribe())
   }
 
   addListeners(map: Map) {

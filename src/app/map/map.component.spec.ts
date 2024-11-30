@@ -49,15 +49,15 @@ describe('MapComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('ngOnDestroy', () => {
-    it('should complete unsubscribe$ on destroy', () => {
-      const unsubscribeCompleteSpy = jest.spyOn(component.unsubscribe$, 'complete');
+  // describe('ngOnDestroy', () => {
+  //   it('should complete unsubscribe$ on destroy', () => {
+  //     const unsubscribeCompleteSpy = jest.spyOn(component.unsubscribe$, 'complete');
 
-      component.ngOnDestroy();
+  //     component.ngOnDestroy();
 
-      expect(unsubscribeCompleteSpy).toHaveBeenCalled();
-    });
-  });
+  //     expect(unsubscribeCompleteSpy).toHaveBeenCalled();
+  //   });
+  // });
 
 });
 

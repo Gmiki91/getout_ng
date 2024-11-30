@@ -2,9 +2,9 @@ import {
   Component,
   ViewChild,
   ElementRef,
-  OnDestroy,
+  DestroyRef,
   inject,
-  OnInit,
+  OnInit
 } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -12,7 +12,6 @@ import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButton,MatIconButton } from '@angular/material/button';
-import { Subject, takeUntil } from 'rxjs';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { EventsService } from '../../services/events.service';
 import { MapService } from '../../services/map.service';
@@ -49,7 +48,7 @@ import { LocationInfoComponent } from "../location-info/location-info.component"
   styleUrl: './event-form.component.scss',
   animations: [slideDown],
 })
-export class EventFormComponent implements OnInit, OnDestroy {
+export class EventFormComponent implements OnInit {
   @ViewChild('locationInput')
   location!: ElementRef;
   locationSelectMode = false;
@@ -65,7 +64,7 @@ export class EventFormComponent implements OnInit, OnDestroy {
   endingDate = new Date();
   durationInDays = 0;
   repeats =false
-  unsubscribe$ = new Subject<void>();
+  destroyRef = inject(DestroyRef);
   eventsService: EventsService = inject(EventsService);
   mapService: MapService = inject(MapService);
   markerAddress = this.mapService.markerAddress; // stores address selected from the map
@@ -83,11 +82,6 @@ export class EventFormComponent implements OnInit, OnDestroy {
       this.selectedEndTime = hour === 0 ? TIMES[2] : TIMES[hour * 2 + 2];
     }
     this.checkEndTimeHours();
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
   onClose() {
@@ -145,7 +139,7 @@ export class EventFormComponent implements OnInit, OnDestroy {
       const latLng = this.markerPosition();
       this.mapService.removeTemporaryMarker();
       let finalRecurring = this.checkDuration(this.durationInDays, recurring);
-      this.eventsService
+      const sub = this.eventsService
         .addEvent({
           title: title,
           location: location,
@@ -157,7 +151,6 @@ export class EventFormComponent implements OnInit, OnDestroy {
           info: info,
           recurring: finalRecurring
         })
-        .pipe(takeUntil(this.unsubscribe$))
         .subscribe({
           next: (event) => {
             this.mapService.addMarker(event);
@@ -167,6 +160,7 @@ export class EventFormComponent implements OnInit, OnDestroy {
             console.error('Error adding event:', error);
           },
         });
+        this.destroyRef.onDestroy(()=>sub.unsubscribe());
     } else if (!form.valid) {
       alert('Form is invalid');
     } else if (this.mapService.markerAddress() == '') {
