@@ -41,13 +41,15 @@ export class HeaderComponent {
     this.eventService.toggleEventForm();
   }
   onToggleEventDetails(eventId: string): void {
-    this.eventService.selectEventById(eventId);
+    if(eventId!='0'){ // for event deletion notification, eventId is set for 0
+      this.eventService.selectEventById(eventId);
+    }
   }
   onRefresh(): void {
     this.eventService.getEvents().pipe(take(1)).subscribe();
   }
-  menuOpened(): void {
-    if (this.user().notifications.length > 0) {
+  menuClosed(): void {
+    if (this.user().notifications.length > 0 && this.unseenNotifications()>0) {
       this.userService.readNotifications();
     }
   }

@@ -9,13 +9,20 @@
   </div>
   <div class="right">
     <button [matBadge]="unseenNotifications()" [matBadgeHidden]="unseenNotifications()==0"  
-    mat-icon-button matTooltip="Events" matTooltipShowDelay="500"  [matMenuTriggerFor]="notifications" (menuOpened)="menuOpened()"> <mat-icon>notifications</mat-icon></button>
+    mat-icon-button matTooltip="Events" matTooltipShowDelay="500"  [matMenuTriggerFor]="notifications" (menuClosed)="menuClosed()"> <mat-icon>notifications</mat-icon></button>
     <mat-menu   #notifications="matMenu" >
-     @for(notific of user().notifications;track $index){
-      <div style="cursor:pointer" (click)="onToggleEventDetails(notific.eventId)">
-       <span [style]="{'font-weight':notific.read ? 'normal' : 'bold'}">{{notific.updateInfo}}</span>
-       <i>{{notific.updateStamp| timeText : "comment"}}</i>
-      </div>}
+      @if(user().notifications.length>0){
+        @for(notific of user().notifications;track $index){
+          <div style="cursor:pointer; padding:10px;" (click)="onToggleEventDetails(notific.eventId)">
+           <span [style]="{'font-weight':notific.read ? 'normal' : 'bold'}">{{notific.updateInfo}}{{" "}}</span>
+           <i>- {{notific.updateStamp| timeText : "comment"}}</i>
+          </div>}
+      }@else {
+        <div style="padding:10px">
+          <span>No notifications</span>
+        </div>
+      }
+   
       
     </mat-menu>
     <span class="username">
