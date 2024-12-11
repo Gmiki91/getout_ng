@@ -33,7 +33,7 @@ export class TimeTextPipe implements PipeTransform {
 
     const minutesDiff = Math.floor(millisecondsDiff / (1000 * 60));
     const hoursDiff = Math.floor(minutesDiff / 60);
-    const daysDiff = Math.floor(hoursDiff / 24);
+    const daysDiff = Math.round(hoursDiff / 24);
 
     if (daysDiff >= 1) {
       return daysDiff === 1
