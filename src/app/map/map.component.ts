@@ -72,7 +72,7 @@ export class MapComponent implements OnInit {
 
   addControls(map: Map) {
     const geoLocateControl = this.initGeoLocateControl();
-    const geocoder = this.initGeocoder(map);
+    const geocoder = this.initGeocoder();
     map.addControl(geocoder);
     map.addControl(geoLocateControl);
     map.addControl(new mapboxgl.NavigationControl());
@@ -85,7 +85,7 @@ export class MapComponent implements OnInit {
     });
   }
 
-  initGeocoder(map: Map): MapboxGeocoder {
+  initGeocoder(): MapboxGeocoder {
     return new MapboxGeocoder({
       accessToken: environment.mapbox.accessToken,
       collapsed: true,
@@ -97,8 +97,9 @@ export class MapComponent implements OnInit {
         lng: location.geometry.coordinates[0],
         lat: location.geometry.coordinates[1],
       } as LngLat;
-      this.createEventPopup(map, latLng);
-      this.mapService.addTemporaryMarker(latLng);
+      // removing this option to avoid stacking markers on the same spot
+      // this.createEventPopup(map, latLng); 
+      // this.mapService.addTemporaryMarker(latLng);
       this.mapService.setSearchResult(location.place_name, latLng);
     });
   }
