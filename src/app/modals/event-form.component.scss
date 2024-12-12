@@ -19,23 +19,15 @@
       font-weight: bold;
     }
     .clickable-text{
-
       font-size:10px;
       width: 85px;
-
       float:right;
       cursor: pointer;
       &:hover{
         text-decoration: underline;
       }
     }
-    .end-date-trigger{
-      margin:-20px 0 10px;
-      cursor: pointer;
-      &:hover{
-        text-decoration: underline;
-      }
-    }
+  
     mat-card-header {
       display: flex;
       justify-content: space-between;
@@ -54,10 +46,6 @@
       margin-bottom: 10px;
     }
 
-    .field-group {
-      display: flex;
-    }
-
     .actions {
       display: flex;
       justify-content: flex-end;
@@ -66,6 +54,17 @@
   }
   .hidden {
     display: none !important;
+  }
+}
+.field-group {
+  display: flex;
+}
+.end-date-trigger{
+  margin:-10px 0 10px;
+  width: 90px;
+  cursor: pointer;
+  &:hover{
+    text-decoration: underline;
   }
 }
 

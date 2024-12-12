@@ -1,0 +1,72 @@
+<div [formGroup]="form">
+  <div class="field-group">
+    <mat-form-field appearance="outline">
+      <mat-label for="date">starts</mat-label>
+      <input
+        matInput
+        formControlName="startDate"
+        [min]="minDate"
+        [matDatepicker]="picker"
+        (dateChange)="checkEndTimeHours()"
+        id="date"/>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      @if(form.get('startDate')?.invalid){
+      <mat-error>Date is invalid</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-select
+        formControlName="selectedTime"
+        (selectionChange)="checkEndTimeHours()">
+        @for (time of times; track time) {
+        <mat-option [value]="time">{{
+          time
+        }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if(isEndTime){
+  <div class="field-group">
+    <mat-form-field appearance="outline">
+      <mat-label for="end-date">ends</mat-label>
+      <input
+        matInput
+        formControlName="endDate"
+        [min]="form.get('startDate')?.value"
+        [matDatepicker]="picker"
+        (dateChange)="checkEndTimeHours()"
+        id="endDate"/>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      @if(form.get('endDate')?.invalid){
+      <mat-error>Date is invalid</mat-error>
+
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-select
+        formControlName="selectedEndTime"
+        (selectionChange)="updateDuration()">
+        @for (time of endTimes; track time) {
+        <mat-option [value]="time">{{ time }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+  }
+
+  <div class="end-date-trigger" (click)="toogleEndTime()">
+    {{ isEndTime ? "- end date" : "+ end date " }}
+  </div>
+</div>

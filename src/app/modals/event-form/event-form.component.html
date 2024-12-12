@@ -27,79 +27,10 @@
       @if(locationSelectMode){
         <div class="clickable-text" (click)="toggleOSMInfo()">wrong location?</div>
       }
-    <app-location-field (locationSelect)="toggleLocationSelect()" />
-      <div class="field-group" [class]="{ hidden: locationSelectMode }">
-        <mat-form-field appearance="outline">
-          <mat-label for="date">starts</mat-label>
-          <input
-            matInput
-            required
-            [min]="minDate"
-            [matDatepicker]="picker"
-            id="date"
-            name="date"
-            (dateChange)="checkEndTimeHours()"
-            [(ngModel)]="startDate"
-            #date="ngModel"
-          />
-          <mat-datepicker-toggle
-            matIconSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-          <mat-error>Date is invalid</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-select
-            (selectionChange)="checkEndTimeHours()"
-            [(value)]="selectedTime">
-            @for (time of times; track time) {
-            <mat-option [value]="time">{{ time }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      @if(isEndTime){
-      <div class="field-group" [class]="{ hidden: locationSelectMode }">
-        <mat-form-field appearance="outline">
-          <mat-label for="end-date">ends</mat-label>
-          <input
-            matInput
-            [min]="startDate"
-            [matDatepicker]="picker"
-            (dateChange)="checkEndTimeHours()"
-            id="endDate"
-            name="endDate"
-            [(ngModel)]="endingDate"
-            #endDate="ngModel"
-          />
-          <mat-datepicker-toggle
-            matIconSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-          <mat-error>Date is invalid</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-select   (selectionChange)="updateDuration()" [(value)]="selectedEndTime">
-            @for (time of endTimes; track time) {
-            <mat-option [value]="time">{{ time }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
+      <app-location-field (locationSelect)="toggleLocationSelect()" />
+      @if(!locationSelectMode){
+        <app-time-field/>
       }
-      <div
-        class="end-date-trigger"
-        [class]="{ hidden: locationSelectMode }"
-        (click)="toogleEndTime()"
-      >
-        {{ isEndTime ? "remove end date" : "add end date " }}
-      </div>
-
       <div class="field-group" [class]="{ hidden: locationSelectMode }">
         <mat-form-field appearance="outline">
           <mat-label for="min">minimum People</mat-label>
@@ -151,19 +82,20 @@
           #recurring="ngModel"
         >
 
-          <mat-radio-button value="daily" [disabled]="durationInDays > 1"
+          <mat-radio-button value="daily" [disabled]="timeField.durationInDays > 1"
             >daily</mat-radio-button
           >
-          <mat-radio-button value="weekly" [disabled]="durationInDays > 7"
+          <mat-radio-button value="weekly" [disabled]="timeField.durationInDays > 7"
             >weekly</mat-radio-button
           >
-          <mat-radio-button value="monthly" [disabled]="durationInDays > 28"
+          <mat-radio-button value="monthly" [disabled]="timeField.durationInDays > 28"
             >monthly</mat-radio-button
           >
         </mat-radio-group>
       </div>
-      } @if(locationSelectMode){
+      } 
       <mat-card-actions class="actions">
+      @if(locationSelectMode){
         <button
           mat-flat-button
           type="button"
@@ -171,11 +103,9 @@
           class="bold">
           ok
         </button>
-      </mat-card-actions>
       }@else{
-      <mat-card-actions class="actions">
-        <button mat-raised-button type="button" (click)="onClose()">
-          Cancel
+        <button mat-raised-button type="button" (click)="onClose()" class="bold">
+          cancel
         </button>
         <button
           mat-flat-button
@@ -184,8 +114,8 @@
           [disabled]="form.invalid">
           create
         </button>
-      </mat-card-actions>
       }
+    </mat-card-actions>
     </form>
   </mat-card>
 </dialog>
