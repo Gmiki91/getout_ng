@@ -4,10 +4,12 @@
   [class]="{ 'fit-height': locationSelectMode }"
   @slideDown>
   <mat-card class="event-card">
+    @if(!locationSelectMode){
     <mat-card-header>
-      <mat-card-title [class]="{ hidden: locationSelectMode }">new event</mat-card-title>
+      <mat-card-title>new event</mat-card-title>
       <button mat-icon-button  (click)="onClose()"><mat-icon>cancel</mat-icon></button>
     </mat-card-header>
+  }
     <form #form="ngForm" (ngSubmit)="onSubmit(form)">
       <div class="field-group" [class]="{ hidden: locationSelectMode }">
         <mat-form-field appearance="outline">
@@ -22,26 +24,10 @@
           <mat-error>Title is invalid</mat-error>
         </mat-form-field>
       </div>
-      <div class="clickable-text" (click)="toggleLocationPopup()">
-        wrong location?
-      </div>
-      <div class="field-group">
-        <mat-form-field appearance="outline">
-          <mat-label for="location">location</mat-label>
-          <input
-            readonly
-            #locationInput
-            matInput
-            required
-            [ngModel]="markerAddress()"
-            #location="ngModel"
-            name="location"
-            (click)="toggleLocationSelect()"/>
-          @if( location.invalid && (location.dirty || location.touched)){
-          <mat-error>Invalid address</mat-error>}
-        </mat-form-field>
-      </div>
-
+      @if(locationSelectMode){
+        <div class="clickable-text" (click)="toggleOSMInfo()">wrong location?</div>
+      }
+    <app-location-field (locationSelect)="toggleLocationSelect()" />
       <div class="field-group" [class]="{ hidden: locationSelectMode }">
         <mat-form-field appearance="outline">
           <mat-label for="date">starts</mat-label>
@@ -182,8 +168,7 @@
           mat-flat-button
           type="button"
           (click)="toggleLocationSelect()"
-          class="bold"
-        >
+          class="bold">
           ok
         </button>
       </mat-card-actions>
@@ -196,8 +181,7 @@
           mat-flat-button
           type="submit"
           class="bold"
-          [disabled]="form.invalid"
-        >
+          [disabled]="form.invalid">
           create
         </button>
       </mat-card-actions>
@@ -205,6 +189,6 @@
     </form>
   </mat-card>
 </dialog>
-@if(showLocationInfo){
-  <app-location-info  (close)="toggleLocationPopup()"></app-location-info>
+@if(showOSMInfo){
+  <app-location-info  (close)="toggleOSMInfo()"></app-location-info>
 }
