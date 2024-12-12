@@ -11,7 +11,7 @@
     <form #form="ngForm" (ngSubmit)="onSubmit(form)">
       <div class="field-group" [class]="{ hidden: locationSelectMode }">
         <mat-form-field appearance="outline">
-          <mat-label for="title">Title</mat-label>
+          <mat-label for="title">title</mat-label>
           <input
             matInput
             required
@@ -27,7 +27,7 @@
       </div>
       <div class="field-group">
         <mat-form-field appearance="outline">
-          <mat-label for="location">Location</mat-label>
+          <mat-label for="location">location</mat-label>
           <input
             readonly
             #locationInput
@@ -36,7 +36,7 @@
             [ngModel]="markerAddress()"
             #location="ngModel"
             name="location"
-            (focus)="toggleLocationSelect()"/>
+            (click)="toggleLocationSelect()"/>
           @if( location.invalid && (location.dirty || location.touched)){
           <mat-error>Invalid address</mat-error>}
         </mat-form-field>
@@ -44,7 +44,7 @@
 
       <div class="field-group" [class]="{ hidden: locationSelectMode }">
         <mat-form-field appearance="outline">
-          <mat-label for="date">Starts</mat-label>
+          <mat-label for="date">starts</mat-label>
           <input
             matInput
             required
@@ -78,7 +78,7 @@
       @if(isEndTime){
       <div class="field-group" [class]="{ hidden: locationSelectMode }">
         <mat-form-field appearance="outline">
-          <mat-label for="end-date">Ends</mat-label>
+          <mat-label for="end-date">ends</mat-label>
           <input
             matInput
             [min]="startDate"
@@ -116,7 +116,7 @@
 
       <div class="field-group" [class]="{ hidden: locationSelectMode }">
         <mat-form-field appearance="outline">
-          <mat-label for="min">Minimum People</mat-label>
+          <mat-label for="min">minimum People</mat-label>
           <input
             matInput
             required
@@ -132,7 +132,7 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label for="max">Maximum People</mat-label>
+          <mat-label for="max">maximum People</mat-label>
           <input
             matInput
             type="number"
@@ -151,11 +151,11 @@
         appearance="outline"
         [class]="{ hidden: locationSelectMode }"
       >
-        <mat-label for="info">Additional Information</mat-label>
+        <mat-label for="info">additional information</mat-label>
         <textarea matInput id="info" name="info" ngModel></textarea>
       </mat-form-field>
 
-      <mat-checkbox [(ngModel)]="repeats" name="isRepeat">Repeats</mat-checkbox>
+      <mat-checkbox  [class]="{ hidden: locationSelectMode }" [(ngModel)]="repeats" name="isRepeat">Repeats</mat-checkbox>
       @if(repeats){
       <div class="field-group" [class]="{ hidden: locationSelectMode }">
         <mat-radio-group
@@ -166,28 +166,25 @@
         >
 
           <mat-radio-button value="daily" [disabled]="durationInDays > 1"
-            >Daily</mat-radio-button
+            >daily</mat-radio-button
           >
           <mat-radio-button value="weekly" [disabled]="durationInDays > 7"
-            >Weekly</mat-radio-button
+            >weekly</mat-radio-button
           >
           <mat-radio-button value="monthly" [disabled]="durationInDays > 28"
-            >Monthly</mat-radio-button
+            >monthly</mat-radio-button
           >
         </mat-radio-group>
       </div>
       } @if(locationSelectMode){
       <mat-card-actions class="actions">
-        <button mat-raised-button type="button" (click)="onClose()">
-          Cancel
-        </button>
         <button
           mat-flat-button
           type="button"
           (click)="toggleLocationSelect()"
           class="bold"
         >
-          Ok
+          ok
         </button>
       </mat-card-actions>
       }@else{
@@ -201,7 +198,7 @@
           class="bold"
           [disabled]="form.invalid"
         >
-          Create
+          create
         </button>
       </mat-card-actions>
       }

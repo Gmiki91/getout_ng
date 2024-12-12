@@ -85,7 +85,7 @@ export class EventFormComponent implements OnInit {
   }
 
   onClose() {
-    this.eventsService.toggleEventForm();
+    this.locationSelectMode ? this.locationSelectMode=false : this.eventsService.toggleEventForm();
   }
 
   toogleEndTime() {

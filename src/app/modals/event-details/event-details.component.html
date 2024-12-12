@@ -12,17 +12,17 @@
     <mat-card-content>
       <div class="event-details">
         <div class="time">
-          <div><strong>Starts:</strong> {{ event().time | date:"MMM dd, hh:mm a"  }}</div>
+          <div><strong>starts:</strong> {{ event().time | date:"MMM dd, hh:mm a"  }}</div>
           @if(event().endTime !==event().time){
-            <div><strong>Ends:</strong> {{ event().endTime | date:"MMM dd, hh:mm a"  }}</div>
+            <div><strong>ends:</strong> {{ event().endTime | date:"MMM dd, hh:mm a"  }}</div>
           }
         </div>
-        <div class="location"><strong>Location:</strong> {{ event().location }}</div>
+        <div class="location"><strong>location:</strong> {{ event().location }}</div>
         <div class="clickable-text" (click)="toggleLocationPopup()">
           wrong location?
         </div>
         <div class="participants">
-          <strong>Participants:</strong> {{ event().participants ?event().participants.length:"unknown"}}{{event().max>0? "/"+event().max : ""}}
+          <strong>participants:</strong> {{ event().participants ?event().participants.length:"unknown"}}{{event().max>0? "/"+event().max : ""}}
       
           <br>
           <span>
@@ -32,7 +32,7 @@
         </span>
         </div>
         @if(event().info){
-        <div class="additional-info"><strong>Info:</strong> {{ event().info }}</div>
+        <div class="additional-info"><strong>info:</strong> {{ event().info }}</div>
         }
       </div>
 
@@ -40,7 +40,7 @@
         <textarea matInput #komment class="comment-area" ngModel (focus)="onShowCommentBtn(true)"
           (blur)="onShowCommentBtn(false)" cdkAutosizeMinRows="5"></textarea>
           <button class="comment-btn" [disabled]="!showCommentBtn" mat-button (click)="onAddKomment($event)">
-            Add comment
+            add comment
           </button>
         </mat-form-field>
 
@@ -60,16 +60,16 @@
     <mat-card-actions class="event-actions">
       @if(user().id === event().ownerId){
       <button class="delete-btn" mat-flat-button (click)="onDelete()">
-        Delete event
+        delete event
       </button>
       }
       @if(joined){
       <button class="leave-btn" mat-raised-button (click)="onLeave()">
-        Leave event
+        leave event
       </button>
       }@else if(event().max==0 || event().max>event().participants.length){
       <button class="join-btn" mat-raised-button (click)="onJoin()">
-        Join event
+        join event
       </button>
       }
     </mat-card-actions>
