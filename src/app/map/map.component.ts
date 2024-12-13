@@ -100,7 +100,7 @@ export class MapComponent implements OnInit {
       // removing this option to avoid stacking markers on the same spot
       // this.createEventPopup(map, latLng); 
       // this.mapService.addTemporaryMarker(latLng);
-      this.mapService.setSearchResult(location.place_name, latLng);
+      this.mapService.setPosition(location.place_name, latLng);
     });
   }
 
@@ -130,9 +130,6 @@ export class MapComponent implements OnInit {
         const id: string = features![0].properties!['id'];
         if (id) {
           this.eventService.selectEventById(id);
-        } else {
-          // Temporary marker selected, remove the previous marker if any
-          this.mapService.removeTemporaryMarker();
         }
       }
       //Cluster clicked (cluster click propagates to the marker as well, thats why length is 2)
@@ -215,8 +212,8 @@ export class MapComponent implements OnInit {
   }
 
   createEventPopup(map: Map, lngLat: LngLat) {
-    if (!this.eventService.isEventFormOpen()) {
-      //dont show 'create event' popup when we are already creating event
+    //dont show 'create event' popup when we are already creating event or an event is selected
+    if (!this.eventService.isEventFormOpen() && !this.eventService.selectedEvent().id) {
 
       //remove previous popup
       document.getElementsByClassName('popup_w_btn')[0]?.remove();

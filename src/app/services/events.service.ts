@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { Observable, tap } from 'rxjs';
 import { calculateDistance } from '../utils/utils';
 import { UserService } from './user.service';
+import { MapService } from './map.service';
 
 @Injectable({ providedIn: 'root' })
 export class EventsService {
@@ -20,7 +21,7 @@ export class EventsService {
   private _userService = inject(UserService);
   private _user = this._userService.user;
   private _unfilteredEvents: Event[] = [];
-
+  private _mapService = inject(MapService)
   currentPosition = this._currentPosition.asReadonly();
   yourEvents = this._yourEvents.asReadonly();
   otherEvents = this._otherEvents.asReadonly();
@@ -110,6 +111,8 @@ export class EventsService {
   // the selected event for the details tab
   selectEvent(event: Event): void {
     this._selectedEvent.set(event);
+    this._mapService.removeTemporaryMarker();
+    this._mapService.setPosition(event.location,event.latLng);
      //close eventform if open
      if(this._isEventFormOpen()){this._isEventFormOpen.set(false)}
   }

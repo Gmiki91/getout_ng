@@ -35,7 +35,7 @@ export class MapService {
     });
   }
 
-  setSearchResult(address:string, location:LatLng){
+  setPosition(address:string, location:LatLng){
     this._markerAddress.set(address);
     this._markerPosition.set(location);
   }
@@ -76,8 +76,10 @@ export class MapService {
   }
   
   removeTemporaryMarker(): void {
-    this._markerAddress.set("");
-    this._markerPosition.set({}as LatLng);
+    const popup = document.getElementsByClassName('mapboxgl-popup');
+    if ( popup.length ) {
+      popup[0].remove();
+    }  
     this.removeFeaturesByCondition((feature) => feature.properties?.['eventType'] === 2);
   }
 
