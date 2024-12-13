@@ -58,11 +58,6 @@
     </mat-card-content>
 
     <mat-card-actions class="event-actions">
-      @if(user().id === event().ownerId){
-      <button class="delete-btn" mat-flat-button (click)="onDelete()">
-        delete event
-      </button>
-      }
       @if(joined){
       <button class="leave-btn" mat-raised-button (click)="onLeave()">
         leave event
@@ -72,6 +67,14 @@
         join event
       </button>
       }
+      @if(user().id === event().ownerId){
+        <button class="update-btn" mat-raised-button (click)="onUpdate()">
+          update event
+        </button>
+        <button class="delete-btn" mat-flat-button (click)="onDelete()">
+          delete event
+        </button>
+        }
     </mat-card-actions>
   </mat-card>
 </dialog>
