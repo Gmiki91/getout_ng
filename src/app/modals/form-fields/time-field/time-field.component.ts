@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TIMES } from '../../../time';
 import { MatFormField,  } from '@angular/material/form-field';
@@ -20,7 +20,7 @@ export class TimeFieldComponent implements OnInit {
   endTimes: string[] = [];
   isEndTime = false;
   minDate = new Date(); // Min date is today
-  durationInDays = 0;
+  durationInDays = output<number>();
   fb = inject(FormBuilder);
 
   ngOnInit(): void {
@@ -82,7 +82,7 @@ export class TimeFieldComponent implements OnInit {
     const selectedEndTime = this.form.get('selectedEndTime')?.value;
 
        if (startDate.getTime() >= endDate.getTime()) {
-         this.durationInDays = 0;
+         this.durationInDays.emit(0);
        } else {
          const start = new Date(
            this.initTime(startDate, selectedTime)
@@ -91,7 +91,7 @@ export class TimeFieldComponent implements OnInit {
            this.initTime(endDate, selectedEndTime)
          ).getTime();
          const diffInMs = end - start;
-         this.durationInDays = diffInMs / 1000 / 60 / 60 / 24;
+         this.durationInDays.emit(diffInMs / 1000 / 60 / 60 / 24);
        }
   }
 

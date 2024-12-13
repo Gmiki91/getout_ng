@@ -55,7 +55,7 @@ export class EventFormComponent{
   mapService: MapService = inject(MapService);
   markerAddress = this.mapService.markerAddress; // stores address selected from the map
   markerPosition = this.mapService.markerPosition; // stores address selected from the map
-
+  durationInDays = 0;
 
   onClose() {
     this.locationSelectMode ? this.locationSelectMode=false : this.eventsService.toggleEventForm();
@@ -68,6 +68,10 @@ export class EventFormComponent{
   toggleLocationSelect() {
     this.locationSelectMode = !this.locationSelectMode;
   }
+
+  updateDurationInDays(value:number){
+    this.durationInDays = value;
+  }
   onSubmit(form: NgForm) {
     if (form.valid && this.markerAddress() && this.markerPosition()) {
       const { title,min, max, info, recurring } = form.form.value;
@@ -76,7 +80,7 @@ export class EventFormComponent{
       const location = this.markerAddress();
       const latLng = this.markerPosition();
       this.mapService.removeTemporaryMarker();
-      let finalRecurring = this.checkDuration(this.timeField.durationInDays, recurring);
+      let finalRecurring = this.checkDuration(this.durationInDays, recurring);
       const sub = this.eventsService
         .addEvent({
           title: title,

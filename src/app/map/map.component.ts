@@ -213,7 +213,7 @@ export class MapComponent implements OnInit {
 
   createEventPopup(map: Map, lngLat: LngLat) {
     //dont show 'create event' popup when we are already creating event or an event is selected
-    if (!this.eventService.isEventFormOpen() && !this.eventService.isEventDetailsOpen()) {
+    if (!this.eventService.isEventFormOpen() && !this.eventService.isEventDetailsOpen() && !this.eventService.isEventUpdating()) {
 
       //remove previous popup
       document.getElementsByClassName('popup_w_btn')[0]?.remove();

@@ -34,3 +34,16 @@ export type NewEventData = {
   ownerId?: string;
   recurring: Recurrence
 };
+
+export type UpdateEventData = {
+  id: string;
+  title?: string;
+  location?: string;
+  latLng?: { lat: number; lng: number };
+  time?: string;
+  endTime?: string;
+  min?: number;
+  max?: number;
+  info?: string;
+  recurring?: Recurrence
+}

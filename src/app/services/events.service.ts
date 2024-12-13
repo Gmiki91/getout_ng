@@ -1,5 +1,5 @@
 import { Injectable, signal, inject } from '@angular/core';
-import { NewEventData, Event, LatLng } from '../models/event.model';
+import { NewEventData, Event, LatLng, UpdateEventData } from '../models/event.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable, tap } from 'rxjs';
@@ -65,6 +65,38 @@ export class EventsService {
       })
     );
   }
+
+  updateEvent(event:UpdateEventData):Observable<void>{
+    this.updateList(event)
+    return this._http.patch<void>(`${this.url}/${event.id}`,event);
+  }
+
+ private updateList(event: UpdateEventData): void {
+    const isUserJoined = this._yourEvents().some(yourEvent => yourEvent.id === event.id);
+    const eventsList = isUserJoined ? this._yourEvents() : this._otherEvents();
+    const eventToUpdate = eventsList.find(existingEvent => existingEvent.id === event.id);
+  
+    if (eventToUpdate) {
+      // Merge the event with the new data
+      const updatedEvent = { ...eventToUpdate, ...event };
+      // If a new location (latLng) is provided, calculate the distance
+      if (event.latLng) {
+        updatedEvent.distance = this.addDistance(event.latLng);
+        this._mapService.removeMarker(updatedEvent.id);
+        this._mapService.addMarker(updatedEvent);
+      }
+  
+      // Update the corresponding event list
+      if (isUserJoined) {
+        this._yourEvents.set(this._yourEvents().filter(yourEvent=>yourEvent.id !==event.id));
+        this._yourEvents.update((events) => [updatedEvent, ...events]);
+      } else {
+        this._otherEvents.set(this._otherEvents().filter(otherEvent=>otherEvent.id !==event.id));
+        this._otherEvents.update((events) => [updatedEvent, ...events]);
+      }
+    }
+  }
+  
 
   deleteEvent(eventId: string, ownerId: string): void {
     if (this._user().id === ownerId) {

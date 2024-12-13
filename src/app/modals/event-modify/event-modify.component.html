@@ -1,0 +1,90 @@
+<dialog
+  open
+  @slideDown
+  class="event-dialog"
+  [class]="{ 'fit-height': locationSelectMode }">
+  <mat-card class="event-card">
+    <mat-card-header>
+      <mat-card-title [class]="{ hidden: locationSelectMode }"
+        >update event</mat-card-title
+      >
+    </mat-card-header>
+    <form [formGroup]="form">
+      <div class="field-group" [class]="{ hidden: locationSelectMode }">
+        <mat-form-field appearance="outline">
+          <mat-label for="title">title</mat-label>
+          <input matInput id="title" formControlName="title" />
+        </mat-form-field>
+      </div>
+
+      <app-location-field (locationSelect)="toggleLocationSelect()" />
+      @if(!locationSelectMode){
+      <div class="field-group">
+        <mat-form-field appearance="outline">
+          <mat-label for="info">additional information</mat-label>
+          <input matInput id="info" formControlName="info" />
+        </mat-form-field>
+      </div>
+  
+      <app-time-field (durationInDays)="updateDurationInDays($event)"/>
+     
+      <div class="field-group">
+        <mat-form-field appearance="outline">
+          <mat-label for="min">min</mat-label>
+          <input matInput id="min" formControlName="min" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label for="max">max</mat-label>
+          <input matInput id="max" formControlName="max" />
+        </mat-form-field>
+        <!-- @if(form?.hasError('maxLessThanMin')){
+          <div>
+            Max must be greater than or equal to Min.
+          </div>
+        } -->
+      </div>
+      <mat-checkbox  [(ngModel)]="isRepeating" [ngModelOptions]="{standalone: true}" >Repeats</mat-checkbox>
+      @if(isRepeating){
+      <div class="field-group" >
+        <mat-radio-group
+          class="radio-group"
+          formControlName="recurring">
+
+          <mat-radio-button value="daily" [disabled]="durationInDays > 1"
+            >daily</mat-radio-button
+          >
+          <mat-radio-button value="weekly" [disabled]="durationInDays > 7"
+            >weekly</mat-radio-button
+          >
+          <mat-radio-button value="monthly" [disabled]="durationInDays > 28"
+            >monthly</mat-radio-button
+          >
+        </mat-radio-group>
+      </div>
+    }
+  }
+      <mat-card-actions class="actions">
+        @if(locationSelectMode){
+        <button
+          mat-flat-button
+          type="button"
+          (click)="toggleLocationSelect()"
+          class="bold">
+          ok
+        </button>
+        }@else{
+        <button
+          mat-raised-button
+          type="button"
+          (click)="onClose()"
+          class="bold">
+          cancel
+        </button>
+        <button mat-flat-button type="button" (click)="onUpdate()" class="bold">
+          update
+        </button>
+        }
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</dialog>

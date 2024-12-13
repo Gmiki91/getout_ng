@@ -29,7 +29,7 @@
       }
       <app-location-field (locationSelect)="toggleLocationSelect()" />
       @if(!locationSelectMode){
-        <app-time-field/>
+        <app-time-field (durationInDays)="updateDurationInDays($event)"/>
       }
       <div class="field-group" [class]="{ hidden: locationSelectMode }">
         <mat-form-field appearance="outline">
@@ -79,18 +79,10 @@
           class="radio-group"
           name="recurring"
           ngModel
-          #recurring="ngModel"
-        >
-
-          <mat-radio-button value="daily" [disabled]="timeField.durationInDays > 1"
-            >daily</mat-radio-button
-          >
-          <mat-radio-button value="weekly" [disabled]="timeField.durationInDays > 7"
-            >weekly</mat-radio-button
-          >
-          <mat-radio-button value="monthly" [disabled]="timeField.durationInDays > 28"
-            >monthly</mat-radio-button
-          >
+          #recurring="ngModel">
+          <mat-radio-button value="daily" [disabled]="durationInDays> 1">daily</mat-radio-button>
+          <mat-radio-button value="weekly" [disabled]="durationInDays> 7">weekly</mat-radio-button>
+          <mat-radio-button value="monthly" [disabled]="durationInDays> 28">monthly</mat-radio-button>
         </mat-radio-group>
       </div>
       } 
