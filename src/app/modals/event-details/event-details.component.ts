@@ -4,7 +4,7 @@ import {
   inject,
   ViewChild,
   OnInit,
-  signal,
+  signal
 } from '@angular/core';
 import { Event } from '../../models/event.model';
 import { DatePipe } from '@angular/common';
@@ -78,6 +78,10 @@ export class EventDetailsComponent implements OnInit {
   onLeave(): void {
     this.eventService.leaveEvent(this.event().id,this.event().distance);
     this.closeDialog();
+  }
+
+  onUpdate():void{
+    this.eventService.toggleUpdateEvent();
   }
 
   onDelete(): void {

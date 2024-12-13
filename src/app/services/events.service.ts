@@ -16,6 +16,8 @@ export class EventsService {
   private _otherEvents = signal<Event[]>([]);
   private _selectedEvent = signal<Event>({} as Event);
   private _isEventFormOpen = signal<boolean>(false);
+  private _isEventUpdating = signal<boolean>(false);
+  private _isEventDetailsOpen = signal<boolean>(false);
   private _areEventsLoaded = signal<boolean>(false);
   private _currentPosition = signal<LatLng>({ lat: 0, lng: 0 });
   private _userService = inject(UserService);
@@ -27,6 +29,8 @@ export class EventsService {
   otherEvents = this._otherEvents.asReadonly();
   selectedEvent = this._selectedEvent.asReadonly();
   isEventFormOpen = this._isEventFormOpen.asReadonly();
+  isEventUpdating = this._isEventUpdating.asReadonly();
+  isEventDetailsOpen = this._isEventDetailsOpen.asReadonly();
   areEventsLoaded = this._areEventsLoaded.asReadonly();
 
   //save the sorted events for the events list, returns unsorted for the map markers
@@ -113,8 +117,7 @@ export class EventsService {
     this._selectedEvent.set(event);
     this._mapService.removeTemporaryMarker();
     this._mapService.setPosition(event.location,event.latLng);
-     //close eventform if open
-     if(this._isEventFormOpen()){this._isEventFormOpen.set(false)}
+    this.toggleEventDetails();
   }
 
   selectEventById(eventId: string): void {
@@ -125,15 +128,31 @@ export class EventsService {
     }else{
       console.log('event not found')
     }
-    //close eventform if open
-    if(this._isEventFormOpen()){this._isEventFormOpen.set(false)}
+  }
+  
+  toggleEventDetails():void{
+    this._isEventDetailsOpen.set(!this._isEventDetailsOpen())
+     //close eventform if open
+     if(this._isEventFormOpen()){this._isEventFormOpen.set(false);}
+    //close updateform if open
+    if(this._isEventUpdating()){this._isEventUpdating.set(false);}
   }
   
   // create new event form
   toggleEventForm():void{
     this._isEventFormOpen.set(!this._isEventFormOpen())
     //close event details if open
-    if(this._selectedEvent().id){this._selectedEvent.set({}as Event);}
+    if(this._isEventDetailsOpen()){this._isEventDetailsOpen.set(false);}
+    //close updateform if open
+    if(this._isEventUpdating()){this._isEventUpdating.set(false);}
+  }
+
+  toggleUpdateEvent():void{
+    this._isEventUpdating.set(!this._isEventUpdating())
+   //close event details if open
+   if(this._isEventDetailsOpen()){this._isEventDetailsOpen.set(false);}
+    //close eventform if open
+    if(this._isEventFormOpen()){this._isEventFormOpen.set(false);}
   }
 
   //for distance calculation and autofill proximity

@@ -14,8 +14,11 @@
     @if(isFormOpen()){
     <app-event-form @dumbParent></app-event-form>
     } 
-    @if(selectedEvent().id){
+    @if(isEventDetailsOpen()){
         <app-event-details @dumbParent></app-event-details>
+    }
+    @if(isEventUpdating()){
+      <app-event-modify @dumbParent></app-event-modify>
     }
   </div>
 </div>
