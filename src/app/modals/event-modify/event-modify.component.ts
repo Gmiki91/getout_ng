@@ -24,6 +24,7 @@ import { UpdateEventData } from '../../models/event.model';
 import { MapService } from '../../services/map.service';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-event-modify',
   standalone: true,
@@ -39,6 +40,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
     TimeFieldComponent,
     MatRadioModule,
   ],
+    providers:[MatSnackBar],
   templateUrl: './event-modify.component.html',
   styleUrl: '../event-form.component.scss',
   animations: [slideDown],
@@ -55,6 +57,7 @@ export class EventModifyComponent implements OnInit {
   isRepeating = this.myEvent.recurring != 'never';
   form!: FormGroup;
   destroyRef = inject(DestroyRef);
+  snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -88,7 +91,10 @@ export class EventModifyComponent implements OnInit {
     changedValues.id = this.myEvent.id;
     const sub = this.eventService
       .updateEvent(changedValues)
-      .subscribe(() => this.onClose());
+      .subscribe(() =>{
+        this.onClose();
+        this.snackBar.open("updated "+this.myEvent.title,undefined,{duration:3000});
+      });
     this.destroyRef.onDestroy(() => sub.unsubscribe());
   }
 

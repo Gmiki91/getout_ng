@@ -19,6 +19,7 @@ import { Recurrence } from '../../models/event.model';
 import { LocationInfoComponent } from "../location-info/location-info.component";
 import { LocationFieldComponent } from "../form-fields/location-field.component";
 import { TimeFieldComponent } from '../form-fields/time-field/time-field.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-event-form',
@@ -39,6 +40,7 @@ import { TimeFieldComponent } from '../form-fields/time-field/time-field.compone
     LocationFieldComponent,
     TimeFieldComponent
 ],
+  providers:[MatSnackBar],
   templateUrl: './event-form.component.html',
   styleUrl: '../event-form.component.scss',
   animations: [slideDown],
@@ -56,6 +58,7 @@ export class EventFormComponent{
   markerAddress = this.mapService.markerAddress; // stores address selected from the map
   markerPosition = this.mapService.markerPosition; // stores address selected from the map
   durationInDays = 0;
+  snackBar = inject(MatSnackBar);
 
   onClose() {
     this.locationSelectMode ? this.locationSelectMode=false : this.eventsService.toggleEventForm();
@@ -97,6 +100,7 @@ export class EventFormComponent{
           next: (event) => {
             this.mapService.addMarker(event);
             this.onClose();
+            this.snackBar.open("created "+title,undefined,{duration:3000});
           },
           error: (error) => {
             console.error('Error adding event:', error);

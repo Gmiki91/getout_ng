@@ -26,6 +26,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MockUser } from '../../utils/mock.factory';
 import { MatTooltip } from '@angular/material/tooltip';
 import { LocationInfoComponent } from '../location-info/location-info.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-event-details',
@@ -46,6 +47,7 @@ import { LocationInfoComponent } from '../location-info/location-info.component'
     MatIcon,
     MatTooltip
   ],
+  providers:[MatSnackBar],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',
   animations:[slideDown] 
@@ -63,6 +65,7 @@ export class EventDetailsComponent implements OnInit {
   showCommentBtn = false;
   showLocationInfo = false;
   user= signal<User>(MockUser);
+  snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
     this.user = this.userService.user;
@@ -72,11 +75,13 @@ export class EventDetailsComponent implements OnInit {
   onJoin(): void {
     if(this.event().max>this.event().participants.length || this.event().max==0)
     this.eventService.joinEvent(this.event().id,this.event().distance);
-  this.joined = true;
+    this.joined = true;
+    this.snackBar.open("joined " + this.event().title,undefined,{duration:3000});
   }
 
   onLeave(): void {
     this.eventService.leaveEvent(this.event().id,this.event().distance);
+    this.snackBar.open("left "+this.event().title,undefined,{duration:3000});
     this.closeDialog();
   }
 
@@ -87,6 +92,7 @@ export class EventDetailsComponent implements OnInit {
   onDelete(): void {
     this.eventService.deleteEvent(this.event().id, this.event().ownerId);
     this.mapService.removeMarker(this.event().id);
+    this.snackBar.open("deleted "+this.event().title,undefined,{duration:3000});
     this.closeDialog();
   }
 

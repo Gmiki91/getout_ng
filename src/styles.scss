@@ -1,8 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
 :root {
   --main-color: rgba(255, 255, 255, 0.8); 
   --secondary-color:rgb(214, 63, 98);
   --accent-color:#BA005C;
+
+  @include mat.snack-bar-overrides((
+    container-color: var(--secondary-color),
+    supporting-text-color: white,
+    supporting-text-weight:bold,
+    supporting-text-size:1.1rem
+
+  ));
 }
 
 html,
@@ -22,6 +32,10 @@ body {
   }
   70% { transform: scale(.9); }
   100% { transform: scale(1); }
+}
+
+.mdc-snackbar__label{
+  text-align:center;
 }
 
 ::-webkit-scrollbar {
