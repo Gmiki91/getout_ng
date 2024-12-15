@@ -66,9 +66,8 @@ export class EventsService {
     );
   }
 
-  updateEvent(event:UpdateEventData):Observable<void>{
-    this.updateList(event)
-    return this._http.patch<void>(`${this.url}/${event.id}`,event);
+  updateEvent(event:UpdateEventData):Observable<Event>{
+    return this._http.patch<Event>(`${this.url}/${event.id}`,event).pipe(tap(event=>this.updateList(event)));
   }
 
  private updateList(event: UpdateEventData): void {
