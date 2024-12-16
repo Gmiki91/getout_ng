@@ -2,7 +2,7 @@
   <div class="left">
     <button mat-icon-button matTooltip="Events" matTooltipShowDelay="500"  (click)="onToggleSideBar()"> <mat-icon>menu</mat-icon></button>
     <button mat-icon-button matTooltip="Filter" matTooltipShowDelay="500"  (click)="onToggleFilter()"> <mat-icon>filter_alt</mat-icon></button>
-    <button mat-icon-button matTooltip="Refresh" matTooltipShowDelay="500"  (click)="onRefresh()"> <mat-icon>refresh</mat-icon></button>
+    <button mat-icon-button matTooltip="Refresh" matTooltipShowDelay="500"  (click)="onRefresh()" [class.spin]="isSpinning"> <mat-icon class="refresh-icon">refresh</mat-icon></button>
     <button mat-icon-button matTooltip="New event" matTooltipShowDelay="500" class="new-event-btn" (click)="onToggleEventForm()">
       <mat-icon>add_circle</mat-icon>
     </button>

@@ -30,6 +30,7 @@ export class HeaderComponent {
   unseenNotifications = computed(() =>this.user().notifications.filter(notification => !notification.read).length);
   toggleSideBar = output();
   toggleFilter = output();
+  isSpinning = false;
 
   onToggleSideBar(): void {
     this.toggleSideBar.emit();
@@ -46,7 +47,12 @@ export class HeaderComponent {
     }
   }
   onRefresh(): void {
-    this.eventService.getEvents().pipe(take(1)).subscribe();
+    this.eventService.getEvents().pipe(take(1)).subscribe(()=>{
+      this.isSpinning = true;
+      setTimeout(() => {
+        this.isSpinning = false;
+      }, 250);
+    });
   }
   menuClosed(): void {
     if (this.user().notifications.length > 0 && this.unseenNotifications()>0) {
