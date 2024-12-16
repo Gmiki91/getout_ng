@@ -123,7 +123,7 @@ describe('EventDetailsComponent', () => {
         component.event().id,
         component.event().ownerId
       );
-      expect(mockMapService.removeMarker).toHaveBeenCalledWith(
+      expect(mockMapService.removeMarkerById).toHaveBeenCalledWith(
         component.event().id
       );
     });
@@ -202,7 +202,7 @@ describe('EventDetailsComponent', () => {
       expect(component.komments).toBeTruthy();
     });
     it('uses Map Service', () => {
-      const deleteSpy = jest.spyOn(mapService, 'removeMarker');
+      const deleteSpy = jest.spyOn(mapService, 'removeMarkerById');
       component.onDelete();
       expect(deleteSpy).toHaveBeenCalled();
     });

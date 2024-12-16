@@ -81,7 +81,7 @@ export class EventsService {
       // If a new location (latLng) is provided, calculate the distance
       if (event.latLng) {
         updatedEvent.distance = this.addDistance(event.latLng);
-        this._mapService.removeMarker(updatedEvent.id);
+        this._mapService.removeMarkerById(updatedEvent.id);
         this._mapService.addMarker(updatedEvent);
       }
   
@@ -100,7 +100,7 @@ export class EventsService {
   deleteEvent(eventId: string, ownerId: string): void {
     if (this._user().id === ownerId) {
       this._http.delete(`${this.bridgeUrl}/events/${eventId}`).subscribe(() => {
-        //update both lists
+        this._unfilteredEvents = this._unfilteredEvents.filter((e) => e.id !== eventId);
         this._otherEvents.update((events) =>
           events.filter((e) => e.id !== eventId)
         );
@@ -223,6 +223,8 @@ export class EventsService {
       this._unfilteredEvents.filter((event) => {
         const passesFullFilter = !hide || (event.max == 0 || event.max > event.participants.length);
         const passesDistanceFilter = event.distance <= distance * 1000;
+         if(!passesDistanceFilter || !passesFullFilter) this._mapService.removeMarkerById(event.id);
+         if(passesDistanceFilter && passesFullFilter) this._mapService.addMarker(event);
         return passesFullFilter && passesDistanceFilter;
       })
     );

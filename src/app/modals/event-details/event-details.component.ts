@@ -91,7 +91,7 @@ export class EventDetailsComponent implements OnInit {
 
   onDelete(): void {
     this.eventService.deleteEvent(this.event().id, this.event().ownerId);
-    this.mapService.removeMarker(this.event().id);
+    this.mapService.removeMarkerById(this.event().id);
     this.snackBar.open("deleted "+this.event().title,undefined,{duration:3000});
     this.closeDialog();
   }

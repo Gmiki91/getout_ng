@@ -1,13 +1,14 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { Event, LatLng } from '../models/event.model';
-import {  Map } from 'mapbox-gl';
+import {  Map as MyMap } from 'mapbox-gl';
 import { NominatimService } from './nominatim.service';
 
 @Injectable({ providedIn: 'root' })
 export class MapService {
   private nominatimService = inject(NominatimService);
   private mapSource: mapboxgl.GeoJSONSource | undefined;
-  private map: Map | undefined;
+  private map: MyMap | undefined;
+  private markerMapData: Map<string, GeoJSON.Feature> = new Map();
   private _markerAddress = signal<string>('');
   private _markerPosition = signal<LatLng>({} as LatLng);
   markerAddress = this._markerAddress.asReadonly();
@@ -25,7 +26,7 @@ export class MapService {
     });
   }
 
-  // legacy function for validating the address in the event creator form
+  // legacy function for validating the address in the event creator form (input is now read only for the address)
   convertAddressToLatLng(address: string): void {
     this.nominatimService.addressLookup(address).subscribe((results) => {
       if (results && results[0]) {
@@ -44,7 +45,7 @@ export class MapService {
     this.mapSource = source;
   }
 
-  setMap(map: Map) {
+  setMap(map: MyMap) {
     this.map = map;
   }
 
@@ -58,8 +59,7 @@ export class MapService {
     const coordinates: [number, number] = [event.latLng.lng, event.latLng.lat];
     const properties = {
       id: event.id,
-      title: event.title,
-      eventType: 1,
+      title: event.title
     };
     this.addFeatureToSource(coordinates, properties);
   }
@@ -67,12 +67,8 @@ export class MapService {
   addTemporaryMarker(latLng: LatLng): void {
     this.removeTemporaryMarker();
     const coordinates: [number, number] = [latLng.lng, latLng.lat];
-    const properties = { eventType: 2 };
+    const properties = { id: 'temporary' };
     this.addFeatureToSource(coordinates, properties);
-  }
-
-  removeMarker(eventId: string): void {
-    this.removeFeaturesByCondition((feature) => feature.properties?.['id'] === eventId);
   }
   
   removeTemporaryMarker(): void {
@@ -80,8 +76,19 @@ export class MapService {
     if ( popup.length ) {
       popup[0].remove();
     }  
-    this.removeFeaturesByCondition((feature) => feature.properties?.['eventType'] === 2);
+    this.removeMarkerById('temporary');
   }
+
+  removeMarkerById(id: string): void {
+    if (this.mapSource && this.markerMapData.has(id)) {
+        const data = this.mapSource._data as GeoJSON.FeatureCollection;
+        data.features = data.features.filter(
+            (feature: GeoJSON.Feature) => feature.properties?.['id'] !== id
+        );
+        this.mapSource.setData(data);
+        this.markerMapData.delete(id);
+    }
+}
 
   highlightMarker(eventId: string): void {
     // const layer = this.findMarker(eventId);
@@ -99,7 +106,7 @@ export class MapService {
   }
 
   addFeatureToSource(coordinates: [number, number], properties: Record<string, any>): void {
-    if (this.mapSource) {
+    if (this.mapSource && !this.markerMapData.has(properties['id'])) {
       const data = this.mapSource._data as GeoJSON.FeatureCollection;
       const newMarker: GeoJSON.Feature = {
         type: 'Feature',
@@ -111,17 +118,7 @@ export class MapService {
       };
       data.features.push(newMarker);
       this.mapSource.setData(data);
-    }
-  }
-
-  removeFeaturesByCondition(condition: (feature: GeoJSON.Feature) => boolean): void {
-    if (this.mapSource) {
-      const data = this.mapSource._data as GeoJSON.FeatureCollection;
-      const updatedFeatures = data.features.filter((feature) => !condition(feature));
-      this.mapSource.setData({
-        ...data,
-        features: updatedFeatures,
-      });
+      this.markerMapData.set(properties['id'],newMarker);
     }
   }
 }
