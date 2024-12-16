@@ -35,12 +35,11 @@ export class TimeFieldComponent implements OnInit {
       currentHour === 0 ? TIMES[1] : TIMES[currentHour * 2 + 2];
     const defaultEndTime =
       currentHour === 0 ? TIMES[2] : TIMES[currentHour * 2 + 2];
-
       this.form = this.fb.group({
         startDate: [new Date(), Validators.required],
         selectedTime: [defaultStartTime, Validators.required],
         endDate: [new Date()],
-        selectedEndTime: [defaultEndTime, ],
+        selectedEndTime: [defaultEndTime],
       });
   }
 
@@ -48,26 +47,29 @@ export class TimeFieldComponent implements OnInit {
     this.form.get('startDate')?.valueChanges.subscribe((startDate) => {
         const endDateControl = this.form.get('endDate');
         endDateControl?.setValue(startDate)
-        
       });
   }
 
   toogleEndTime() {
     this.isEndTime = !this.isEndTime;
+    if(this.isEndTime){
+      this.checkEndTimeHours();
+    }
       }
 
   checkEndTimeHours() {
-    const startDate = this.form.get('startDate')?.value;
-    const selectedTime = this.form.get('selectedTime')?.value;
+    if(this.isEndTime){
+      const startDate = this.form.get('startDate')?.value;
+      const selectedTime = this.form.get('selectedTime')?.value;
 
-    if (this.form.get('endDate')?.value?.toDateString() === startDate?.toDateString()) {
+      if (this.form.get('endDate')?.value?.toDateString() === startDate?.toDateString()) {
         this.endTimes = this.times.filter((time) => time > selectedTime);
-      this.form.patchValue({ selectedEndTime: this.endTimes[0] || '00:00' });
-    } else {
-      this.endTimes = [...this.times];
+        this.form.patchValue({ selectedEndTime: this.endTimes[0] || '00:00' });
+      } else {
+        this.endTimes = [...this.times];
+      }
+      this.updateDuration();
     }
-
-    this.updateDuration();
   }
 
    /**
@@ -81,6 +83,7 @@ export class TimeFieldComponent implements OnInit {
     const selectedTime = this.form.get('selectedTime')?.value;
     const selectedEndTime = this.form.get('selectedEndTime')?.value;
 
+    if(startDate && endDate){
        if (startDate.getTime() >= endDate.getTime()) {
          this.durationInDays.emit(0);
        } else {
@@ -93,6 +96,7 @@ export class TimeFieldComponent implements OnInit {
          const diffInMs = end - start;
          this.durationInDays.emit(diffInMs / 1000 / 60 / 60 / 24);
        }
+      }
   }
 
   getStartTime():string{
@@ -102,6 +106,8 @@ export class TimeFieldComponent implements OnInit {
   }
 
   getEndTime():string{
+    if(!this.isEndTime)
+      return '';
     const date = this.form.get('endDate')?.value;
     const time = this.form.get('selectedEndTime')?.value;
     return  this.initTime(date, time);
