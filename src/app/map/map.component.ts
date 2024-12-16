@@ -44,8 +44,6 @@ export class MapComponent implements OnInit {
           position.coords.latitude - 0.05
         }`;
         this.eventService.setCurrentPosition(param);
-        // update location field in create event form
-        this.mapService.convertLatLngToAddress(param);
         this.initMap(position.coords);
       },
       (err) => {
@@ -82,7 +80,16 @@ export class MapComponent implements OnInit {
     return new mapboxgl.GeolocateControl({
       positionOptions: { enableHighAccuracy: true },
       trackUserLocation: true,
-    });
+      showUserHeading: true
+    }).on('geolocate',(e)=>{
+
+      const param = {
+        lat: e.coords.latitude,
+        lng: e.coords.longitude,
+    };
+    this.eventService.setCurrentPosition(param);
+    this.eventService.updateDistances();
+    })
   }
 
   initGeocoder(): MapboxGeocoder {

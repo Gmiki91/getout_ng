@@ -234,6 +234,11 @@ export class EventsService {
     return this.yourEvents().some((e) => e.id == id);
   }
 
+  updateDistances():void{
+    this.updateDistanceOfEvents(this._otherEvents());
+    this.updateDistanceOfEvents(this._yourEvents());
+  }
+
   private updateDistanceOfEvents(events: Event[]): Event[] {
     return events.map((event) => {
       event.distance = this.addDistance(event.latLng);
