@@ -1,4 +1,4 @@
-import { Component, computed, inject, output } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,7 @@ import { take } from 'rxjs';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import { TimeTextPipe } from '../pipes/time-text.pipe';
+import { StateService } from '../services/state.service';
 
 @Component({
   selector: 'app-header',
@@ -26,17 +27,16 @@ import { TimeTextPipe } from '../pipes/time-text.pipe';
 export class HeaderComponent {
   userService = inject(UserService);
   eventService = inject(EventsService);
+  stateService = inject(StateService);
   user = this.userService.user;
   unseenNotifications = computed(() =>this.user().notifications.filter(notification => !notification.read).length);
-  toggleSideBar = output();
-  toggleFilter = output();
   isSpinning = false;
 
   onToggleSideBar(): void {
-    this.toggleSideBar.emit();
+    this.stateService.toggleSideBar();
   }
   onToggleFilter(): void {
-    this.toggleFilter.emit();
+    this.stateService.toggleFilter();
   }
   onToggleEventForm(): void {
     this.eventService.toggleEventForm();

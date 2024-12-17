@@ -4,6 +4,7 @@ import { EventsService } from '../services/events.service';
 import { MapService } from '../services/map.service';
 import { Event } from '../models/event.model';
 import { EventListComponent } from '../event-list/event-list.component';
+import { slideDown } from '../utils/utils';
 
 @Component({
   selector: 'app-event-sidebar',
@@ -14,6 +15,7 @@ import { EventListComponent } from '../event-list/event-list.component';
   ],
   templateUrl: './event-sidebar.component.html',
   styleUrl: './event-sidebar.component.scss',
+  animations:[slideDown]
 })
 export class EventSidebarComponent {
   private eventsService = inject(EventsService);

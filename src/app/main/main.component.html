@@ -1,0 +1,15 @@
+<div class="body">
+  @if(showSideBar() && areEventsLoaded()){
+  <app-event-sidebar @dumbParent></app-event-sidebar>
+  } @if(showFilter()){
+  <app-filter @dumbParent></app-filter>
+  } @if(showMap){ @defer{
+  <app-map />
+  } } @if(isFormOpen()){
+  <app-event-form @dumbParent></app-event-form>
+  } @if(isEventDetailsOpen()){
+  <app-event-details @dumbParent></app-event-details>
+  } @if(isEventUpdating()){
+  <app-event-modify @dumbParent></app-event-modify>
+  }
+</div>

@@ -3,74 +3,8 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-
-  app-header{
-    z-index:100;
-  }
-  .body {
-    position: relative;
-    flex-grow: 1;
-
-    .event-sidebar{
-      position: absolute;
-      width: 25rem;
-      transition: transform 0.3s ease;
-      z-index: 20;
-
-      &.hidden {
-        transform: translateY(-100%);
-      }
-    }
-    .filter-container {
-      position: absolute;
-      width:20rem;
-      left: 26rem;
-      transition: transform 0.3s ease;
-      z-index: 10;
-      border-radius: 15px;
-
-      &.hidden {
-        transform: translatey(-100%);
-      }
-    }
-    app-map {
-      flex-grow: 1;
-      height: 100%;
-    }
-    app-event-form{
-      transition: transform 0.3s ease;
-      transform: translatey(-100%);
-    
-    }
-    app-event-details{
-      transition: transform 0.3s ease;
-      &.hidden {
-        transform: translatey(-100%);
-      }
-    }
-   
+  app-header {
+    z-index: 33;
+    height: 5vh;
   }
 }
-@media (max-width: 768px) {
-.container{
-    .body {
-      .event-sidebar {
-        width: 12rem;
-      }  
-      .filter-container{
-        width: 11rem;
-        left:12rem;
-      }
-    }
-  }
-}
-@media (max-width: 400px) {
-  .container{
-      .body {
-        .filter-container{
-          width: 9rem;
-        
-        }
-      }
-    }
-  }

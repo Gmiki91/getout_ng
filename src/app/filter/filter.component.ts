@@ -5,12 +5,14 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSliderModule} from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
+import { slideDown } from '../utils/utils';
 @Component({
   selector: 'app-filter',
   standalone: true,
   imports: [MatIcon,MatMenuModule, MatSlideToggleModule,MatSliderModule,FormsModule],
   templateUrl: './filter.component.html',
-  styleUrl: './filter.component.scss'
+  styleUrl: './filter.component.scss',
+  animations: [slideDown]
 })
 export class FilterComponent {
   //time ascending is the default sort by from the backend, so the first click has to change the direction

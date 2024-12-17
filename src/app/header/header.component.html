@@ -9,7 +9,7 @@
   </div>
   <div class="right">
     <button [matBadge]="unseenNotifications()" [matBadgeHidden]="unseenNotifications()==0"  
-    mat-icon-button matTooltip="Events" matTooltipShowDelay="500"  [matMenuTriggerFor]="notifications" (menuClosed)="menuClosed()"> <mat-icon>notifications</mat-icon></button>
+    mat-icon-button matTooltip="Notifications" matTooltipShowDelay="1000"  [matMenuTriggerFor]="notifications" (menuClosed)="menuClosed()"> <mat-icon>notifications</mat-icon></button>
     <mat-menu   #notifications="matMenu" >
       @if(user().notifications.length>0){
         @for(notific of user().notifications;track $index){
@@ -22,7 +22,6 @@
           <span>No notifications</span>
         </div>
       }
-   
       
     </mat-menu>
     <span class="username">

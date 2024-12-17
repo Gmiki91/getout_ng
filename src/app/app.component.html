@@ -1,24 +1,4 @@
 <div class="container">
-  <app-header
-    (toggleSideBar)="toggleSideBar()"
-    (toggleFilter)="toggleFilter()"
-  ></app-header>
-  <div class="body">
-    <div class="event-sidebar" [class.hidden]="!showSideBar || !areEventsLoaded()">
-      <app-event-sidebar></app-event-sidebar>
-    </div>
-    <div class="filter-container" [class.hidden]="!showFilter" >
-      <app-filter></app-filter>
-    </div>
-    @if(showMap){ @defer{<app-map />} } 
-    @if(isFormOpen()){
-    <app-event-form @dumbParent></app-event-form>
-    } 
-    @if(isEventDetailsOpen()){
-        <app-event-details @dumbParent></app-event-details>
-    }
-    @if(isEventUpdating()){
-      <app-event-modify @dumbParent></app-event-modify>
-    }
-  </div>
+  <app-header/>
+<app-main/>
 </div>
