@@ -22,7 +22,8 @@ export class EventsService {
   private _currentPosition = signal<LatLng>({ lat: 0, lng: 0 });
   private _userService = inject(UserService);
   private _user = this._userService.user;
-  private _unfilteredEvents: Event[] = [];
+  private _unfilteredOtherEvents: Event[] = [];
+  private _unfilteredYourEvents: Event[] = [];
   private _mapService = inject(MapService)
   currentPosition = this._currentPosition.asReadonly();
   yourEvents = this._yourEvents.asReadonly();
@@ -51,7 +52,8 @@ export class EventsService {
     const updatedOtherEvents = this.updateDistanceOfEvents(otherEvents);
     const updatedYourEvents = this.updateDistanceOfEvents(joinedEvents);
 
-    this._unfilteredEvents = updatedOtherEvents;
+    this._unfilteredOtherEvents = updatedOtherEvents;
+    this._unfilteredYourEvents = updatedYourEvents;
     this._otherEvents.set(updatedOtherEvents);
     this._yourEvents.set(updatedYourEvents);
   }
@@ -100,7 +102,8 @@ export class EventsService {
   deleteEvent(eventId: string, ownerId: string): void {
     if (this._user().id === ownerId) {
       this._http.delete(`${this.bridgeUrl}/events/${eventId}`).subscribe(() => {
-        this._unfilteredEvents = this._unfilteredEvents.filter((e) => e.id !== eventId);
+        this._unfilteredYourEvents = this._unfilteredYourEvents.filter((e) => e.id !== eventId);
+        this._unfilteredOtherEvents = this._unfilteredOtherEvents.filter((e) => e.id !== eventId);
         this._otherEvents.update((events) =>
           events.filter((e) => e.id !== eventId)
         );
@@ -220,12 +223,21 @@ export class EventsService {
 
   applyFilters(hide: boolean, distance: number): void {
     this._otherEvents.set(
-      this._unfilteredEvents.filter((event) => {
+      this._unfilteredOtherEvents.filter((event) => {
         const passesFullFilter = !hide || (event.max == 0 || event.max > event.participants.length);
         const passesDistanceFilter = event.distance <= distance * 1000;
          if(!passesDistanceFilter || !passesFullFilter) this._mapService.removeMarkerById(event.id);
          if(passesDistanceFilter && passesFullFilter) this._mapService.addMarker(event);
         return passesFullFilter && passesDistanceFilter;
+      })
+    );
+
+    this._yourEvents.set(
+      this._unfilteredYourEvents.filter(event=>{
+        const passesDistanceFilter = event.distance <= distance * 1000;
+        if(!passesDistanceFilter) this._mapService.removeMarkerById(event.id);
+        else this._mapService.addMarker(event);
+        return passesDistanceFilter;
       })
     );
   }
