@@ -41,6 +41,12 @@ export class HeaderComponent {
   onToggleEventForm(): void {
     this.eventService.toggleEventForm();
   }
+  onToggleRegister():void{
+    this.stateService.toggleRegister()
+  }
+  onToggleLogin():void{
+    this.stateService.toggleLogin()
+  }
   onToggleEventDetails(eventId: string): void {
     if(eventId!='0'){ // for event deletion notification, eventId is set for 0
       this.eventService.selectEventById(eventId);

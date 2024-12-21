@@ -1,0 +1,40 @@
+<div (click)="closeDialog()" class="backdrop"></div>
+<dialog open class="container" @slideDown>
+<mat-card>
+    <mat-card-content>
+      <form class="form" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+        <mat-form-field appearance="outline">
+          <mat-label for="name">name</mat-label>
+          <input
+            matInput
+            required
+            name="name"
+            ngModel
+            #name="ngModel"
+            type="text"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label for="password">password</mat-label>
+          <input
+            matInput
+            required
+            name="password"
+            ngModel
+            #password="ngModel"
+            type="password"
+          />
+        </mat-form-field>
+        <mat-card-actions class="actions">
+          <button
+            mat-flat-button
+            type="submit"
+            class="bold"
+            [disabled]="loginForm.invalid">
+            sign in
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</dialog>

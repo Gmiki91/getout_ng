@@ -11,5 +11,9 @@
   <app-event-details @dumbParent></app-event-details>
   } @if(isEventUpdating()){
   <app-event-modify @dumbParent></app-event-modify>
+  }@if(showLogin()){
+    <app-login @dumbParent/>
+  }@if(showRegister()){
+    <app-register @dumbParent/>
   }
 </div>

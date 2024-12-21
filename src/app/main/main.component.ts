@@ -10,6 +10,8 @@ import { dumbParent } from '../utils/utils';
 import { UserService } from '../services/user.service';
 import { EventsService } from '../services/events.service';
 import { StateService } from '../services/state.service';
+import { LoginComponent } from '../auth/login/login.component';
+import { RegisterComponent } from '../auth/register/register.component';
 @Component({
   selector: 'app-main',
   standalone: true,
@@ -18,7 +20,9 @@ import { StateService } from '../services/state.service';
       EventFormComponent,
       EventDetailsComponent,
       EventModifyComponent,
-      FilterComponent
+      FilterComponent,
+      LoginComponent,
+      RegisterComponent
     ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
@@ -35,6 +39,8 @@ export class MainComponent implements OnInit {
   areEventsLoaded = this.eventService.areEventsLoaded;
   showSideBar = this.stateService.showSideBar;
   showFilter = this.stateService.showFilter;
+  showLogin = this.stateService.showLogin;
+  showRegister = this.stateService.showRegister;
   showMap = false;
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
