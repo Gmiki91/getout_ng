@@ -10,5 +10,5 @@ import { MainComponent } from './main/main.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent  {
-  title = 'getout_ng';
+  title = 'Sign sign';
 }
