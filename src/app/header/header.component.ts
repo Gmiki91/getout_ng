@@ -9,6 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import { TimeTextPipe } from '../pipes/time-text.pipe';
 import { StateService } from '../services/state.service';
+import { MyNotification } from '../models/my-notification.model';
 
 @Component({
   selector: 'app-header',
@@ -29,7 +30,7 @@ export class HeaderComponent {
   eventService = inject(EventsService);
   stateService = inject(StateService);
   user = this.userService.user;
-  unseenNotifications = computed(() =>this.user().notifications.filter(notification => !notification.read).length);
+  unseenNotifications = computed(() =>this.user().notifications.filter((notification:MyNotification) => !notification.read).length);
   isSpinning = false;
 
   onToggleSideBar(): void {

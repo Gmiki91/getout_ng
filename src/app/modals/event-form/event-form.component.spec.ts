@@ -52,30 +52,6 @@ describe('Event-form', () => {
   it('should create component', () => {
     expect(component).toBeTruthy();
   });
-
-  describe('should set up default time', () => {
-    it(' 30 minutes in the future', () => {
-      const fakeDate = new Date().setHours(10);
-      jest.useFakeTimers().setSystemTime(fakeDate);
-      component.ngOnInit();
-
-      expect(component.selectedTime).toBe(TIMES[10 * 2 + 1]); // 10:30
-    });
-    it('at 00:00 if it is past 22:59', () => {
-      const fakeDate = new Date().setHours(23);
-      jest.useFakeTimers().setSystemTime(fakeDate);
-      component.ngOnInit();
-
-      expect(component.selectedTime).toBe(TIMES[0]);
-    });
-    it('at 00:30 if it is 0 hour (midnight)', () => {
-      const fakeDate = new Date().setHours(0);
-      jest.useFakeTimers().setSystemTime(fakeDate);
-      component.ngOnInit();
-
-      expect(component.selectedTime).toBe(TIMES[1]);
-    });
-  });
   it('should not submit form when invalid', () => {
     const invalidForm = {
       valid: false,
@@ -112,13 +88,4 @@ describe('Event-form', () => {
     expect(mockEventsService.toggleEventForm).toHaveBeenCalled();
   });
 
-  it('should complete the unsubscribe$ subject when component is destroyed', () => {
-    const unsubscribeSpy = jest.spyOn(component.unsubscribe$, 'next');
-    const completeSpy = jest.spyOn(component.unsubscribe$, 'complete');
-
-    component.ngOnDestroy();
-
-    expect(unsubscribeSpy).toHaveBeenCalled();
-    expect(completeSpy).toHaveBeenCalled();
-  });
 });

@@ -13,6 +13,7 @@ describe('KommentService', () => {
     text: 'Test comment',
     userName: 'Username',
     timestamp: '2024-01-01T12:00:00Z',
+    userAvatarUrl:'',
   };
   const newKommentData: NewKommentData = {
     text: 'Test new comment',

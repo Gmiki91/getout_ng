@@ -38,7 +38,7 @@ export class NominatimService {
     const {country,city,house_number,road, postcode} = item.address;
     return {
       latLng: { lat: item.lat, lng: item.lon },
-      displayName: `${city|| ''}, ${road|| ''} ${house_number || ''}, ${postcode|| ''}, ${country|| ''}`,
+      displayName: `${city|| ''} ${city? ',': ''} ${road|| ''} ${house_number || ''}${road || house_number ? ',':''} ${postcode|| ''}${postcode?',':''} ${country|| ''}`,
     };
   }
 }

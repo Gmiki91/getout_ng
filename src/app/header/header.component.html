@@ -30,7 +30,7 @@
     <span class="username">
       hi {{ user().name }}!
     </span>
-    <img  class="avatar" [src]="user().avatarUrl" alt="no img :*("  [matMenuTriggerFor]="menu" matTooltip="That's you!" matTooltipShowDelay="500"/>
+    <img  class="avatar" [src]="user().avatarUrl" alt="no img :*("  matTooltip="That's you!" matTooltipShowDelay="500"/> <!-- [matMenuTriggerFor]="menu"-->
     <mat-menu class="menu" #menu="matMenu" >
       <div mat-menu-item (click)="onToggleLogin()">
         <mat-icon>login</mat-icon> <strong>Sign in</strong>
