@@ -20,7 +20,7 @@ import { MatCardModule } from '@angular/material/card';
 import { EventsService } from '../../services/events.service';
 import { MapService } from '../../services/map.service';
 import { UserService } from '../../services/user.service';
-import User from '../../models/user.model';
+import {Visitor} from '../../models/user.model';
 import { slideDown } from '../../utils/utils';
 import { MatIcon } from '@angular/material/icon';
 import { MockUser } from '../../utils/mock.factory';
@@ -64,7 +64,7 @@ export class EventDetailsComponent implements OnInit {
   komments = this.kommentService.comments;
   showCommentBtn = false;
   showLocationInfo = false;
-  user= signal<User>(MockUser);
+  user= signal<Visitor>(MockUser);
   snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {

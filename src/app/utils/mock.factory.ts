@@ -1,6 +1,6 @@
 import { Event } from "../models/event.model";
 import { MyNotification } from "../models/my-notification.model";
-import User from "../models/user.model";
+import {Visitor} from "../models/user.model";
 const defaultMockEvent: Event = {
     id: '1',
     title: 'Event 1',
@@ -25,7 +25,7 @@ export function createMockEvent(overrides: Partial<Event> = {}): Event {
     };
   }
 
-export const MockUser: User={
+export const MockUser: Visitor={
   id: "1",
   name: "???",
   avatarUrl: "https://getoutimages.blob.core.windows.net/avatars/1.png",

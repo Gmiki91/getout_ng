@@ -1,5 +1,5 @@
 import { Komment } from './komment.model';
-import User from './user.model';
+import {Visitor} from './user.model';
 export type Recurrence = 'never' | 'daily' | 'weekly' | 'monthly';
 export type LatLng = {
   lat: number;
@@ -13,7 +13,7 @@ export type Event = {
   distance: number;
   time: string;
   endTime: string;
-  participants: User[];
+  participants: Visitor[];
   min: number;
   max: number;
   info: string;
