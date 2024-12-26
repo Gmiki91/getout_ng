@@ -36,9 +36,10 @@ export class TimeTextPipe implements PipeTransform {
     const daysDiff = Math.floor(hoursDiff / 24);
 
     if (daysDiff >= 1) {
-      return daysDiff === 1
-        ? `1 day ${appendix}`
-        : `${daysDiff} days ${appendix}`;
+      const isNextDay = eventDate.getDate() === now.getDate() + 1;
+      return isNextDay && hoursDiff >= 24
+          ? `1 day ${appendix}`
+          : `${daysDiff+1} days ${appendix}`;
     }
 
     if (hoursDiff >= 1) {
@@ -63,15 +64,11 @@ export class TimeTextPipe implements PipeTransform {
     const hoursDiff = Math.floor(minutesDiff / 60);
 
     if (hoursDiff >= 1) {
-      return hoursDiff === 1
-        ? `1 hour ago`
-        : `${hoursDiff} hours ago`;
+      return hoursDiff === 1 ? `1 hour ago` : `${hoursDiff} hours ago`;
     }
 
     if (minutesDiff >= 1) {
-      return minutesDiff === 1
-        ? `1 minute ago`
-        : `${minutesDiff} minutes ago`;
+      return minutesDiff === 1 ? `1 minute ago` : `${minutesDiff} minutes ago`;
     }
 
     return 'Just now';
