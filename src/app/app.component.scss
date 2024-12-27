@@ -3,8 +3,8 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-y: hidden;
   app-header {
     z-index: 33;
-    height: 5vh;
   }
 }

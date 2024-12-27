@@ -2,7 +2,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 30px;
   padding: 10px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
   background: linear-gradient(
@@ -13,26 +12,26 @@
 
   .left {
     display: flex;
-    .button-group{
-    margin-left:1rem;
+    .button-group {
+      margin-left: 1rem;
+      display: flex;
     }
   }
-  .right{
-    display:flex;
+  .right {
+    display: flex;
     align-items: center;
   }
-  .avatar{
-    width:40px;
-    height:40px;
+  .avatar {
+    width: 40px;
+    height: 40px;
     border-radius: 30px;
     cursor: pointer;
     margin-left: 5px;
   }
 
-  .logo{
-    width:60px;
-    height:40px;
-    border-radius: 30px;
+  .logo {
+    width: 60px;
+    height: 40px;
   }
 
   .username {
@@ -43,7 +42,7 @@
     font-weight: bold;
     color: white;
   }
-  
+
   .spin .refresh-icon {
     display: inline-block;
     animation: spin 0.25s linear;
@@ -52,7 +51,7 @@
 
 button {
   align-self: center;
-  color:white
+  color: white;
 }
 
 @keyframes spin {
@@ -67,10 +66,10 @@ button {
 @media (max-width: 768px) {
   .container {
     .username {
-      font-size: 1rem;
+      display:none;
     }
-    .avatar{
-      margin-left: 0
+    .avatar {
+      margin-left: 0;
     }
   }
 }
