@@ -33,15 +33,23 @@
     </div>
   </div>
   <div class="row">
-    <div class="slider-group">
-      <mat-slider min="1" max="25" step="1" discrete>
-        <input
-          matSliderThumb
-          (dragEnd)="onSliderDragEnd()"
-          [(ngModel)]="maxDistance"
-        />
-      </mat-slider>
-      <strong>Max distance: {{ maxDistance }} km </strong>
-    </div>
+    <div>
+        <mat-checkbox (change)="toggleDistance()" [checked]="distanceToggle"></mat-checkbox> 
+        @if(distanceToggle){
+          <strong>Max distance
+              <input
+            matInput
+            type="number"
+            min="0"
+            max="1000"
+            (input)="updateDistance($event)"
+            [disabled]="!distanceToggle"
+            [(ngModel)]="maxDistance"
+          />
+          km </strong>
+        }@else{
+          <strong>Max distance</strong>
+        }
+      </div>
   </div>
 </div>

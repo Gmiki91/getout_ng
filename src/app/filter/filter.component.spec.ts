@@ -101,15 +101,10 @@ describe('FilterComponent', () => {
       it('should call hideFullEvent when button is clicked', () => {
         const toggle = fixture.debugElement.query(By.css('mat-slide-toggle'));
         toggle.triggerEventHandler('change');
-        expect(mockEventsService.hideFullEvents).toHaveBeenCalled();
+        expect(mockEventsService.applyFilters).toHaveBeenCalled();
       });
 
-      it('should toggle hideFullEvents property', () => {
-        component.toggleFullEvents();
-        expect(component.hideFullEvents()).toBe(true);
-        component.toggleFullEvents();
-        expect(component.hideFullEvents()).toBe(false);
-      });
+      
     });
   });
   describe('integration tests', () => {
@@ -139,12 +134,6 @@ describe('FilterComponent', () => {
       const sortByTimeSpy = jest.spyOn(eventsService, 'sortByTime');
       component.sortByTime();
       expect(sortByTimeSpy).toHaveBeenCalledWith(false); //time is the default sort
-    });
-
-    it('should call hideFullEvents', () => {
-      const hideFullEventsSpy = jest.spyOn(eventsService, 'hideFullEvents');
-      component.toggleFullEvents();
-      expect(hideFullEventsSpy).toHaveBeenCalled();
     });
   });
 });

@@ -3,13 +3,14 @@ import { MatIcon } from '@angular/material/icon';
 import { EventsService } from '../services/events.service';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatSliderModule} from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { slideDown } from '../utils/utils';
+import { MatCheckbox } from '@angular/material/checkbox';
+
 @Component({
   selector: 'app-filter',
   standalone: true,
-  imports: [MatIcon,MatMenuModule, MatSlideToggleModule,MatSliderModule,FormsModule],
+  imports: [MatIcon,MatMenuModule, MatSlideToggleModule,MatCheckbox,FormsModule],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.scss',
   animations: [slideDown]
@@ -21,7 +22,8 @@ export class FilterComponent {
   eventService = inject(EventsService);
   sort:'Time' | 'Distance' = 'Time';
   maxDistance = 10;
-  hideFullEvents = false
+  hideFullEvents = false;
+  distanceToggle=false;
   
   
   sortByDistance(): void {
@@ -38,10 +40,22 @@ export class FilterComponent {
 
   toggleFullEvents(): void {
     this.hideFullEvents = !this.hideFullEvents;
-    this.eventService.applyFilters(this.hideFullEvents,this.maxDistance);
+    this.applyFilters();
   }
 
-  onSliderDragEnd():void{
-   this.eventService.applyFilters(this.hideFullEvents,this.maxDistance)
+  toggleDistance(): void {
+    this.distanceToggle = !this.distanceToggle;
+    this.maxDistance = this.distanceToggle ? (this.maxDistance === 41000 ? 10 : this.maxDistance) : 41000;
+    this.applyFilters();
+  }
+  
+  updateDistance(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.maxDistance = +value;
+    this.applyFilters();
+  }
+  
+  applyFilters(): void {
+    this.eventService.applyFilters(this.hideFullEvents, this.maxDistance);
   }
 }
