@@ -2,7 +2,7 @@ import { Injectable, signal, inject } from '@angular/core';
 import { NewEventData, Event, LatLng, UpdateEventData } from '../models/event.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { calculateDistance } from '../utils/utils';
 import { UserService } from './user.service';
 import { MapService } from './map.service';
@@ -41,6 +41,10 @@ export class EventsService {
         `${this.url}/user/${this._user().id}`
       )
       .pipe(
+        catchError((error) => {
+          alert('An error occurred while fetching events, please try again!');
+          return throwError(()=>new Error("An error occurred while fetching events: " + error.message));
+        }),
         tap((result) => {
           this.setEvents(result.joinedEvents, result.otherEvents);
           this._areEventsLoaded.set(true);
