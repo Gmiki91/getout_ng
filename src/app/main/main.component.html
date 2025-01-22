@@ -3,7 +3,7 @@
   <app-event-sidebar @dumbParent></app-event-sidebar>
   } @if(showFilter()){
   <app-filter @dumbParent></app-filter>
-  } @if(showMap){ @defer{
+  } @if(showMap()){ @defer{
   <app-map />
   } } @if(isFormOpen()){
   <app-event-form @dumbParent></app-event-form>

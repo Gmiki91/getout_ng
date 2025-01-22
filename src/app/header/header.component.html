@@ -27,9 +27,13 @@
       }
       
     </mat-menu>
-    <span class="username">
-      hi {{ user().name }}!
-    </span>
+    @if(loading()){
+      <mat-spinner diameter="30"></mat-spinner>
+    }@else { 
+      <span class="username">
+        hi {{ user().name }}!
+      </span>
+    }
     <img  class="avatar" [src]="user().avatarUrl" alt="no img :*("  [matTooltip]="'a '+user().name" matTooltipShowDelay="500"/> <!-- [matMenuTriggerFor]="menu"-->
     <mat-menu class="menu" #menu="matMenu" >
       <div mat-menu-item (click)="onToggleLogin()">

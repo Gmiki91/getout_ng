@@ -1,4 +1,4 @@
 <div class="container">
-  <app-header/>
-<app-main/>
+  <app-header [loading]="loading"/>
+<app-main [showMap]="!loading"/>
 </div>

@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +10,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { TimeTextPipe } from '../pipes/time-text.pipe';
 import { StateService } from '../services/state.service';
 import { MyNotification } from '../models/my-notification.model';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-header',
@@ -19,13 +20,15 @@ import { MyNotification } from '../models/my-notification.model';
     MatTooltip,
     MatMenuModule,
     MatBadgeModule,
-    TimeTextPipe,
+    MatProgressSpinnerModule,
+    TimeTextPipe
   ],
   standalone: true,
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
+  loading = input<boolean>();
   userService = inject(UserService);
   eventService = inject(EventsService);
   stateService = inject(StateService);
