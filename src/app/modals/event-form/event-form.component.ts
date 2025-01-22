@@ -20,6 +20,7 @@ import { LocationInfoComponent } from "../location-info/location-info.component"
 import { LocationFieldComponent } from "../form-fields/location-field.component";
 import { TimeFieldComponent } from '../form-fields/time-field/time-field.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-event-form',
@@ -36,6 +37,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatIcon,
     MatRadioModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule,
     LocationInfoComponent,
     LocationFieldComponent,
     TimeFieldComponent
@@ -59,7 +61,7 @@ export class EventFormComponent{
   markerPosition = this.mapService.markerPosition; // stores address selected from the map
   durationInDays = 0;
   snackBar = inject(MatSnackBar);
-
+  loading=false;
   onClose() {
     this.locationSelectMode ? this.locationSelectMode=false : this.eventsService.toggleEventForm();
   }
@@ -75,6 +77,7 @@ export class EventFormComponent{
   updateDurationInDays(value:number){
     this.durationInDays = value;
   }
+
   onSubmit(form: NgForm) {
     if (form.valid && this.markerAddress() && this.markerPosition()) {
       const { title,min, max, info, recurring } = form.form.value;
@@ -84,6 +87,7 @@ export class EventFormComponent{
       const latLng = this.markerPosition();
       this.mapService.removeTemporaryMarker();
       let finalRecurring = this.checkDuration(this.durationInDays, recurring);
+      this.loading=true;
       const sub = this.eventsService
         .addEvent({
           title: title,
@@ -98,6 +102,7 @@ export class EventFormComponent{
         })
         .subscribe({
           next: (event) => {
+            this.loading=false;
             this.mapService.addMarker(event);
             this.onClose();
             this.snackBar.open("created "+title,undefined,{duration:3000});

@@ -63,6 +63,7 @@ export class MapComponent implements OnInit {
         : { lat: 0, lon: 0 },
       zoom: 13,
     });
+    map.on('error', e => alert("An error occurred while initializing the map, please try again later."));
     this.addControls(map);
     this.addListeners(map);
     this.mapService.setMap(map);

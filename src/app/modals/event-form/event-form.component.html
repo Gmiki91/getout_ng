@@ -4,6 +4,12 @@
   [class]="{ 'fit-height': locationSelectMode }"
   @slideDown>
   <mat-card class="event-card">
+    @if(loading){
+      <div class="form-backdrop">
+        <div class="spinner-container">
+          <mat-spinner></mat-spinner></div>
+        </div>
+    }
     @if(!locationSelectMode){
     <mat-card-header>
       <mat-card-title>new event</mat-card-title>
