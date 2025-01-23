@@ -33,8 +33,8 @@
       <span class="username">
         hi {{ user().name }}!
       </span>
+      <img  class="avatar" [src]="user().avatarUrl" alt="no img :*("  [matTooltip]="'a '+user().name" matTooltipShowDelay="500"/> <!-- [matMenuTriggerFor]="menu"-->
     }
-    <img  class="avatar" [src]="user().avatarUrl" alt="no img :*("  [matTooltip]="'a '+user().name" matTooltipShowDelay="500"/> <!-- [matMenuTriggerFor]="menu"-->
     <mat-menu class="menu" #menu="matMenu" >
       <div mat-menu-item (click)="onToggleLogin()">
         <mat-icon>login</mat-icon> <strong>Sign in</strong>
