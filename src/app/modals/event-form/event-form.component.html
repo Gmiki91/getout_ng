@@ -25,7 +25,7 @@
             required
             id="title"
             name="title"
-            ngModel
+            [(ngModel)]="defaultTitle"
             #title="ngModel"/>
           <mat-error>Title is invalid</mat-error>
         </mat-form-field>

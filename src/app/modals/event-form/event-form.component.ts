@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   DestroyRef,
   inject,
   ViewChild,
@@ -62,6 +63,9 @@ export class EventFormComponent{
   durationInDays = 0;
   snackBar = inject(MatSnackBar);
   loading=false;
+  eventCount = computed(()=>this.eventsService.yourEvents().length + this.eventsService.otherEvents().length);
+  defaultTitle = "OTB #"+(this.eventCount()+1); 
+
   onClose() {
     this.locationSelectMode ? this.locationSelectMode=false : this.eventsService.toggleEventForm();
   }
