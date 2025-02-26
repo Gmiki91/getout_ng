@@ -38,7 +38,7 @@ describe('EventComponent', () => {
     });
 
     it('should retrieve uuid', () => {
-      expect(component.user().id).toBe('0'); // Since no 'uuid' is set, the fallback value is '0'
+      expect(component.user().id).toBe(null); // Since no 'uuid' is set, the fallback value is null
     });
 
     it('should call mapService.flyTo with the event location on marker click', () => {

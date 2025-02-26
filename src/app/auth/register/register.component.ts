@@ -25,10 +25,10 @@ export class RegisterComponent {
 
   onSubmit(form:NgForm){
     if (form.valid) {
-      const { name,email, password, password2 } = form.value;
+      const { username,email, password, password2 } = form.value;
       if (password !== password2) return;
       
-      this.authService.register(name,email, password).subscribe({
+      this.authService.register(username,email, password).subscribe({
         next: (response) => {
           console.log('Registration successful', response);
           this.closeDialog();

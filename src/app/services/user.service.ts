@@ -16,7 +16,7 @@ export class UserService {
   initializeUser(): Promise<void> {
     return new Promise((resolve) => {
       if (isPlatformBrowser(this.platformId)) {
-        const uid = localStorage.getItem('uuid') || '0';
+        const uid = localStorage.getItem('uuid') || 'c7a2a99c-db48-4c17-891a-126a13b7bb8f';
         this.http.get<Visitor>(`${this.url}/check/${uid}`).subscribe({
           next: (user) => {
             this.setUser(user);

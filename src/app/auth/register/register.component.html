@@ -4,18 +4,18 @@
     <mat-card-content>
       <form class="form" #regForm="ngForm" (ngSubmit)="onSubmit(regForm)">
         <mat-form-field appearance="outline">
-          <mat-label for="name">name</mat-label>
+          <mat-label for="username">username</mat-label>
           <input
             matInput
             required
-            name="name"
+            name="username"
             ngModel
-            #name="ngModel"
+            #username="ngModel"
             type="text"
           />
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label for="name">e-mail</mat-label>
+          <mat-label for="email">e-mail</mat-label>
           <input
             matInput
             required

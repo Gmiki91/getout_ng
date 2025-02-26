@@ -52,7 +52,7 @@ export class HeaderComponent {
     this.stateService.toggleLogin()
   }
   onToggleEventDetails(eventId: string): void {
-    if(eventId!='0'){ // for event deletion notification, eventId is set for 0
+    if(eventId!=null){ // for event deletion notification, eventId is set for null
       this.eventService.selectEventById(eventId);
     }
   }
