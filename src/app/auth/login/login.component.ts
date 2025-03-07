@@ -21,14 +21,15 @@ export class LoginComponent {
   authService = inject(AuthService);
   onSubmit(form:NgForm){
     if (form.valid) {
-      const { email, password } = form.value;
-      this.authService.login(email, password).subscribe({
+      const { name, password } = form.value;
+      this.authService.login(name, password).subscribe({
         next: (response) => {
           console.log('Login successful', response);
           this.closeDialog();
         },
         error: (error) => {
           console.error('Login failed', error);
+          alert('Username or password is incorrect');
         }
       });
     } else {

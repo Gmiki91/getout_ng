@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, DestroyRef, inject, input, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,14 +27,23 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   loading = input<boolean>();
+  destroyRef = inject(DestroyRef);
   userService = inject(UserService);
   eventService = inject(EventsService);
   stateService = inject(StateService);
   user = this.userService.user;
   unseenNotifications = computed(() =>this.user().notifications.filter((notification:MyNotification) => !notification.read).length);
   isSpinning = false;
+  isAuthenticated = false;
+
+  ngOnInit(): void {
+    const sub = this.userService.isAuthenticated$.subscribe((isAuthenticated) => {
+      this.isAuthenticated = isAuthenticated;
+    });
+    this.destroyRef.onDestroy(() => sub.unsubscribe());
+  }
 
   onToggleSideBar(): void {
     this.stateService.toggleSideBar();
@@ -55,6 +64,9 @@ export class HeaderComponent {
     if(eventId!=null){ // for event deletion notification, eventId is set for null
       this.eventService.selectEventById(eventId);
     }
+  }
+  onLogOut():void{
+    this.userService.logout();
   }
   onRefresh(): void {
     this.eventService.getEvents().pipe(take(1)).subscribe(()=>{

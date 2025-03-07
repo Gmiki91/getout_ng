@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { User } from '../models/user.model';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,18 +12,17 @@ import { User } from '../models/user.model';
 export class AuthService {
   private url = environment.url + 'auth';
   private http = inject(HttpClient);
+  private userService = inject(UserService);
 
   login(username: string,password: string): Observable<{ status: boolean; token: string,user:User }> {
     return this.http.post<{ status: boolean; token: string,user:User }>(`${this.url}/login`, {username,password})
       .pipe(tap(response => {
           if (response.token) {
             localStorage.setItem('authToken', response.token);
+            this.userService.isAuthenticated$.next(true); 
+            this.userService.setUser(response.user);
           }
         }));
-  }
-
-  logout(): void {
-    localStorage.removeItem('authToken');
   }
 
   register(username: string,email: string,password: string): Observable<{ status: boolean; token: string,user:User }> {
@@ -30,11 +30,10 @@ export class AuthService {
       .pipe(tap(response => {
           if (response.token) {
             localStorage.setItem('authToken', response.token);
+            this.userService.isAuthenticated$.next(true); 
+            this.userService.setUser(response.user);
           }
         }));
   }
 
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('authToken');
-  }
 }

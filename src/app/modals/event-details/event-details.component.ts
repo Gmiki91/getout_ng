@@ -64,7 +64,7 @@ export class EventDetailsComponent implements OnInit {
   komments = this.kommentService.comments;
   showCommentBtn = false;
   showLocationInfo = false;
-  user= signal<Visitor>(MockUser);
+  user= signal<Visitor>(MockUser).asReadonly();
   snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {

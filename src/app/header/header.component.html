@@ -36,12 +36,18 @@
       <img  class="avatar" [src]="user().avatarUrl" alt="no img :*("  [matTooltip]="'a '+user().name" matTooltipShowDelay="500" [matMenuTriggerFor]="menu"/>
     }
     <mat-menu class="menu" #menu="matMenu" >
+      @if(isAuthenticated){
+        <div mat-menu-item (click)="onLogOut()">
+          <mat-icon>logout</mat-icon> <strong>Sign out</strong>
+        </div>
+      }@else{
       <div mat-menu-item (click)="onToggleLogin()">
         <mat-icon>login</mat-icon> <strong>Sign in</strong>
       </div>
       <div mat-menu-item (click)="onToggleRegister()">
         <mat-icon>person_add</mat-icon> <strong>Sign up</strong>
       </div>
+    }
     </mat-menu>
   </div>
 </div>
