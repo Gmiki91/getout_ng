@@ -34,7 +34,8 @@ export class UserService {
             },
             error: (error) => {
               console.error('Error initializing user:', error);
-              alert(error.error.message + ". Try reloading the page or deleting the cache.");
+              this.logout();
+              alert("You have been logged out.");
               resolve();
             },
           });
