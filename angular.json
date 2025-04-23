@@ -35,10 +35,7 @@
               "@angular/material/prebuilt-themes/rose-red.css",
               "node_modules/@mapbox/mapbox-gl-geocoder/lib/mapbox-gl-geocoder.css",
               "src/styles.scss"],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": false, 
-            "ssr": false
+            "scripts": []
           },
           "configurations": {
             "production": {
