@@ -1,24 +1,3 @@
-.backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 21;
-}
-.container {
-  top: 0;
-  left: auto;
-  border-radius: 6px;
-  border: none;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-  background: var(--main-color);
-  padding: 1rem;
-  z-index: 22;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-
   mat-card{
     background-color: var(--main-color);
   }
@@ -32,10 +11,3 @@
     justify-content: flex-end;
     gap: 1rem;
   }
-
-}
-@media (max-width: 768px) {
-    .container{
-        flex-direction: column;
-    }
-}

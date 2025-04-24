@@ -31,7 +31,7 @@ export class RegisterComponent {
       this.authService.register(username,email, password).subscribe({
         next: (response) => {
           console.log('Registration successful', response);
-          this.closeDialog();
+          this.stateService.closeRegister();
         },
         error: (error) => {
           console.error('Registration failed', error);
@@ -40,8 +40,5 @@ export class RegisterComponent {
     } else {
       console.error('Form is invalid');
     }
-  }
-  closeDialog(): void {
-    this.stateService.toggleRegister();
   }
 }

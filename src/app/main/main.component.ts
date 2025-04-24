@@ -10,18 +10,18 @@ import { EventsService } from '../services/events.service';
 import { StateService } from '../services/state.service';
 import { LoginComponent } from '../auth/login/login.component';
 import { RegisterComponent } from '../auth/register/register.component';
+import { DialogComponent } from "../modals/dialog/dialog.component";
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [ MapComponent,
-      EventSidebarComponent,
-      EventFormComponent,
-      EventDetailsComponent,
-      EventModifyComponent,
-      FilterComponent,
-      LoginComponent,
-      RegisterComponent
-    ],
+  imports: [MapComponent,
+    EventSidebarComponent,
+    EventFormComponent,
+    EventDetailsComponent,
+    EventModifyComponent,
+    FilterComponent,
+    LoginComponent,
+    RegisterComponent, DialogComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   animations: [dumbParent]

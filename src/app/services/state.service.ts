@@ -28,9 +28,26 @@ export class StateService {
     this._showLogin.set(!this.showLogin());
   }
 
+  closeLogin(){
+    this._showLogin.set(false);
+  }
+
   toggleRegister(){
     if(this.showLogin())
     this._showLogin.set(false);
     this._showRegister.set(!this.showRegister());
   }
+
+  closeRegister(){
+    this._showRegister.set(false);
+  }
+  
+  closeAuth() {
+    if(this.showLogin())
+      this._showLogin.set(false);
+    if(this.showRegister())
+      this._showRegister.set(false);
+  }
+
+
 }

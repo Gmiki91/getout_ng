@@ -25,7 +25,7 @@ export class LoginComponent {
       this.authService.login(name, password).subscribe({
         next: (response) => {
           console.log('Login successful', response);
-          this.closeDialog();
+          this.stateService.closeLogin();
         },
         error: (error) => {
           console.error('Login failed', error);
@@ -35,10 +35,6 @@ export class LoginComponent {
     } else {
       console.error('Form is invalid');
     }
-  }
-   
-  closeDialog(): void {
-    this.stateService.toggleLogin();
   }
 
 }
