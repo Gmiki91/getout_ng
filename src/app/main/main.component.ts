@@ -28,16 +28,7 @@ import { DialogComponent } from "../modals/dialog/dialog.component";
 })
 export class MainComponent{
   showMap = input<boolean>(); 
-  updateEvent = false;
-  eventService = inject(EventsService);
-  stateService = inject(StateService);
-  isEventDetailsOpen = this.eventService.isEventDetailsOpen;
-  isFormOpen = this.eventService.isEventFormOpen;
-  isEventUpdating = this.eventService.isEventUpdating;
-  areEventsLoaded = this.eventService.areEventsLoaded;
-  showSideBar = this.stateService.showSideBar;
-  showFilter = this.stateService.showFilter;
-  showLogin = this.stateService.showLogin;
-  showRegister = this.stateService.showRegister;
+  events = inject(EventsService);
+  state = inject(StateService);
   loadingUser = true;
 }

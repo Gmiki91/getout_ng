@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit {
     this.stateService.toggleFilter();
   }
   onToggleEventForm(): void {
-    this.eventService.toggleEventForm();
+    this.stateService.toggleEventForm();
   }
   onToggleRegister():void{
     this.stateService.toggleRegister()

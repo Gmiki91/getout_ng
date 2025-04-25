@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { StateService } from '../services/state.service';
 
 const markerSymbolLayout: mapboxgl.SymbolLayerSpecification['layout'] = {
   'icon-image': 'custom-marker',
@@ -26,6 +27,7 @@ const markerSymbolLayout: mapboxgl.SymbolLayerSpecification['layout'] = {
 export class MapComponent implements OnInit {
   private mapService = inject(MapService);
   private eventService = inject(EventsService);
+  private stateService = inject(StateService);
   private destroyRef = inject(DestroyRef);
   viewbox = '';
 
@@ -221,7 +223,7 @@ export class MapComponent implements OnInit {
 
   createEventPopup(map: Map, lngLat: LngLat) {
     //dont show 'create event' popup when we are already creating event or an event is selected
-    if (!this.eventService.isEventFormOpen() && !this.eventService.isEventDetailsOpen() && !this.eventService.isEventUpdating()) {
+    if (!this.stateService.showEventForm() && !this.stateService.showEventDetails() && !this.stateService.isEventUpdating()) {
 
       //remove previous popup
       document.getElementsByClassName('popup_w_btn')[0]?.remove();
@@ -239,7 +241,7 @@ export class MapComponent implements OnInit {
       this.stylePopup(popup);
 
       document.getElementById('popupBtn')!.addEventListener('click', () => {
-        this.eventService.toggleEventForm();
+        this.stateService.toggleEventForm();
         document.getElementsByClassName('popup_w_btn')[0].remove();
       });
     }

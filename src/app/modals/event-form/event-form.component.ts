@@ -22,6 +22,7 @@ import { LocationFieldComponent } from "../form-fields/location-field.component"
 import { TimeFieldComponent } from '../form-fields/time-field/time-field.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'app-event-form',
@@ -58,6 +59,7 @@ export class EventFormComponent{
   destroyRef = inject(DestroyRef);
   eventsService: EventsService = inject(EventsService);
   mapService: MapService = inject(MapService);
+  stateService = inject(StateService);
   markerAddress = this.mapService.markerAddress; // stores address selected from the map
   markerPosition = this.mapService.markerPosition; // stores address selected from the map
   durationInDays = 0;
@@ -67,7 +69,7 @@ export class EventFormComponent{
   defaultTitle = "OTB #"+(this.eventCount()+1); 
 
   onClose() {
-    this.locationSelectMode ? this.locationSelectMode=false : this.eventsService.toggleEventForm();
+    this.locationSelectMode ? this.locationSelectMode=false : this.stateService.toggleEventForm();
   }
 
   toggleOSMInfo(){

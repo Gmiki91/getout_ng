@@ -6,32 +6,29 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 import { calculateDistance } from '../utils/utils';
 import { UserService } from './user.service';
 import { MapService } from './map.service';
+import { StateService } from './state.service';
 
 @Injectable({ providedIn: 'root' })
 export class EventsService {
   private url = environment.url + 'events';
   private bridgeUrl = environment.url + 'user-events';
   private _http = inject(HttpClient);
+  private _mapService = inject(MapService)
+  private _userService = inject(UserService);
+  private _stateService = inject(StateService);
+
   private _yourEvents = signal<Event[]>([]);
   private _otherEvents = signal<Event[]>([]);
   private _selectedEvent = signal<Event>({} as Event);
-  private _isEventFormOpen = signal<boolean>(false);
-  private _isEventUpdating = signal<boolean>(false);
-  private _isEventDetailsOpen = signal<boolean>(false);
   private _areEventsLoaded = signal<boolean>(false);
   private _currentPosition = signal<LatLng>({ lat: 0, lng: 0 });
-  private _userService = inject(UserService);
   private _user = this._userService.user;
   private _unfilteredOtherEvents: Event[] = [];
   private _unfilteredYourEvents: Event[] = [];
-  private _mapService = inject(MapService)
   currentPosition = this._currentPosition.asReadonly();
   yourEvents = this._yourEvents.asReadonly();
   otherEvents = this._otherEvents.asReadonly();
   selectedEvent = this._selectedEvent.asReadonly();
-  isEventFormOpen = this._isEventFormOpen.asReadonly();
-  isEventUpdating = this._isEventUpdating.asReadonly();
-  isEventDetailsOpen = this._isEventDetailsOpen.asReadonly();
   areEventsLoaded = this._areEventsLoaded.asReadonly();
 
   //save the sorted events for the events list, returns unsorted for the map markers
@@ -155,7 +152,7 @@ export class EventsService {
     this._selectedEvent.set(event);
     this._mapService.removeTemporaryMarker();
     this._mapService.setPosition(event.location,event.latLng);
-    this.toggleEventDetails();
+    this._stateService.toggleEventDetails();
   }
 
   selectEventById(eventId: string): void {
@@ -166,31 +163,6 @@ export class EventsService {
     }else{
       console.log('event not found')
     }
-  }
-  
-  toggleEventDetails():void{
-    this._isEventDetailsOpen.set(!this._isEventDetailsOpen())
-     //close eventform if open
-     if(this._isEventFormOpen()){this._isEventFormOpen.set(false);}
-    //close updateform if open
-    if(this._isEventUpdating()){this._isEventUpdating.set(false);}
-  }
-  
-  // create new event form
-  toggleEventForm():void{
-    this._isEventFormOpen.set(!this._isEventFormOpen())
-    //close event details if open
-    if(this._isEventDetailsOpen()){this._isEventDetailsOpen.set(false);}
-    //close updateform if open
-    if(this._isEventUpdating()){this._isEventUpdating.set(false);}
-  }
-
-  toggleUpdateEvent():void{
-    this._isEventUpdating.set(!this._isEventUpdating())
-   //close event details if open
-   if(this._isEventDetailsOpen()){this._isEventDetailsOpen.set(false);}
-    //close eventform if open
-    if(this._isEventFormOpen()){this._isEventFormOpen.set(false);}
   }
 
   //for distance calculation and autofill proximity

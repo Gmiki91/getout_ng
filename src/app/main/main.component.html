@@ -1,21 +1,21 @@
 <div class="body">
-  @if(showSideBar() && areEventsLoaded()){
+  @if(state.showSideBar() && events.areEventsLoaded()){
   <app-event-sidebar @dumbParent></app-event-sidebar>
-  } @if(showFilter()){
+  } @if(state.showFilter()){
   <app-filter @dumbParent></app-filter>
   } @if(showMap()){ @defer{
   <app-map />
-  } } @if(isFormOpen()){
+  } } @if(state.showEventForm()){
   <app-event-form @dumbParent></app-event-form>
-  } @if(isEventDetailsOpen()){
+  } @if(state.showEventDetails()){
   <app-event-details @dumbParent></app-event-details>
-  } @if(isEventUpdating()){
+  } @if(state.isEventUpdating()){
   <app-event-modify @dumbParent></app-event-modify>
-  }@if(showLogin()){
+  }@if(state.showLogin()){
     <app-dialog @dumbParent>
       <app-login/>
     </app-dialog>
-  }@if(showRegister()){
+  }@if(state.showRegister()){
     <app-dialog @dumbParent>
       <app-register/>
     </app-dialog>

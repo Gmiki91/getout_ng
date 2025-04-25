@@ -27,6 +27,7 @@ import { MockUser } from '../../utils/mock.factory';
 import { MatTooltip } from '@angular/material/tooltip';
 import { LocationInfoComponent } from '../location-info/location-info.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'app-event-details',
@@ -59,6 +60,7 @@ export class EventDetailsComponent implements OnInit {
   eventService = inject(EventsService);
   mapService = inject(MapService);
   userService = inject(UserService);
+  stateService = inject(StateService);
   event = this.eventService.selectedEvent;
   joined = this.eventService.isUserJoined(this.event().id);
   komments = this.kommentService.comments;
@@ -86,7 +88,7 @@ export class EventDetailsComponent implements OnInit {
   }
 
   onUpdate():void{
-    this.eventService.toggleUpdateEvent();
+    this.stateService.toggleUpdateEvent();
   }
 
   onDelete(): void {
