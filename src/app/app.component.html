@@ -1,4 +1,4 @@
 <div class="container">
-  <app-header [loading]="loading"/>
-<app-main [showMap]="!loading"/>
+  <app-header />
+<app-main [showMap]="!userService.loading()"/>
 </div>

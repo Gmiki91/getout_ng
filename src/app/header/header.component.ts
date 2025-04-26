@@ -28,12 +28,12 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
-  loading = input<boolean>();
   destroyRef = inject(DestroyRef);
   userService = inject(UserService);
   eventService = inject(EventsService);
   stateService = inject(StateService);
   user = this.userService.user;
+  loading = this.userService.loading;
   unseenNotifications = computed(() =>this.user().notifications.filter((notification:MyNotification) => !notification.read).length);
   isSpinning = false;
   isAuthenticated = false;
