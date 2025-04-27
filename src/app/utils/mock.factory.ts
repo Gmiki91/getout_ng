@@ -28,6 +28,7 @@ export function createMockEvent(overrides: Partial<Event> = {}): Event {
 export const MockUser: Visitor={
   id: "1",
   name: "???",
+  elo:1500,
   avatarUrl: "https://getoutimages.blob.core.windows.net/avatars/1.png",
   notifications:[]as MyNotification[]
 }

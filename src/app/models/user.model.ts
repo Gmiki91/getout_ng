@@ -5,6 +5,7 @@ export interface Visitor{
     name:string;
     avatarUrl:string;
     notifications:MyNotification[];
+    elo:number;
 }
 export interface User extends Visitor{
     email:string;

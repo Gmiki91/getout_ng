@@ -11,10 +11,16 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [MatCardModule,MatFormFieldModule,FormsModule,MatInputModule,MatButtonModule],
+  imports: [
+    MatCardModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatInputModule,
+    MatButtonModule,
+  ],
   templateUrl: './register.component.html',
   styleUrl: '../auth.component.scss',
-  animations:[slideDown]
+  animations: [slideDown],
 })
 export class RegisterComponent {
   stateService = inject(StateService);
@@ -23,22 +29,27 @@ export class RegisterComponent {
   password = '';
   password2 = '';
 
-  onSubmit(form:NgForm){
-    if (form.valid) {
-      const { username,email, password, password2 } = form.value;
-      if (password !== password2) return;
-      
-      this.authService.register(username,email, password).subscribe({
-        next: (response) => {
-          console.log('Registration successful', response);
-          this.stateService.closeRegister();
-        },
-        error: (error) => {
-          console.error('Registration failed', error);
-        }
-      });
-    } else {
+  onSubmit(form: NgForm) {
+    if (form.invalid) {
       console.error('Form is invalid');
+      return;
     }
+    
+    const { username, email, password, password2, elo } = form.value;
+
+    if (password !== password2) {
+      console.error('Passwords do not match');
+      return;
+    }
+    const eloValue = elo || 0;
+    this.authService.register(username, email, password, eloValue).subscribe({
+      next: (response) => {
+        console.log('Registration successful', response);
+        this.stateService.closeRegister();
+      },
+      error: (error) => {
+        console.error('Registration failed', error);
+      },
+    });
   }
 }

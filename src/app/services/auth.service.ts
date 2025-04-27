@@ -25,8 +25,8 @@ export class AuthService {
         }));
   }
 
-  register(username: string,email: string,password: string): Observable<{ status: boolean; token: string,user:User }> {
-    return this.http.post<{ status: boolean; token: string,user:User }>(`${this.url}/register`, {username,password,email})
+  register(username: string,email: string,password: string, elo:number): Observable<{ status: boolean; token: string,user:User }> {
+    return this.http.post<{ status: boolean; token: string,user:User }>(`${this.url}/register`, {username,password,email,elo})
       .pipe(tap(response => {
           if (response.token) {
             localStorage.setItem('authToken', response.token);
