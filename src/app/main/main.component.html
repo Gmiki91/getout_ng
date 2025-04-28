@@ -20,4 +20,9 @@
       <app-register/>
     </app-dialog>
   }
+  @if(state.showUserSettings()){
+    <app-dialog @dumbParent>
+      <app-user-settings/>
+    </app-dialog>
+  }
 </div>

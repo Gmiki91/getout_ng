@@ -30,7 +30,7 @@
     @if(loading()){
       <mat-spinner diameter="30"></mat-spinner>
     }@else { 
-      <span class="username">
+      <span class="username" >
         hi {{ user().name }}!
       </span>
       <img  class="avatar" [src]="user().avatarUrl" alt="no img :*("  [matTooltip]="'a '+user().name" matTooltipShowDelay="500" [matMenuTriggerFor]="menu"/>
@@ -39,6 +39,9 @@
       @if(isAuthenticated){
         <div mat-menu-item (click)="onLogOut()">
           <mat-icon>logout</mat-icon> <strong>Sign out</strong>
+        </div>
+        <div mat-menu-item (click)="stateService.toggleUserSettings()">
+          <mat-icon>settings</mat-icon> <strong>Settings</strong>
         </div>
       }@else{
       <div mat-menu-item (click)="onToggleLogin()">

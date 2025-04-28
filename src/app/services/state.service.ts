@@ -11,6 +11,7 @@ export class StateService {
   private _showVisitorPage = signal<boolean>(false);
   private _showEventForm = signal<boolean>(false);
   private _showEventDetails = signal<boolean>(false);
+  private _showUserSettings = signal<boolean>(false);
   private _isEventUpdating = signal<boolean>(false);
   showSideBar = this._showSideBar.asReadonly();
   showFilter = this._showFilter.asReadonly();
@@ -19,6 +20,7 @@ export class StateService {
   showVisitorPage = this._showVisitorPage.asReadonly();
   showEventForm = this._showEventForm.asReadonly();
   showEventDetails = this._showEventDetails.asReadonly();
+  showUserSettings = this._showUserSettings.asReadonly();
   isEventUpdating = this._isEventUpdating.asReadonly();
   toggleSideBar() {
     this._showSideBar.set(!this.showSideBar());
@@ -81,5 +83,9 @@ export class StateService {
     this._showEventDetails.set(false);
     //close eventform if open
     this._showEventForm.set(false);
+  }
+
+  toggleUserSettings(): void {
+    this._showUserSettings.set(!this._showUserSettings());
   }
 }

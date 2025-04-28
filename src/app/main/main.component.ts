@@ -11,6 +11,7 @@ import { StateService } from '../services/state.service';
 import { LoginComponent } from '../auth/login/login.component';
 import { RegisterComponent } from '../auth/register/register.component';
 import { DialogComponent } from "../modals/dialog/dialog.component";
+import { UserSettingsComponent } from "../user/user-settings/user-settings.component";
 @Component({
   selector: 'app-main',
   standalone: true,
@@ -21,7 +22,7 @@ import { DialogComponent } from "../modals/dialog/dialog.component";
     EventModifyComponent,
     FilterComponent,
     LoginComponent,
-    RegisterComponent, DialogComponent],
+    RegisterComponent, DialogComponent, UserSettingsComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   animations: [dumbParent]
