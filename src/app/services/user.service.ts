@@ -33,10 +33,7 @@ export class UserService {
     if(!token) return Promise.resolve();
 
     try {
-      const user = await firstValueFrom(
-        this.http.get<Visitor>(`${this.url}/me`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
-        }));
+      const user = await firstValueFrom(this.http.get<Visitor>(`${this.url}/me`));
       this.setUser(user);
       this.isAuthenticated$.next(true);
       localStorage.removeItem('uuid');
@@ -60,6 +57,7 @@ export class UserService {
   }
 
   readNotifications(){
+    //TODO: remove the user id, it should not be needed with interceptor
     this.http.put<Visitor>(`${this.url}/clearNotifications/${this.user().id}`,{}).subscribe(user=>this.setUser(user));
   }
 
@@ -71,5 +69,16 @@ export class UserService {
     localStorage.removeItem('authToken');
     await this.initializeGuest();
     this.isAuthenticated$.next(false)
+  }
+
+  changeAvatar(newAvatarIndex: number): void {
+    const userId = this.user()?.id;
+    if (!userId) return;
+  
+    this.http.put<Visitor>(`${this.url}/changeAvatar/${newAvatarIndex}`,{})
+      .subscribe({
+        next: (updatedUser) => this.setUser(updatedUser),
+        error: (error) => console.error('Failed to change avatar:', error)
+      });
   }
 }
