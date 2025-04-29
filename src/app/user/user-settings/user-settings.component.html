@@ -5,8 +5,9 @@
   
       <section class="avatar-section">
         <h3>Change Avatar</h3>
-        <img [src]="userService.user().avatarUrl" alt="avatar" class="avatar-preview" />
-        <button mat-raised-button color="primary" (click)="changeAvatar()">New random avatar</button>
+        <img [src]="temporaryAvatar()" alt="avatar" class="avatar-preview" />
+        <app-avatar-list (avatarSelected)="changeAvatar($event)"></app-avatar-list>
+        <button mat-raised-button color="primary" (click)="confirmAvatarChange()">Change avatar</button>
       </section>
   
       <section class="password-section">

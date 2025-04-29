@@ -48,10 +48,6 @@ export class StateService {
     this._showRegister.set(false);
   }
 
-  closeAuth() {
-    if (this.showLogin()) this._showLogin.set(false);
-    if (this.showRegister()) this._showRegister.set(false);
-  }
   toggleVisitorPage() {
     this._showVisitorPage.set(false);
   }

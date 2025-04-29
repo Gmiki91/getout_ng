@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { StateService } from '../../services/state.service';
 import { slideDown } from '../../utils/utils';
 
@@ -12,8 +12,9 @@ import { slideDown } from '../../utils/utils';
 })
 export class DialogComponent {
   stateService = inject(StateService);
+  onClose = output();
 
   closeDialog(): void {
-    this.stateService.closeAuth()
+    this.onClose.emit();
   }
 }

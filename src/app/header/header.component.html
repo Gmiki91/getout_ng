@@ -37,11 +37,11 @@
     }
     <mat-menu class="menu" #menu="matMenu" >
       @if(isAuthenticated){
-        <div mat-menu-item (click)="onLogOut()">
-          <mat-icon>logout</mat-icon> <strong>Sign out</strong>
-        </div>
         <div mat-menu-item (click)="stateService.toggleUserSettings()">
           <mat-icon>settings</mat-icon> <strong>Settings</strong>
+        </div>
+        <div mat-menu-item (click)="onLogOut()">
+          <mat-icon>logout</mat-icon> <strong>Sign out</strong>
         </div>
       }@else{
       <div mat-menu-item (click)="onToggleLogin()">

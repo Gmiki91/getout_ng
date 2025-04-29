@@ -1,0 +1,11 @@
+<div class="avatar-grid">
+    @for (avatar of avatars; track avatar) {
+      <img
+        [src]="url + avatar + '.png'"
+        (click)="onAvatarClick(avatar)"
+        class="avatar"
+        [class.selected]="isSelected(avatar)"
+        alt="Avatar {{ avatar }}"
+      />
+    }
+  </div>
