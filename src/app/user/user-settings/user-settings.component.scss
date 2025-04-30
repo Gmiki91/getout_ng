@@ -1,11 +1,15 @@
 .settings-card {
     max-width: 500px;
-    margin: 2rem auto;
-    padding: 2rem;
+    padding: 1rem;
+    background-color: var(--main-color);
   }
   
   .avatar-section, .password-section {
-    margin-top: 2rem;
+    margin-bottom:1rem;
+  }
+  .passwords{
+    display:flex;
+    flex-direction: column;
   }
   
   .avatar-preview {

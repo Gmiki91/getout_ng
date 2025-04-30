@@ -4,9 +4,11 @@
   gap: 8px;
   max-height: calc(50px * 2 + 8px); /* 2 rows + gap */
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 5px;
   border: 1px solid var(--secondary-color);
   border-radius: 8px;
+  margin-bottom: 1rem;
 }
 
 .avatar {
