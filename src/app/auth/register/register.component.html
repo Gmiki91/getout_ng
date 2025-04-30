@@ -31,6 +31,7 @@
             name="password"
             [(ngModel)]="password"
             type="password"
+            minlength="4"
           />
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -41,6 +42,7 @@
             name="password2"
             [(ngModel)]="password2"
             type="password"
+            minlength="4"
           />
         </mat-form-field>
         @if(password2!==password && regForm.controls['password2'].touched && regForm.controls['password2'].dirty) {

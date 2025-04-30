@@ -36,4 +36,8 @@ export class AuthService {
         }));
   }
 
+  changePassword(password: string): Observable<{ status: boolean }> {
+    return this.http.post<{ status: boolean }>(`${this.url}/change-password`,  {password})
+  }
+
 }
