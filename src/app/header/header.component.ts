@@ -37,6 +37,10 @@ export class HeaderComponent implements OnInit {
   unseenNotifications = computed(() =>this.user().notifications.filter((notification:MyNotification) => !notification.read).length);
   isSpinning = false;
   isAuthenticated = false;
+  userNameTooltip = computed(() => {
+    const user = this.user();
+    return 'email' in user ? user.name :  'a  '+ user.name;
+  });
 
   ngOnInit(): void {
     const sub = this.userService.isAuthenticated$.subscribe((isAuthenticated) => {
