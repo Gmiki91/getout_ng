@@ -71,6 +71,7 @@ export class HeaderComponent implements OnInit {
   }
   onLogOut():void{
     this.userService.logout();
+    this.stateService.closeUserSettings()
   }
   onRefresh(): void {
     this.eventService.getEvents().pipe(take(1)).subscribe(()=>{

@@ -84,4 +84,8 @@ export class StateService {
   toggleUserSettings(): void {
     this._showUserSettings.set(!this._showUserSettings());
   }
+
+  closeUserSettings(): void {
+    this._showUserSettings.set(false);
+  }
 }
