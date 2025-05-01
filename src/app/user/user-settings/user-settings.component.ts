@@ -30,10 +30,15 @@ export class UserSettingsComponent {
   destroyRef = inject(DestroyRef);
   password = '';
   confirmPassword = '';
+  elo = this.userService.user().elo
 
   //Temporary avatar index and URL to display in the UI without backend call
   temporaryAvatarIndex = signal<number>(0);
   temporaryAvatar = signal<string>(this.userService.user().avatarUrl);
+
+  changeElo() {
+    this.userService.changeElo(this.elo);
+  }
 
   changeAvatar(index: number) {
     this.temporaryAvatarIndex.set(index);

@@ -81,4 +81,14 @@ export class UserService {
         error: (error) => console.error('Failed to change avatar:', error)
       });
   }
+  changeElo(newElo: number): void {
+    const userId = this.user()?.id;
+    if (!userId) return;
+  
+    this.http.put<Visitor>(`${this.url}/changeElo/${newElo}`,{})
+      .subscribe({
+        next: (updatedUser) => this.setUser(updatedUser),
+        error: (error) => console.error('Failed to change elo:', error)
+      });
+  }
 }

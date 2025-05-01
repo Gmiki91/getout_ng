@@ -9,17 +9,25 @@
         <button mat-raised-button color="primary" (click)="confirmAvatarChange()">Change avatar</button>
       </section>
   
+      <section class="elo-section">
+        <mat-form-field appearance="outline">
+          <mat-label>Elo</mat-label>
+          <input matInput type="number" [(ngModel)]="elo" name="elo"  min="0" max="3000"  />
+        </mat-form-field>
+        <br/>  
+        <button mat-raised-button color="primary" (click)="changeElo()">Change Elo</button>
+      </section>
       <section class="password-section">
         <form (ngSubmit)="changePassword()">
           <div class="passwords">
           <mat-form-field appearance="outline">
             <mat-label>New Password</mat-label>
-            <input matInput type="password" [(ngModel)]="password" name="password" required minlength="4" />
+            <input matInput type="password" [(ngModel)]="password" name="password"  minlength="4" />
           </mat-form-field>
   
           <mat-form-field appearance="outline">
             <mat-label>Confirm Password</mat-label>
-            <input matInput type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required minlength="4" />
+            <input matInput type="password" [(ngModel)]="confirmPassword" name="confirmPassword"  minlength="4" />
           </mat-form-field>
         </div>
           <button mat-flat-button color="accent" type="submit" [disabled]="!canSubmitPassword()">Change Password</button>
