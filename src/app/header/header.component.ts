@@ -11,6 +11,7 @@ import { TimeTextPipe } from '../pipes/time-text.pipe';
 import { StateService } from '../services/state.service';
 import { MyNotification } from '../models/my-notification.model';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -32,8 +33,9 @@ export class HeaderComponent implements OnInit {
   userService = inject(UserService);
   eventService = inject(EventsService);
   stateService = inject(StateService);
+  authService = inject(AuthService);
   user = this.userService.user;
-  loading = this.userService.loading;
+  loading = this.authService.loading;
   unseenNotifications = computed(() =>this.user().notifications.filter((notification:MyNotification) => !notification.read).length);
   isSpinning = false;
   isAuthenticated = false;
@@ -43,7 +45,7 @@ export class HeaderComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    const sub = this.userService.isAuthenticated$.subscribe((isAuthenticated) => {
+    const sub = this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
       this.isAuthenticated = isAuthenticated;
     });
     this.destroyRef.onDestroy(() => sub.unsubscribe());
@@ -70,7 +72,7 @@ export class HeaderComponent implements OnInit {
     }
   }
   onLogOut():void{
-    this.userService.logout();
+    this.authService.logout();
     this.stateService.closeUserSettings()
   }
   onRefresh(): void {
