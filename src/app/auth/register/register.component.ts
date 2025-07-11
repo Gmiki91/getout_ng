@@ -9,18 +9,17 @@ import { StateService } from '../../services/state.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [
-    MatCardModule,
-    MatFormFieldModule,
-    FormsModule,
-    MatInputModule,
-    MatButtonModule,
-  ],
-  templateUrl: './register.component.html',
-  styleUrl: '../auth.component.scss',
-  animations: [slideDown],
+    selector: 'app-register',
+    imports: [
+        MatCardModule,
+        MatFormFieldModule,
+        FormsModule,
+        MatInputModule,
+        MatButtonModule,
+    ],
+    templateUrl: './register.component.html',
+    styleUrl: '../auth.component.scss',
+    animations: [slideDown]
 })
 export class RegisterComponent {
   stateService = inject(StateService);

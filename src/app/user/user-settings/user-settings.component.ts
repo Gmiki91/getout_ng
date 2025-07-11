@@ -10,19 +10,18 @@ import { AuthService } from '../../services/auth.service';
 import { AvatarListComponent } from '../avatar-list/avatar-list.component';
 
 @Component({
-  selector: 'app-user-settings',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatCardModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    AvatarListComponent,
-  ],
-  templateUrl: './user-settings.component.html',
-  styleUrls: ['./user-settings.component.scss'],
+    selector: 'app-user-settings',
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatCardModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        AvatarListComponent,
+    ],
+    templateUrl: './user-settings.component.html',
+    styleUrls: ['./user-settings.component.scss']
 })
 export class UserSettingsComponent {
   userService = inject(UserService);

@@ -7,12 +7,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { provideNativeDateAdapter } from '@angular/material/core';
 @Component({
-  selector: 'app-time-field',
-  templateUrl: './time-field.component.html',
-  styleUrl:'../../event-form.component.scss',
-  providers: [provideNativeDateAdapter()],
-  standalone:true,
-  imports:[ReactiveFormsModule,MatFormField,MatDatepickerModule,MatInputModule,MatSelectModule]
+    selector: 'app-time-field',
+    templateUrl: './time-field.component.html',
+    styleUrl: '../../event-form.component.scss',
+    providers: [provideNativeDateAdapter()],
+    imports: [ReactiveFormsModule, MatFormField, MatDatepickerModule, MatInputModule, MatSelectModule]
 })
 export class TimeFieldComponent implements OnInit {
   form!: FormGroup;

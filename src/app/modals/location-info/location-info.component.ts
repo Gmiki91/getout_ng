@@ -4,11 +4,10 @@ import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-location-info',
-  standalone: true,
-  imports: [MatIcon,MatIconButton],
-  templateUrl: './location-info.component.html',
-  styleUrl: './location-info.component.scss'
+    selector: 'app-location-info',
+    imports: [MatIcon, MatIconButton],
+    templateUrl: './location-info.component.html',
+    styleUrl: './location-info.component.scss'
 })
 export class LocationInfoComponent {
   close = output();

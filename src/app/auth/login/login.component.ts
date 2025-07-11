@@ -9,12 +9,11 @@ import { slideDown } from '../../utils/utils';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [MatCardModule,MatFormFieldModule,FormsModule,MatInputModule,MatButtonModule],
-  templateUrl: './login.component.html',
-  styleUrl: '../auth.component.scss',
-  animations:[slideDown]
+    selector: 'app-login',
+    imports: [MatCardModule, MatFormFieldModule, FormsModule, MatInputModule, MatButtonModule],
+    templateUrl: './login.component.html',
+    styleUrl: '../auth.component.scss',
+    animations: [slideDown]
 })
 export class LoginComponent {
   stateService = inject(StateService);

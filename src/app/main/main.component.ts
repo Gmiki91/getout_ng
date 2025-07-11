@@ -13,19 +13,18 @@ import { RegisterComponent } from '../auth/register/register.component';
 import { DialogComponent } from "../modals/dialog/dialog.component";
 import { UserSettingsComponent } from "../user/user-settings/user-settings.component";
 @Component({
-  selector: 'app-main',
-  standalone: true,
-  imports: [MapComponent,
-    EventSidebarComponent,
-    EventFormComponent,
-    EventDetailsComponent,
-    EventModifyComponent,
-    FilterComponent,
-    LoginComponent,
-    RegisterComponent, DialogComponent, UserSettingsComponent],
-  templateUrl: './main.component.html',
-  styleUrl: './main.component.scss',
-  animations: [dumbParent]
+    selector: 'app-main',
+    imports: [MapComponent,
+        EventSidebarComponent,
+        EventFormComponent,
+        EventDetailsComponent,
+        EventModifyComponent,
+        FilterComponent,
+        LoginComponent,
+        RegisterComponent, DialogComponent, UserSettingsComponent],
+    templateUrl: './main.component.html',
+    styleUrl: './main.component.scss',
+    animations: [dumbParent]
 })
 export class MainComponent{
   showMap = input<boolean>(); 

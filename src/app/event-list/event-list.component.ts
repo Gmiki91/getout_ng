@@ -3,11 +3,10 @@ import { Event } from '../models/event.model';
 import { EventComponent } from './event/event.component';
 
 @Component({
-  selector: 'app-event-list',
-  standalone: true,
-  imports: [EventComponent],
-  templateUrl: './event-list.component.html',
-  styleUrl: './event-list.component.scss',
+    selector: 'app-event-list',
+    imports: [EventComponent],
+    templateUrl: './event-list.component.html',
+    styleUrl: './event-list.component.scss'
 })
 export class EventListComponent {
   events = input.required<Event[]>();

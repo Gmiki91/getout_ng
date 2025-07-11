@@ -8,12 +8,11 @@ import { slideDown } from '../utils/utils';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
-  selector: 'app-filter',
-  standalone: true,
-  imports: [MatIcon,MatMenuModule, MatSlideToggleModule,MatCheckbox,FormsModule],
-  templateUrl: './filter.component.html',
-  styleUrl: './filter.component.scss',
-  animations: [slideDown]
+    selector: 'app-filter',
+    imports: [MatIcon, MatMenuModule, MatSlideToggleModule, MatCheckbox, FormsModule],
+    templateUrl: './filter.component.html',
+    styleUrl: './filter.component.scss',
+    animations: [slideDown]
 })
 export class FilterComponent {
   //time ascending is the default sort by from the backend, so the first click has to change the direction

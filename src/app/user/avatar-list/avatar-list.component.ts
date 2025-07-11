@@ -2,11 +2,10 @@ import { Component,output,signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-avatar-list',
-  standalone: true,
-  imports: [],
-  templateUrl: './avatar-list.component.html',
-  styleUrl: './avatar-list.component.scss'
+    selector: 'app-avatar-list',
+    imports: [],
+    templateUrl: './avatar-list.component.html',
+    styleUrl: './avatar-list.component.scss'
 })
 export class AvatarListComponent {
   url = environment.avatarUrl;

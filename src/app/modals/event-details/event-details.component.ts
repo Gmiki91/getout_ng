@@ -30,28 +30,27 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import { StateService } from '../../services/state.service';
 
 @Component({
-  selector: 'app-event-details',
-  standalone: true,
-  imports: [
-    LocationInfoComponent,
-    DatePipe,
-    TextFieldModule,
-    MatButton,
-    MatCardModule,
-    MatFormField,
-    MatList,
-    MatInput,
-    MatButton,
-    MatListItem,
-    TimeTextPipe,
-    MatIconButton,
-    MatIcon,
-    MatTooltip
-  ],
-  providers:[MatSnackBar],
-  templateUrl: './event-details.component.html',
-  styleUrl: './event-details.component.scss',
-  animations:[slideDown] 
+    selector: 'app-event-details',
+    imports: [
+        LocationInfoComponent,
+        DatePipe,
+        TextFieldModule,
+        MatButton,
+        MatCardModule,
+        MatFormField,
+        MatList,
+        MatInput,
+        MatButton,
+        MatListItem,
+        TimeTextPipe,
+        MatIconButton,
+        MatIcon,
+        MatTooltip
+    ],
+    providers: [MatSnackBar],
+    templateUrl: './event-details.component.html',
+    styleUrl: './event-details.component.scss',
+    animations: [slideDown]
 })
 export class EventDetailsComponent implements OnInit {
   @ViewChild('komment')

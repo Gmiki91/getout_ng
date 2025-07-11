@@ -27,24 +27,23 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { StateService } from '../../services/state.service';
 @Component({
-  selector: 'app-event-modify',
-  standalone: true,
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatLabel,
-    MatInputModule,
-    MatButton,
-    LocationFieldComponent,
-    MatCheckbox,
-    TimeFieldComponent,
-    MatRadioModule,
-  ],
-  providers: [MatSnackBar],
-  templateUrl: './event-modify.component.html',
-  styleUrl: '../event-form.component.scss',
-  animations: [slideDown],
+    selector: 'app-event-modify',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatLabel,
+        MatInputModule,
+        MatButton,
+        LocationFieldComponent,
+        MatCheckbox,
+        TimeFieldComponent,
+        MatRadioModule,
+    ],
+    providers: [MatSnackBar],
+    templateUrl: './event-modify.component.html',
+    styleUrl: '../event-form.component.scss',
+    animations: [slideDown]
 })
 export class EventModifyComponent implements OnInit {
   @ViewChild(TimeFieldComponent)

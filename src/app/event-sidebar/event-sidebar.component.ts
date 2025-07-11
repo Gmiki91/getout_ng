@@ -7,15 +7,14 @@ import { EventListComponent } from '../event-list/event-list.component';
 import { slideDown } from '../utils/utils';
 
 @Component({
-  selector: 'app-event-sidebar',
-  standalone: true,
-  imports: [
-    MatLabel,
-    EventListComponent,
-  ],
-  templateUrl: './event-sidebar.component.html',
-  styleUrl: './event-sidebar.component.scss',
-  animations:[slideDown]
+    selector: 'app-event-sidebar',
+    imports: [
+        MatLabel,
+        EventListComponent,
+    ],
+    templateUrl: './event-sidebar.component.html',
+    styleUrl: './event-sidebar.component.scss',
+    animations: [slideDown]
 })
 export class EventSidebarComponent {
   private eventsService = inject(EventsService);

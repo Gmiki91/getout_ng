@@ -10,11 +10,10 @@ import { DatePipe } from '@angular/common';
 import { UserService } from '../../services/user.service';
 
 @Component({
-  selector: 'app-event',
-  standalone: true,
-  imports: [TimeTextPipe,MatIcon,MatCardModule,MatTooltip,DistanceFormatPipe,DatePipe],
-  templateUrl: './event.component.html',
-  styleUrl: './event.component.scss',
+    selector: 'app-event',
+    imports: [TimeTextPipe, MatIcon, MatCardModule, MatTooltip, DistanceFormatPipe, DatePipe],
+    templateUrl: './event.component.html',
+    styleUrl: './event.component.scss'
 })
 export class EventComponent {
   private mapService = inject(MapService);

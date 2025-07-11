@@ -25,29 +25,28 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { StateService } from '../../services/state.service';
 
 @Component({
-  selector: 'app-event-form',
-  standalone: true,
-  imports: [
-    FormsModule,
-    MatFormField,
-    MatInputModule,
-    MatButton,
-    MatIconButton,
-    MatLabel,
-    MatError,
-    MatCardModule,
-    MatIcon,
-    MatRadioModule,
-    MatCheckboxModule,
-    MatProgressSpinnerModule,
-    LocationInfoComponent,
-    LocationFieldComponent,
-    TimeFieldComponent
-],
-  providers:[MatSnackBar],
-  templateUrl: './event-form.component.html',
-  styleUrl: '../event-form.component.scss',
-  animations: [slideDown],
+    selector: 'app-event-form',
+    imports: [
+        FormsModule,
+        MatFormField,
+        MatInputModule,
+        MatButton,
+        MatIconButton,
+        MatLabel,
+        MatError,
+        MatCardModule,
+        MatIcon,
+        MatRadioModule,
+        MatCheckboxModule,
+        MatProgressSpinnerModule,
+        LocationInfoComponent,
+        LocationFieldComponent,
+        TimeFieldComponent
+    ],
+    providers: [MatSnackBar],
+    templateUrl: './event-form.component.html',
+    styleUrl: '../event-form.component.scss',
+    animations: [slideDown]
 })
 export class EventFormComponent{
   @ViewChild(TimeFieldComponent)

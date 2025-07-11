@@ -12,10 +12,9 @@ import { MapService } from '../../services/map.service';
 import {  MatInputModule } from '@angular/material/input';
 
 @Component({
-  selector: 'app-location-field',
-  standalone: true,
-  imports: [MatCardModule, MatFormField, FormsModule, MatInputModule],
-  template: `
+    selector: 'app-location-field',
+    imports: [MatCardModule, MatFormField, FormsModule, MatInputModule],
+    template: `
     <mat-form-field appearance="outline">
       <mat-label for="location">location</mat-label>
       <input
@@ -32,9 +31,9 @@ import {  MatInputModule } from '@angular/material/input';
       <mat-error>Invalid address</mat-error>}
     </mat-form-field>
   `,
-  styles: `
+    styles: `
        mat-form-field{width:100%}
-       `,
+       `
 })
 export class LocationFieldComponent {
   @ViewChild('locationInput')

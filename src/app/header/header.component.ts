@@ -14,19 +14,18 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-header',
-  imports: [
-    MatIcon,
-    MatButtonModule,
-    MatTooltip,
-    MatMenuModule,
-    MatBadgeModule,
-    MatProgressSpinnerModule,
-    TimeTextPipe
-  ],
-  standalone: true,
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+    selector: 'app-header',
+    imports: [
+        MatIcon,
+        MatButtonModule,
+        MatTooltip,
+        MatMenuModule,
+        MatBadgeModule,
+        MatProgressSpinnerModule,
+        TimeTextPipe
+    ],
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
   destroyRef = inject(DestroyRef);
