@@ -9,7 +9,7 @@
         >update event</mat-card-title
       >
     </mat-card-header>
-    <form [formGroup]="form">
+    <form [formGroup]="form" (ngSubmit)="onUpdate()">
       <div class="field-group" [class]="{ hidden: locationSelectMode }">
         <mat-form-field appearance="outline">
           <mat-label for="title">title</mat-label>
@@ -80,7 +80,7 @@
           class="bold">
           cancel
         </button>
-        <button mat-flat-button type="button" (click)="onUpdate()" class="bold">
+        <button mat-flat-button type="submit" class="bold" [disabled]="form.invalid">
           update
         </button>
         }
