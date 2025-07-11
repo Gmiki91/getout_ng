@@ -10,7 +10,8 @@
     "test:watch": "jest --watch",
     "test:ci": "jest --runInBand",
     "build:ssr": "ng build --configuration production",
-    "serve:ssr": "node dist/getout_ng/server/server.mjs"
+    "serve:ssr": "node dist/getout_ng/server/server.mjs",
+    "start-ssl": "ng serve --ssl true --ssl-key ssl/key.pem --ssl-cert ssl/cert.pem"
   },
   "private": true,
   "dependencies": {
