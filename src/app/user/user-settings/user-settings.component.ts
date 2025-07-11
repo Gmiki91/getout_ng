@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,14 +12,13 @@ import { AvatarListComponent } from '../avatar-list/avatar-list.component';
 @Component({
     selector: 'app-user-settings',
     imports: [
-        CommonModule,
-        FormsModule,
-        MatCardModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        AvatarListComponent,
-    ],
+    FormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    AvatarListComponent
+],
     templateUrl: './user-settings.component.html',
     styleUrls: ['./user-settings.component.scss']
 })
