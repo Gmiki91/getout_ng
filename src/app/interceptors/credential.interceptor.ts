@@ -1,10 +1,15 @@
 import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+const PUBLIC_API_DOMAINS = [
+  'nominatim.openstreetmap.org',
+];
 export function credentialsInterceptor(
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> {
-  req = req.clone({ withCredentials: true });
+  const isPublicApi = PUBLIC_API_DOMAINS.some(domain => req.url.includes(domain));
+  if (!isPublicApi) {
+    req = req.clone({ withCredentials: true });
+  }
   return next(req);
 }
