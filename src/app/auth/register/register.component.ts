@@ -48,6 +48,7 @@ export class RegisterComponent {
       },
       error: (error) => {
         console.error('Registration failed', error);
+        alert(error.error.message || 'Registration failed, please try again');
       },
     });
   }
