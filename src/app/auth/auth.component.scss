@@ -1,13 +1,10 @@
-  mat-card{
-    background-color: var(--main-color);
-  }
-  .form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-  }
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}

@@ -4,12 +4,8 @@
   align-items: center;
   padding: 10px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-  background: linear-gradient(
-    170deg,
-    var(--secondary-color) 0%,
-    var(--accent-color) 100%
-  );
-
+  background: var(--app-primary);
+  
   .left {
     display: flex;
     .button-group {

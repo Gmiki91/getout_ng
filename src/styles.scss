@@ -1,21 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
+@use "./style/_theme-colors.scss" as theme-colors;
 
 :root {
-  --main-color: rgba(255, 255, 255, 0.8); 
-  --secondary-color:rgb(214, 63, 98);
-  --accent-color:#BA005C;
+  --app-primary: var(--mat-sys-primary);
+  --app-primary-container: var(--mat-sys-primary-container);
+  --app-on-primary: var(--mat-sys-on-primary);
+  --app-surface: var(--mat-sys-surface);
+  --app-on-surface: var(--mat-sys-on-surface);
+  --app-error: var(--mat-sys-error);
+  --app-on-error: var(--mat-sys-on-error);
 
-  @include mat.snack-bar-overrides((
-    container-color: var(--secondary-color),
-    supporting-text-color: white,
-    supporting-text-weight:bold,
-    supporting-text-size:1.1rem
+    @include mat.snack-bar-overrides((
+      container-color: var(--app-primary),
+      supporting-text-weight:bold,
+      supporting-text-size:1.1rem
+    ));
 
-  ));
-  @include mat.progress-spinner-overrides((
-    active-indicator-color: white,
-  ));
+//   @include mat.progress-spinner-overrides((
+//     active-indicator-color: white,
+//   ));
+}
+
+html {
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: theme-colors.$primary-palette,
+        tertiary: theme-colors.$tertiary-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
 }
 
 html,
@@ -47,10 +65,10 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: var(--main-color);
+  background: var(--app-on-primary);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--accent-color);
+  background: var(--app-primary);
 }
