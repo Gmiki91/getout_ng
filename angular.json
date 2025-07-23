@@ -33,7 +33,7 @@
             ],
             "styles": [
               "node_modules/@mapbox/mapbox-gl-geocoder/lib/mapbox-gl-geocoder.css",
-              "src/style/token.scss",
+              "src/style/tokens.scss",
               "src/styles.scss"],
             "scripts": []
           },
