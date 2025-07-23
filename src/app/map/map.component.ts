@@ -8,8 +8,30 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { StateService } from '../services/state.service';
 
+// Define the layout for marker symbols
+// This layout is used for individual events marked with pawns
 const markerSymbolLayout: mapboxgl.SymbolLayerSpecification['layout'] = {
-  'icon-image': 'custom-marker',
+  'icon-image': 'pawn-marker',
+  'icon-anchor': 'bottom',
+  'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+  'text-size': 14,
+  'text-offset': [0, 0.25],
+  'text-anchor': 'top',
+};
+
+// This layout is used for clusters of events, where the icon changes based on the number of markers in the cluster
+const clusterSymbolLayout: mapboxgl.SymbolLayerSpecification['layout'] = {
+  'icon-image': [
+    'step',
+    ['get', 'point_count'],
+    'pawn-marker',
+    3, 'knight-marker',
+    4, 'bishop-marker',
+    5, 'rook-marker',
+    9, 'queen-marker',
+    10, 'king-marker',
+  ],
+  'text-field': '{markerCount} events',
   'icon-anchor': 'bottom',
   'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
   'text-size': 14,
@@ -58,7 +80,7 @@ export class MapComponent implements OnInit {
     const map = new mapboxgl.Map({
       accessToken: environment.mapbox.accessToken,
       container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v12',
+      style: 'mapbox://styles/mapbox/light-v11',
       center: coords
         ? { lat: coords.latitude, lon: coords.longitude }
         : { lat: 0, lon: 0 },
@@ -162,18 +184,33 @@ export class MapComponent implements OnInit {
       this.mapService.removeTemporaryMarker();
     });
 
-    map.on('load', () => {
-      map.loadImage(
-        'https://getoutimages.blob.core.windows.net/symbol1/location-mark.png',
-        (error, image) => {
-          if (error) throw error;
-          //@ts-ignore
-          map.addImage('custom-marker', image);
-        }
-      );
-      this.addGeoJsonSource(map);
-      this.addSymbolLayer(map);
-      this.initMarkers();
+    map.on('load', async() => {
+      try {
+        await Promise.all([
+          this.loadMapImage(map, 'pawn-marker',   '/pawn.png'),
+          this.loadMapImage(map, 'knight-marker', '/knight.png'),
+          this.loadMapImage(map, 'bishop-marker', '/bishop.png'),
+          this.loadMapImage(map, 'rook-marker',   '/rook.png'),
+          this.loadMapImage(map, 'queen-marker',  '/queen.png'),
+          this.loadMapImage(map, 'king-marker',   '/king.png'),
+        ]);
+        this.addGeoJsonSource(map);
+        this.addSymbolLayer(map);
+        this.initMarkers();
+      } catch (error) {
+        alert('Failed to load marker images!');
+      }
+    });
+  }
+
+  loadMapImage(map: mapboxgl.Map, name: string, url: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      map.loadImage(url, (error, image) => {
+        if (error || !image) return reject(error);
+        // @ts-ignore
+        map.addImage(name, image);
+        resolve();
+      });
     });
   }
 
@@ -201,6 +238,7 @@ export class MapComponent implements OnInit {
       id: 'markers',
       type: 'symbol',
       source: 'event-markers',
+      filter: ['!', ['has', 'point_count']],
       layout: {
         'icon-allow-overlap': true,
         'text-allow-overlap': true,
@@ -213,9 +251,11 @@ export class MapComponent implements OnInit {
       type: 'symbol',
       source: 'event-markers',
       filter: ['has', 'point_count'], // Only for clusters
-      layout: {
-        'text-field': '{markerCount} events',
-        ...markerSymbolLayout,
+      layout:  {
+        'icon-allow-overlap': true,
+        'text-allow-overlap': true,
+        'text-field': '{point_count}',
+        ...clusterSymbolLayout,
       },
     });
   }
@@ -258,7 +298,7 @@ export class MapComponent implements OnInit {
       popupContent.style.borderRadius = '16px';
       popupContent.style.opacity = '0';
       popupContent.style.background =
-        'linear-gradient(135deg, rgb(207, 36, 75,0.9), rgba(232, 61, 88,0.9))';
+        'linear-gradient(135deg, rgba(76, 207, 36, 0.9), rgba(81, 232, 61, 0.9))';
       popupContent.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
 
       // Trigger the fade-in after a short delay (to allow rendering)
