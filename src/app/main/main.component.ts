@@ -3,7 +3,6 @@ import { MapComponent } from '../map/map.component';
 import { EventSidebarComponent } from '../event-sidebar/event-sidebar.component';
 import { EventFormComponent } from '../modals/event-form/event-form.component';
 import { EventDetailsComponent } from '../modals/event-details/event-details.component';
-import { FilterComponent } from '../filter/filter.component';
 import { EventModifyComponent } from '../modals/event-modify/event-modify.component';
 import { dumbParent } from '../utils/utils';
 import { EventsService } from '../services/events.service';
@@ -21,7 +20,6 @@ import { FloatingActionBtnComponent } from "../floating-action-btn/floating-acti
     EventFormComponent,
     EventDetailsComponent,
     EventModifyComponent,
-    FilterComponent,
     LoginComponent,
     RegisterComponent, DialogComponent, UserSettingsComponent, FloatingActionBtnComponent],
     templateUrl: './main.component.html',

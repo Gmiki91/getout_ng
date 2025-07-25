@@ -1,6 +1,6 @@
 .body {
   position: relative;
-  height: 94vh;
+  height: 100vh;
   flex-grow: 1;
   overflow-y: hidden;
 
@@ -8,14 +8,6 @@
     position: absolute;
     width: 25rem;
     z-index: 20;
-  }
-
-  app-filter {
-    position: absolute;
-    width: 20rem;
-    left: 26rem;
-    z-index: 10;
-    border-radius: 15px;
   }
 
   app-map {
@@ -29,17 +21,6 @@
     app-event-sidebar {
       width: 12rem;
     }
-    app-filter {
-      width: 11rem;
-      left: 12rem;
-    }
   }
 }
 
-@media (max-width: 400px) {
-  .body {
-    app-filter {
-      width: 9rem;
-    }
-  }
-}
