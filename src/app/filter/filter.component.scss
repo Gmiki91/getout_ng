@@ -1,31 +1,46 @@
 .filters {
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-template-columns: 1fr 1fr;//1fr if distance is included
+
   padding: 5px;
-  background: var(--app-surface);
-  border-radius: 15px;
-  .row {
+  background: var(--app-primary-container);
+
+  .labels-row,
+  .controls-row {
+    display: contents; 
+  }
+
+  .label {
+    font-weight: bold;
+    color: var(--app-on-primary-container);
+    font-size: 1rem;
+    text-align: center;
+    grid-row: 1;
+  }
+
+  .control {
     display: flex;
-
-    .group {
-      display: flex;
-      flex: 1;
-      align-items: center;
-      gap: 5px;
-
-      .sort-by{
-        cursor: pointer;
-      }
-      .icon-group {
-        display: flex;
-        mat-icon {
-          cursor: pointer;
-        }
-      }
-    }
+    align-items: center;
+    justify-content: center;
+    grid-row: 2;
+  }
+  .control input {
+    width: 60px;
+    padding: 4px 8px;
+    border:none;
+    border-bottom: 1px solid var(--app-on-primary-container);
+    background: var(--app-primary-container);
+    color: var(--app-on-primary-container);
+    font-size: 1rem;
+    outline: none;
+    text-align: center;
   }
 }
-@media (max-width: 768px) {
-  .row {
-    flex-direction: column;
-    row-gap: 5px;
-  }
-}
+
+// @media (max-width: 768px) {
+//   .filters .label {
+//     display: none;
+
+//   }
+// }

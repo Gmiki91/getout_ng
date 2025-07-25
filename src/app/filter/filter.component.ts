@@ -5,11 +5,12 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
 import { slideDown } from '../utils/utils';
-import { MatCheckbox } from '@angular/material/checkbox';
-
+import { MatInputModule } from '@angular/material/input';
+import { MatTooltip } from '@angular/material/tooltip';
+import {MatSliderModule} from '@angular/material/slider';
 @Component({
     selector: 'app-filter',
-    imports: [MatIcon, MatMenuModule, MatSlideToggleModule, MatCheckbox, FormsModule],
+    imports: [MatIcon, MatMenuModule, MatSlideToggleModule, MatInputModule,MatTooltip, FormsModule,MatSliderModule ],
     templateUrl: './filter.component.html',
     styleUrl: './filter.component.scss',
     animations: [slideDown]
@@ -23,7 +24,9 @@ export class FilterComponent {
   maxDistance = 10;
   hideFullEvents = false;
   distanceToggle=false;
-  
+  formatLabel(value: number): string {
+    return `${value}km`;
+  }
   
   sortByDistance(): void {
     this.eventService.sortByDistance(this.ascendingDistance);

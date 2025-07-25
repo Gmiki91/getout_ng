@@ -1,4 +1,5 @@
-<div class="sidebar-container" @slideDown>
+<div class="sidebar-container">
+  <app-filter></app-filter>
   @if(joinedEvents().length>0){
   <mat-label class="sticky-title">your events</mat-label>
   <app-event-list

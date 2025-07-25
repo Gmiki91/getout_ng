@@ -4,17 +4,13 @@ import { EventsService } from '../services/events.service';
 import { MapService } from '../services/map.service';
 import { Event } from '../models/event.model';
 import { EventListComponent } from '../event-list/event-list.component';
-import { slideDown } from '../utils/utils';
+import { FilterComponent } from '../filter/filter.component';
 
 @Component({
-    selector: 'app-event-sidebar',
-    imports: [
-        MatLabel,
-        EventListComponent,
-    ],
-    templateUrl: './event-sidebar.component.html',
-    styleUrl: './event-sidebar.component.scss',
-    animations: [slideDown]
+  selector: 'app-event-sidebar',
+  imports: [FilterComponent, MatLabel, EventListComponent, FilterComponent],
+  templateUrl: './event-sidebar.component.html',
+  styleUrl: './event-sidebar.component.scss',
 })
 export class EventSidebarComponent {
   private eventsService = inject(EventsService);
@@ -22,7 +18,6 @@ export class EventSidebarComponent {
   joinedEvents = this.eventsService.yourEvents;
   otherEvents = this.eventsService.otherEvents;
   selectedEvent = this.eventsService.selectedEvent;
-
 
   onOpenDetails(event: Event): void {
     this.mapService.flyTo(event.latLng);

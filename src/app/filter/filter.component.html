@@ -1,55 +1,52 @@
-<div class="filters" @slideDown>
-  <div class="row">
-    <div class="group">
-      <strong class="sort-by" [matMenuTriggerFor]="menu">Sort by</strong>
-      <mat-menu #menu="matMenu">
-        <button class="distance-btn" mat-menu-item (click)="sortByDistance()">
-          <mat-icon>place</mat-icon> <strong>Distance</strong>
-        </button>
-        <button class="time-btn" mat-menu-item (click)="sortByTime()">
-          <mat-icon>watch_later</mat-icon><strong>Time</strong>
-        </button>
-      </mat-menu>
-      <div class="icon-group">
+<div class="filters">
+  <!-- Row 1: Labels -->
+  <div class="labels-row">
+    <div class="label">Sort by</div>
+    <div class="label">Show full events</div>
+    <!-- <div class="label">Max distance</div> -->
+  </div>
+
+  <!-- Row 2: Controls -->
+  <div class="controls-row">
+    <!-- Sort by -->
+    <div class="control">
+      <div>
         @if(sort ==='Time'){
-        <mat-icon [matMenuTriggerFor]="menu">watch_later</mat-icon>
+        <mat-icon matTooltip="Sort by" matTooltipShowDelay="500"  [matMenuTriggerFor]="menu">watch_later</mat-icon>
         <mat-icon (click)="sortByTime()">{{
           ascendingTime ? "arrow_drop_up" : "arrow_drop_down"
         }}</mat-icon>
         }@else{
-        <mat-icon [matMenuTriggerFor]="menu">place</mat-icon>
+        <mat-icon matTooltip="Sort by" matTooltipShowDelay="500"  [matMenuTriggerFor]="menu">place</mat-icon>
         <mat-icon (click)="sortByDistance()">{{
           ascendingDistance ? "arrow_drop_up" : "arrow_drop_down"
         }}</mat-icon>
         }
       </div>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="sortByDistance()">
+          <mat-icon>place</mat-icon>
+          <span>Distance</span>
+        </button>
+        <button mat-menu-item (click)="sortByTime()">
+          <mat-icon>watch_later</mat-icon>
+          <span>Time</span>
+        </button>
+      </mat-menu>
     </div>
-    <div class="group">
-      <strong>Full events</strong>
+    <!-- Toggle full events -->
+    <div class="control">
       <mat-slide-toggle
+      matTooltip="Show full events" matTooltipShowDelay="500"
         checked
         (change)="toggleFullEvents()"
       ></mat-slide-toggle>
     </div>
-  </div>
-  <div class="row">
-    <div>
-        <mat-checkbox (change)="toggleDistance()" [checked]="distanceToggle"></mat-checkbox> 
-        @if(distanceToggle){
-          <strong>Max distance
-              <input
-            matInput
-            type="number"
-            min="0"
-            max="1000"
-            (input)="updateDistance($event)"
-            [disabled]="!distanceToggle"
-            [(ngModel)]="maxDistance"
-          />
-          km </strong>
-        }@else{
-          <strong>Max distance</strong>
-        }
-      </div>
+    <!-- Check distance -->
+    <!-- <div class="control">
+     <mat-slider min="0" max="500" step="1" showTickMarks discrete [displayWith]="formatLabel">
+  <input matSliderThumb>
+</mat-slider>
+    </div> -->
   </div>
 </div>
