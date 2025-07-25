@@ -1,4 +1,5 @@
-import { Component, computed, DestroyRef, inject, input, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, computed, DestroyRef, inject, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,6 +34,7 @@ export class HeaderComponent implements OnInit {
   eventService = inject(EventsService);
   stateService = inject(StateService);
   authService = inject(AuthService);
+  document = inject(DOCUMENT);
   user = this.userService.user;
   loading = this.authService.loading;
   unseenNotifications = computed(() =>this.user().notifications.filter((notification:MyNotification) => !notification.read).length);
@@ -75,6 +77,7 @@ export class HeaderComponent implements OnInit {
     this.stateService.closeUserSettings()
   }
   onRefresh(): void {
+    // this.document.body.classList.toggle('dark');
     this.eventService.getEvents().pipe(take(1)).subscribe(()=>{
       this.isSpinning = true;
       setTimeout(() => {

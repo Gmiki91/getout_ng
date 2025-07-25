@@ -1,11 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { HeaderComponent } from './header/header.component';
 import { MainComponent } from './main/main.component';
 import { AuthService } from './services/auth.service';
 
 @Component({
     selector: 'app-root',
-    imports: [HeaderComponent, MainComponent],
+    imports: [MainComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })

@@ -1,4 +1,5 @@
 <div class="body">
+  <app-header></app-header>
   @if(state.showSideBar() && events.areEventsLoaded()){
   <app-event-sidebar @dumbParent></app-event-sidebar>
   } @if(state.showFilter()){
@@ -25,4 +26,5 @@
       <app-user-settings/>
     </app-dialog>
   }
+  <app-floating-action-btn></app-floating-action-btn>
 </div>

@@ -1,22 +1,13 @@
 .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: absolute;
   padding: 10px;
+  z-index: 20;
+  right: 0;
+  top: 0;
+  border-bottom-left-radius: 30px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-  background: var(--app-primary);
-  
-  .left {
-    display: flex;
-    .button-group {
-      margin-left: 1rem;
-      display: flex;
-    }
-  }
-  .right {
-    display: flex;
-    align-items: center;
-  }
+  background: var(--app-primary-container);
+
   .avatar {
     width: 40px;
     height: 40px;
@@ -32,12 +23,9 @@
   }
 
   .username {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji",
-      "Segoe UI Symbol", sans-serif;
+    align-self: center;
     font-size: 1.5rem;
     font-weight: bold;
-    color: white;
   }
 
   .spin .refresh-icon {
@@ -48,7 +36,6 @@
 
 button {
   align-self: center;
-  color: white;
 }
 
 @keyframes spin {
@@ -63,7 +50,7 @@ button {
 @media (max-width: 768px) {
   .container {
     .username {
-      display:none;
+      display: none;
     }
     .avatar {
       margin-left: 0;

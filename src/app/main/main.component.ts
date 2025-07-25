@@ -12,16 +12,18 @@ import { LoginComponent } from '../auth/login/login.component';
 import { RegisterComponent } from '../auth/register/register.component';
 import { DialogComponent } from "../modals/dialog/dialog.component";
 import { UserSettingsComponent } from "../user/user-settings/user-settings.component";
+import { HeaderComponent } from '../header/header.component';
+import { FloatingActionBtnComponent } from "../floating-action-btn/floating-action-btn.component";
 @Component({
     selector: 'app-main',
-    imports: [MapComponent,
-        EventSidebarComponent,
-        EventFormComponent,
-        EventDetailsComponent,
-        EventModifyComponent,
-        FilterComponent,
-        LoginComponent,
-        RegisterComponent, DialogComponent, UserSettingsComponent],
+    imports: [MapComponent, HeaderComponent,
+    EventSidebarComponent,
+    EventFormComponent,
+    EventDetailsComponent,
+    EventModifyComponent,
+    FilterComponent,
+    LoginComponent,
+    RegisterComponent, DialogComponent, UserSettingsComponent, FloatingActionBtnComponent],
     templateUrl: './main.component.html',
     styleUrl: './main.component.scss',
     animations: [dumbParent]

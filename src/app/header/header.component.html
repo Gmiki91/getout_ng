@@ -1,16 +1,4 @@
 <div class="container">
-  <div class="left">
-    <img class="logo" src="rook-icon.png" alt="no img :*(" />
-    <div class="button-group">
-      <button mat-icon-button matTooltip="Events" matTooltipShowDelay="500"  (click)="onToggleSideBar()"> <mat-icon>menu</mat-icon></button>
-      <button mat-icon-button matTooltip="Filter" matTooltipShowDelay="500"  (click)="onToggleFilter()"> <mat-icon>filter_alt</mat-icon></button>
-      <button mat-icon-button matTooltip="Refresh" matTooltipShowDelay="500"  (click)="onRefresh()" [class.spin]="isSpinning"> <mat-icon class="refresh-icon">refresh</mat-icon></button>
-      <button mat-icon-button matTooltip="New event" matTooltipShowDelay="500" class="new-event-btn" (click)="onToggleEventForm()">
-        <mat-icon>add_circle</mat-icon>
-      </button>
-    </div>
-  </div>
-  <div class="right">
     <button [matBadge]="unseenNotifications()" [matBadgeHidden]="unseenNotifications()==0"  
     mat-icon-button matTooltip="Notifications" matTooltipShowDelay="1000"  [matMenuTriggerFor]="notifications" (menuClosed)="menuClosed()"> <mat-icon>notifications</mat-icon></button>
     <mat-menu   #notifications="matMenu" >
@@ -53,4 +41,4 @@
     }
     </mat-menu>
   </div>
-</div>
+
