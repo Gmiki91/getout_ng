@@ -95,9 +95,9 @@ export class MapComponent implements OnInit {
   addControls(map: Map) {
     const geoLocateControl = this.initGeoLocateControl();
     const geocoder = this.initGeocoder();
-    map.addControl(geocoder);
-    map.addControl(geoLocateControl);
-    map.addControl(new mapboxgl.NavigationControl());
+    map.addControl(geocoder,'bottom-right');
+    map.addControl(geoLocateControl,'bottom-right');
+    map.addControl(new mapboxgl.NavigationControl(),'bottom-right');
   }
 
   initGeoLocateControl(): GeolocateControl {
@@ -297,8 +297,8 @@ export class MapComponent implements OnInit {
       popupTip.style.display = 'none';
       popupContent.style.borderRadius = '16px';
       popupContent.style.opacity = '0';
-      popupContent.style.background =
-        'linear-gradient(135deg, rgba(76, 207, 36, 0.9), rgba(81, 232, 61, 0.9))';
+      popupContent.style.background = 
+        'linear-gradient( #000000,#b3b3b3 99%)';
       popupContent.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
 
       // Trigger the fade-in after a short delay (to allow rendering)
