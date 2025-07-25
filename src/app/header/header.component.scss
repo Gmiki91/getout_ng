@@ -12,8 +12,8 @@
     width: 40px;
     height: 40px;
     border-radius: 30px;
+    vertical-align: bottom;
     cursor: pointer;
-    margin-left: 5px;
   }
 
   .logo {
@@ -23,7 +23,7 @@
   }
 
   .username {
-    align-self: center;
+    vertical-align: text-bottom;
     font-size: 1.5rem;
     font-weight: bold;
   }
