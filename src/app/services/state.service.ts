@@ -4,8 +4,8 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class StateService {
-  private _showSideBar = signal<boolean>(true);
-  private _showFilter = signal<boolean>(false);
+  // private _showSideBar = signal<boolean>(true);
+  // private _showFilter = signal<boolean>(false);
   private _showLogin = signal<boolean>(false);
   private _showRegister = signal<boolean>(false);
   private _showVisitorPage = signal<boolean>(false);
@@ -13,8 +13,8 @@ export class StateService {
   private _showEventDetails = signal<boolean>(false);
   private _showUserSettings = signal<boolean>(false);
   private _isEventUpdating = signal<boolean>(false);
-  showSideBar = this._showSideBar.asReadonly();
-  showFilter = this._showFilter.asReadonly();
+  // showSideBar = this._showSideBar.asReadonly();
+  // showFilter = this._showFilter.asReadonly();
   showLogin = this._showLogin.asReadonly();
   showRegister = this._showRegister.asReadonly();
   showVisitorPage = this._showVisitorPage.asReadonly();
@@ -22,13 +22,13 @@ export class StateService {
   showEventDetails = this._showEventDetails.asReadonly();
   showUserSettings = this._showUserSettings.asReadonly();
   isEventUpdating = this._isEventUpdating.asReadonly();
-  toggleSideBar() {
-    this._showSideBar.set(!this.showSideBar());
-  }
+  // toggleSideBar() {
+  //   this._showSideBar.set(!this.showSideBar());
+  // }
 
-  toggleFilter() {
-    this._showFilter.set(!this.showFilter());
-  }
+  // toggleFilter() {
+  //   this._showFilter.set(!this.showFilter());
+  // }
 
   toggleLogin() {
     if (this.showRegister()) this._showRegister.set(false);

@@ -52,12 +52,12 @@ export class HeaderComponent implements OnInit {
     this.destroyRef.onDestroy(() => sub.unsubscribe());
   }
 
-  onToggleSideBar(): void {
-    this.stateService.toggleSideBar();
-  }
-  onToggleFilter(): void {
-    this.stateService.toggleFilter();
-  }
+  // onToggleSideBar(): void {
+  //   this.stateService.toggleSideBar();
+  // }
+  // onToggleFilter(): void {
+  //   this.stateService.toggleFilter();
+  // }
   onToggleEventForm(): void {
     this.stateService.toggleEventForm();
   }
