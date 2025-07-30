@@ -20,7 +20,6 @@ export class EventsService {
   private _yourEvents = signal<Event[]>([]);
   private _otherEvents = signal<Event[]>([]);
   private _selectedEvent = signal<Event>({} as Event);
-  private _areEventsLoaded = signal<boolean>(false);
   private _currentPosition = signal<LatLng>({ lat: 0, lng: 0 });
   private _user = this._userService.user;
   private _unfilteredOtherEvents: Event[] = [];
@@ -29,7 +28,6 @@ export class EventsService {
   yourEvents = this._yourEvents.asReadonly();
   otherEvents = this._otherEvents.asReadonly();
   selectedEvent = this._selectedEvent.asReadonly();
-  areEventsLoaded = this._areEventsLoaded.asReadonly();
 
   //save the sorted events for the events list, returns unsorted for the map markers
   getEvents(): Observable<{ joinedEvents: Event[]; otherEvents: Event[] }> {
@@ -44,7 +42,7 @@ export class EventsService {
         }),
         tap((result) => {
           this.setEvents(result.joinedEvents, result.otherEvents);
-          this._areEventsLoaded.set(true);
+          this._stateService.eventsLoaded(true);
         })
       );
   }

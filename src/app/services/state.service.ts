@@ -13,6 +13,7 @@ export class StateService {
   private _showEventDetails = signal<boolean>(false);
   private _showUserSettings = signal<boolean>(false);
   private _isEventUpdating = signal<boolean>(false);
+  private _areEventsLoaded = signal<boolean>(false);
   // showSideBar = this._showSideBar.asReadonly();
   // showFilter = this._showFilter.asReadonly();
   showLogin = this._showLogin.asReadonly();
@@ -22,6 +23,7 @@ export class StateService {
   showEventDetails = this._showEventDetails.asReadonly();
   showUserSettings = this._showUserSettings.asReadonly();
   isEventUpdating = this._isEventUpdating.asReadonly();
+  areEventsLoaded = this._areEventsLoaded.asReadonly();
   // toggleSideBar() {
   //   this._showSideBar.set(!this.showSideBar());
   // }
@@ -29,6 +31,10 @@ export class StateService {
   // toggleFilter() {
   //   this._showFilter.set(!this.showFilter());
   // }
+
+  eventsLoaded(option:boolean): void {
+      this._areEventsLoaded.set(option);
+  };
 
   toggleLogin() {
     if (this.showRegister()) this._showRegister.set(false);
