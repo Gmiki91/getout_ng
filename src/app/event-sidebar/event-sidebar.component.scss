@@ -21,4 +21,16 @@
   app-filter {
     width: 100%;
   }
+
+}
+.event-skeleton {
+  width: 25rem;
+  background-color: var(--app-surface);
+  padding: 1rem;
+
+  @media (max-width: 768px) {
+    width: 12rem;
+    height: auto;
+    padding: 0.5rem;
+  }
 }
