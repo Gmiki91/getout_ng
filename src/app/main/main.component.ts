@@ -1,4 +1,4 @@
-import { Component, inject, input} from '@angular/core';
+import { Component, inject} from '@angular/core';
 import { MapComponent } from '../map/map.component';
 import { EventSidebarComponent } from '../event-sidebar/event-sidebar.component';
 import { EventFormComponent } from '../modals/event-form/event-form.component';
@@ -27,8 +27,6 @@ import { FloatingActionBtnComponent } from "../floating-action-btn/floating-acti
     animations: [dumbParent]
 })
 export class MainComponent{
-  showMap = input<boolean>(); 
   events = inject(EventsService);
   state = inject(StateService);
-  loadingUser = true;
 }

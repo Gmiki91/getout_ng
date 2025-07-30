@@ -1,10 +1,8 @@
 <div class="body">
   <app-header></app-header>
- 
   <app-event-sidebar></app-event-sidebar>
-  @if(showMap()){ @defer{
   <app-map />
-  } } @if(state.showEventForm()){
+  @if(state.showEventForm()){
   <app-event-form @dumbParent></app-event-form>
   } @if(state.showEventDetails()){
   <app-event-details @dumbParent></app-event-details>
