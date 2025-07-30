@@ -7,6 +7,8 @@ import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { StateService } from '../services/state.service';
+import { AuthService } from '../services/auth.service';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 // Define the layout for marker symbols
 // This layout is used for individual events marked with pawns
@@ -49,6 +51,7 @@ export class MapComponent implements OnInit {
   private mapService = inject(MapService);
   private eventService = inject(EventsService);
   private stateService = inject(StateService);
+  private authService = inject(AuthService);
   private destroyRef = inject(DestroyRef);
   viewbox = '';
 
@@ -136,7 +139,10 @@ export class MapComponent implements OnInit {
   }
 
   initMarkers(): void {
-    const sub = this.eventService.getEvents().subscribe((events) => {
+   const sub =  this.authService.isAuthenticated$.pipe(
+      distinctUntilChanged(), // if the authentication state changes upon login/logout, refresh the event list groups (joined and other events)
+      switchMap(() => this.eventService.getEvents())
+    ).subscribe((events) => {
       const allEvents = events.joinedEvents.concat(events.otherEvents);
       allEvents.forEach((event) => {
         this.mapService.addMarker(event);

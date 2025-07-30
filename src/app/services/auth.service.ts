@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import { firstValueFrom, Observable, BehaviorSubject } from 'rxjs';
 import { tap,map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { User, Visitor } from '../models/user.model';
@@ -53,8 +53,8 @@ export class AuthService {
       .pipe(tap(response => {
           if (response.token) {
             this.setAccessToken(response.token);
-            this.isAuthenticated$.next(true); 
             this.userService.setUser(response.user);
+            this.isAuthenticated$.next(true); 
           }
         }));
   }
