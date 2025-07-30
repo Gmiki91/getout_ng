@@ -5,7 +5,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { EventsService } from '../services/events.service';
 import { MatTooltip } from '@angular/material/tooltip';
-import { take } from 'rxjs';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import { TimeTextPipe } from '../pipes/time-text.pipe';
@@ -75,15 +74,6 @@ export class HeaderComponent implements OnInit {
   onLogOut():void{
     this.authService.logout();
     this.stateService.closeUserSettings()
-  }
-  onRefresh(): void {
-    // this.document.body.classList.toggle('dark');
-    this.eventService.getEvents().pipe(take(1)).subscribe(()=>{
-      this.isSpinning = true;
-      setTimeout(() => {
-        this.isSpinning = false;
-      }, 250);
-    });
   }
   menuClosed(): void {
     if (this.user().notifications.length > 0 && this.unseenNotifications()>0) {
