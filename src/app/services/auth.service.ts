@@ -49,26 +49,25 @@ export class AuthService {
   
   
   login(username: string,password: string): Observable<{ status: boolean; token: string,user:User }> {
+    this._loading.set(true)
     return this.http.post<{ status: boolean; token: string,user:User }>(`${this.url}/login`, {username,password})
-      .pipe(tap(response => {
-          if (response.token) {
-            this.setAccessToken(response.token);
-            this.userService.setUser(response.user);
-            this.isAuthenticated$.next(true); 
-          }
-        }));
+       .pipe(tap(response => this.handleAuthSuccess(response.token, response.user)));
   }
 
   register(username: string,email: string,password: string, elo:number): Observable<{ status: boolean; token: string,user:User }> {
+    this._loading.set(true)
     return this.http.post<{ status: boolean; token: string,user:User }>(`${this.url}/register`, {username,password,email,elo})
-      .pipe(tap(response => {
-          if (response.token) {
-            this.setAccessToken(response.token);
-            this.isAuthenticated$.next(true); 
-            this.userService.setUser(response.user);
-          }
-        }));
+      .pipe(tap(response => this.handleAuthSuccess(response.token, response.user)));
   }
+
+  private handleAuthSuccess( token: string, user: User ) {
+  if (token) {
+    this.setAccessToken(token);
+    this.userService.setUser(user);
+    this.isAuthenticated$.next(true);
+  }
+  this._loading.set(false);
+}
 
   refreshToken(): Observable<string> {
     return this.http.post<{ status: boolean; token: string,user:User }>(`${this.url}/refresh-token`,{})
