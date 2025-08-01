@@ -11,15 +11,15 @@
     <!-- Sort by -->
     <div class="control">
       <div>
-        @if(sort ==='Time'){
-        <mat-icon matTooltip="Sort by" matTooltipShowDelay="500"  [matMenuTriggerFor]="menu">watch_later</mat-icon>
-        <mat-icon (click)="sortByTime()">{{
-          ascendingTime ? "arrow_drop_up" : "arrow_drop_down"
+        @if(sortType() ==='Time'){
+        <mat-icon style="cursor:pointer" matTooltip="Sort by time" matTooltipShowDelay="500"  [matMenuTriggerFor]="menu">watch_later</mat-icon>
+        <mat-icon style="cursor:pointer" (click)="toggleSortDirection()">{{
+          sortDirection()==='asc' ? "arrow_drop_up" : "arrow_drop_down"
         }}</mat-icon>
         }@else{
-        <mat-icon matTooltip="Sort by" matTooltipShowDelay="500"  [matMenuTriggerFor]="menu">place</mat-icon>
-        <mat-icon (click)="sortByDistance()">{{
-          ascendingDistance ? "arrow_drop_up" : "arrow_drop_down"
+        <mat-icon style="cursor:pointer" matTooltip="Sort by distance" matTooltipShowDelay="500"  [matMenuTriggerFor]="menu">place</mat-icon>
+        <mat-icon style="cursor:pointer" (click)="toggleSortDirection()">{{
+          sortDirection()==='asc' ? "arrow_drop_up" : "arrow_drop_down"
         }}</mat-icon>
         }
       </div>

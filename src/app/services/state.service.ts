@@ -4,8 +4,6 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class StateService {
-  // private _showSideBar = signal<boolean>(true);
-  // private _showFilter = signal<boolean>(false);
   private _showLogin = signal<boolean>(false);
   private _showRegister = signal<boolean>(false);
   private _showVisitorPage = signal<boolean>(false);
@@ -14,8 +12,6 @@ export class StateService {
   private _showUserSettings = signal<boolean>(false);
   private _isEventUpdating = signal<boolean>(false);
   private _areEventsLoaded = signal<boolean>(false);
-  // showSideBar = this._showSideBar.asReadonly();
-  // showFilter = this._showFilter.asReadonly();
   showLogin = this._showLogin.asReadonly();
   showRegister = this._showRegister.asReadonly();
   showVisitorPage = this._showVisitorPage.asReadonly();
@@ -24,13 +20,16 @@ export class StateService {
   showUserSettings = this._showUserSettings.asReadonly();
   isEventUpdating = this._isEventUpdating.asReadonly();
   areEventsLoaded = this._areEventsLoaded.asReadonly();
-  // toggleSideBar() {
-  //   this._showSideBar.set(!this.showSideBar());
-  // }
 
-  // toggleFilter() {
-  //   this._showFilter.set(!this.showFilter());
-  // }
+  // Filters
+  private _hideFull = signal<boolean>(false);
+  private _maxDistance = signal<number>(10);
+  private _sortType = signal<'Time' | 'Distance'>('Time');
+  private _sortDirection = signal<'asc' | 'desc'>('asc');
+  hidefull = this._hideFull.asReadonly();
+  maxDistance = this._maxDistance.asReadonly();
+  sortType = this._sortType.asReadonly();
+  sortDirection = this._sortDirection.asReadonly();
 
   eventsLoaded(option:boolean): void {
       this._areEventsLoaded.set(option);
@@ -93,5 +92,24 @@ export class StateService {
 
   closeUserSettings(): void {
     this._showUserSettings.set(false);
+  }
+
+  // Filters
+  changeSortType(value:'Time'|'Distance'): void {
+      this._sortType.set(value);
+   }
+
+  toggleSortDirection(): void {
+    if (this._sortDirection() === 'asc') {
+      this._sortDirection.set('desc');
+    } else {
+      this._sortDirection.set('asc');
+    }
+  }
+  toggleFullEvents(): void {
+    this._hideFull.set(!this._hideFull());
+  }
+  setMaxDistance(value: number): void {
+    this._maxDistance.set(value);
   }
 }
