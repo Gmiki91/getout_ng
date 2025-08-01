@@ -1,6 +1,6 @@
 import { Component, inject, output } from '@angular/core';
 import { StateService } from '../../services/state.service';
-import { slideDown } from '../../utils/utils';
+import { slideDown } from '../../utils/animation.utils';
 
 @Component({
     selector: 'app-dialog',

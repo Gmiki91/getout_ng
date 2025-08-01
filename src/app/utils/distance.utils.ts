@@ -1,4 +1,3 @@
-import { trigger, transition, style, animate, query, animateChild } from '@angular/animations';
 /**
  *  Spherical Law of Cosines uses trigonometric identities and can be used to calculate distance
  * @param lat1 latitude of location#1
@@ -28,23 +27,3 @@ export const calculateDistance = (
   const d = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * R;
   return Math.round(d * 100) * 10;
 };
-
-export const slideDown = trigger('slideDown', [
-  transition(':enter', [
-    style({ transform: 'translateY(-100%)'}), // Initial state
-    animate('0.3s ease-out', style({ transform: 'translateY(0)'})), // Final state
-  ]),
-  transition(':leave', [
-    style({ transform: 'translateY(0)'}), // Initial state
-    animate(
-      '0.3s ease-in',
-      style({ transform: 'translateY(-100%)'})
-    ), 
-  ]),
-]);
-
-export const dumbParent=trigger('dumbParent', [
-    transition('* => void', [
-      query('@*', [animateChild()], {optional: true})
-    ]),
-  ]);

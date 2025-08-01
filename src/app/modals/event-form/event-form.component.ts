@@ -12,7 +12,7 @@ import { MatButton,MatIconButton } from '@angular/material/button';
 import { EventsService } from '../../services/events.service';
 import { MapService } from '../../services/map.service';
 import { MatCardModule } from '@angular/material/card';
-import { slideDown } from '../../utils/utils';
+import { slideDown } from '../../utils/animation.utils';
 import { MatIcon } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';

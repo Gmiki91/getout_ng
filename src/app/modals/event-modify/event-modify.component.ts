@@ -17,7 +17,7 @@ import { EventsService } from '../../services/events.service';
 import { MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
-import { slideDown } from '../../utils/utils';
+import { slideDown } from '../../utils/animation.utils';
 import { LocationFieldComponent } from '../form-fields/location-field.component';
 import { TimeFieldComponent } from '../form-fields/time-field/time-field.component';
 import { UpdateEventData } from '../../models/event.model';

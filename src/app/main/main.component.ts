@@ -4,7 +4,7 @@ import { EventSidebarComponent } from '../event-sidebar/event-sidebar.component'
 import { EventFormComponent } from '../modals/event-form/event-form.component';
 import { EventDetailsComponent } from '../modals/event-details/event-details.component';
 import { EventModifyComponent } from '../modals/event-modify/event-modify.component';
-import { dumbParent } from '../utils/utils';
+import { dumbParent } from '../utils/animation.utils';
 import { EventsService } from '../services/events.service';
 import { StateService } from '../services/state.service';
 import { LoginComponent } from '../auth/login/login.component';

@@ -21,7 +21,7 @@ import { EventsService } from '../../services/events.service';
 import { MapService } from '../../services/map.service';
 import { UserService } from '../../services/user.service';
 import {Visitor} from '../../models/user.model';
-import { slideDown } from '../../utils/utils';
+import { slideDown } from '../../utils/animation.utils';
 import { MatIcon } from '@angular/material/icon';
 import { MockUser } from '../../utils/mock.factory';
 import { MatTooltip } from '@angular/material/tooltip';
