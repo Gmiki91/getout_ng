@@ -1,9 +1,11 @@
 <div class="sidebar-container">
   <app-filter></app-filter>
-  @if(!showEvents()){ <!--Title for the skeleton-->
-    <mat-label class="sticky-title">events</mat-label>
+  @if(!showEvents()){
+  <!--Title for the skeleton-->
+  <mat-label class="sticky-title">events</mat-label>
   }
-  @defer(when showEvents()){ @if(joinedEvents().length>0){
+  <div class="event-list-container">
+    @defer(when showEvents()){ @if(joinedEvents().length>0){
     <mat-label class="sticky-title">your events</mat-label>
     <app-event-list
       [events]="joinedEvents()"
@@ -20,11 +22,12 @@
     ></app-event-list>
     } @if(otherEvents().length==0 && joinedEvents().length==0 ){
     <mat-label class="sticky-title">No events yet :(</mat-label>
-    } 
-  } @placeholder (minimum 500ms) {
-    <ngx-skeleton-loader class="event-skeleton"
-    count="5"
-    [theme]="{height: '75px' }"
+    } } @placeholder (minimum 500ms) {
+    <ngx-skeleton-loader
+      class="event-skeleton"
+      count="5"
+      [theme]="{ height: '75px' }"
     />
-  }
+    }
+  </div>
 </div>
