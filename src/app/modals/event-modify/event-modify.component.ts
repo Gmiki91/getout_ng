@@ -92,13 +92,13 @@ export class EventModifyComponent implements OnInit {
       }
 
       changedValues.id = this.myEvent.id;
-      const sub = this.eventService.updateEvent(changedValues).subscribe(() => {
-        this.onClose();
-        this.snackBar.open('updated ' + this.myEvent.title, undefined, {
-          duration: 3000,
-        });
-      });
-      this.destroyRef.onDestroy(() => sub.unsubscribe());
+      // const sub = this.eventService.updateEvent(changedValues).subscribe(() => {
+      //   this.onClose();
+      //   this.snackBar.open('updated ' + this.myEvent.title, undefined, {
+      //     duration: 3000,
+      //   });
+      // });
+      // this.destroyRef.onDestroy(() => sub.unsubscribe());
     }
   }
 

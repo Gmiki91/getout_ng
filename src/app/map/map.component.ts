@@ -136,9 +136,8 @@ export class MapComponent implements OnInit {
    const sub =  this.authService.isAuthenticated$.pipe(
       distinctUntilChanged(), // if the authentication state changes upon login/logout, refresh the event list groups (joined and other events)
       switchMap(() => this.eventService.getEvents())
-    ).subscribe((events) => {
-      const allEvents = events.joinedEvents.concat(events.otherEvents);
-      allEvents.forEach((event) => {
+    ).subscribe(events => {
+      events.forEach((event) => {
         this.mapService.addMarker(event);
       });
     });
