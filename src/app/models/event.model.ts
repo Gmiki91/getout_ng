@@ -20,6 +20,7 @@ export type Event = {
   ownerId: string;
   komments: Komment[];
   recurring: Recurrence
+  joined: boolean;
 };
 
 export type NewEventData = {
@@ -32,7 +33,8 @@ export type NewEventData = {
   max?: number;
   info?: string;
   ownerId?: string;
-  recurring: Recurrence
+  recurring: Recurrence;
+  joined: boolean;
 };
 
 export type UpdateEventData = {

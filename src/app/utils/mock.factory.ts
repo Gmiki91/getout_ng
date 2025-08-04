@@ -15,7 +15,8 @@ const defaultMockEvent: Event = {
     min: 2,
     info: 'test info',
     ownerId: '1',
-    komments: []
+    komments: [],
+    joined: false
   };
 
 export function createMockEvent(overrides: Partial<Event> = {}): Event {

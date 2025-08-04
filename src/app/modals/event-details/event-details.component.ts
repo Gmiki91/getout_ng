@@ -61,7 +61,6 @@ export class EventDetailsComponent implements OnInit {
   userService = inject(UserService);
   stateService = inject(StateService);
   event = this.eventService.selectedEvent;
-  joined = this.eventService.isUserJoined(this.event().id);
   komments = this.kommentService.comments;
   showCommentBtn = false;
   showLocationInfo = false;
@@ -76,7 +75,6 @@ export class EventDetailsComponent implements OnInit {
   onJoin(): void {
     if(this.event().max>this.event().participants.length || this.event().max==0)
     this.eventService.joinEvent(this.event().id,this.event().distance);
-    this.joined = true;
     this.snackBar.open("joined " + this.event().title,undefined,{duration:3000});
   }
 

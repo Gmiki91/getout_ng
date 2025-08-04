@@ -58,7 +58,7 @@
     </mat-card-content>
 
     <mat-card-actions class="event-actions">
-      @if(joined){
+      @if(event().joined){
       <button class="leave-btn" mat-raised-button (click)="onLeave()">
         leave event
       </button>

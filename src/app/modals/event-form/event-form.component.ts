@@ -103,7 +103,8 @@ export class EventFormComponent{
           min: min,
           max: max,
           info: info,
-          recurring: finalRecurring
+          recurring: finalRecurring,
+          joined:true
         })
         .subscribe({
           next: (event) => {
