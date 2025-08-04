@@ -1,5 +1,5 @@
  @for(event of events(); track event.id){
-<mat-card class="event">
+<mat-card class="event" (click)="openDetails.emit(event)">
   <mat-card-header>
     <mat-card-title>
       {{ event.title }}
@@ -18,8 +18,12 @@
         ></mat-icon>
         <span>{{event.distance | distanceFormat}}</span>
       </div>
-      <div class="info-item last-item"  matTooltip="Participation" matTooltipShowDelay="500">
-        <mat-icon>people</mat-icon>
+      <div class="info-item last-item"  [matTooltip]="event.joined? 'You participate as well':'Participation'" matTooltipShowDelay="500">
+        @if(event.joined){
+        <mat-icon>person_add</mat-icon>
+        }@else{
+        <mat-icon>person</mat-icon>
+        }
         <span>{{event.participants.length}}{{event.max>0? "/"+event.max : ""}}</span>
       </div>
     </div>

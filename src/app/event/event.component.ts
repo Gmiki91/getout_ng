@@ -32,7 +32,4 @@ export class EventComponent {
     e.stopPropagation();
     this.mapService.flyTo(event.latLng);
   }
-    onDetails(event: Event): void {
-    this.openDetails.emit(event);
-  }
 }
