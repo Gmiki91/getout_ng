@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EventComponent } from './event.component';
-import { MapService } from '../../services/map.service';
-import { Event } from '../../models/event.model';
-import { TimeTextPipe } from '../../pipes/time-text.pipe';
-import { DistanceFormatPipe } from '../../pipes/distance-format.pipe';
+import { MapService } from '../services/map.service';
+import { Event } from '../models/event.model';
+import { TimeTextPipe } from '../pipes/time-text.pipe';
+import { DistanceFormatPipe } from '../pipes/distance-format.pipe';
 import { By } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { createMockEvent } from '../../utils/mock.factory';
+import { createMockEvent } from '../utils/mock.factory';
 
 const mockEvent: Event = createMockEvent();
 

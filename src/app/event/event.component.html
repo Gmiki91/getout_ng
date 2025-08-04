@@ -1,31 +1,33 @@
+ @for(event of events(); track event.id){
 <mat-card class="event">
   <mat-card-header>
     <mat-card-title>
-      {{ event().title }}
+      {{ event.title }}
     </mat-card-title>
   </mat-card-header>
     <div class="event-info">
-      <div class="info-item"  [matTooltip]="event().time|date : 'medium'" matTooltipShowDelay="500">
+      <div class="info-item"  [matTooltip]="event.time|date : 'medium'" matTooltipShowDelay="500">
         <mat-icon >timelapse</mat-icon>
-        <span>{{event().time | timeText: 'event'}}</span>
+        <span>{{event.time | timeText: 'event'}}</span>
       </div>
-      <div class="info-item"   [matTooltip]="event().location"  matTooltipShowDelay="500">
+      <div class="info-item"   [matTooltip]="event.location"  matTooltipShowDelay="500">
         <mat-icon
         class="find-marker-icon"
-        (click)="onFindMarker($event)"
+        (click)="onFindMarker($event, event)"
         fontIcon="not_listed_location"
         ></mat-icon>
-        <span>{{event().distance | distanceFormat}}</span>
+        <span>{{event.distance | distanceFormat}}</span>
       </div>
       <div class="info-item last-item"  matTooltip="Participation" matTooltipShowDelay="500">
         <mat-icon>people</mat-icon>
-        <span>{{event().participants.length}}{{event().max>0? "/"+event().max : ""}}</span>
+        <span>{{event.participants.length}}{{event.max>0? "/"+event.max : ""}}</span>
       </div>
     </div>
   <div>
   </div>
 
-  @if(user().id==event().ownerId){
+  @if(user().id==event.ownerId){
     <mat-icon matTooltip="You created this event" matTooltipShowDelay="1000" class="owner-icon" fontIcon="copyright"></mat-icon>
   }
 </mat-card>
+ }
