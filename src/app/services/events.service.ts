@@ -22,6 +22,7 @@ export class EventsService {
   private _otherEvents = signal<Event[]>([]);
   private _selectedEvent = signal<Event>({} as Event);
   private _currentPosition = signal<LatLng>({ lat: 0, lng: 0 });
+  private _viewportBounds = signal<[LatLng, LatLng]>([{lat:0,lng:0},{lat:0,lng:0}]);
   private _user = this._userService.user;
   currentPosition = this._currentPosition.asReadonly();
   selectedEvent = this._selectedEvent.asReadonly();
@@ -29,13 +30,15 @@ export class EventsService {
   otherEvents = filterAndSortEvents(
     this._otherEvents,
     this._stateService,
-    this._mapService
+    this._mapService,
+    this._viewportBounds
   );
 
   yourEvents = filterAndSortEvents(
     this._yourEvents,
     this._stateService,
-    this._mapService
+    this._mapService,
+    this._viewportBounds
   );
 
   //save the sorted events for the events list, returns unsorted for the map markers
@@ -147,6 +150,10 @@ export class EventsService {
   updateDistances(): void {
     this.updateDistanceOfEvents(this._otherEvents());
     this.updateDistanceOfEvents(this._yourEvents());
+  }
+
+  setViewportBounds(sw: mapboxgl.LngLat, ne: mapboxgl.LngLat) {
+    this._viewportBounds.set([sw, ne]);
   }
 
   private setEvents(joinedEvents: Event[], otherEvents: Event[]): void {

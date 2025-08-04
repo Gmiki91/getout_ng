@@ -42,10 +42,10 @@ const clusterSymbolLayout: mapboxgl.SymbolLayerSpecification['layout'] = {
 };
 
 @Component({
-    selector: 'app-map',
-    imports: [MatIconModule, MatButtonModule],
-    templateUrl: './map.component.html',
-    styleUrls: ['./map.component.scss']
+  selector: 'app-map',
+  imports: [MatIconModule, MatButtonModule],
+  templateUrl: './map.component.html',
+  styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
   private mapService = inject(MapService);
@@ -53,7 +53,7 @@ export class MapComponent implements OnInit {
   private stateService = inject(StateService);
   private authService = inject(AuthService);
   private destroyRef = inject(DestroyRef);
-  viewbox = '';
+  showSearchButton = false;
 
   //Get current location
   ngOnInit(): void {
@@ -63,12 +63,6 @@ export class MapComponent implements OnInit {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
-        // set bounds for the autofill search
-        this.viewbox = `${position.coords.longitude - 0.05},${
-          position.coords.latitude + 0.05
-        },${position.coords.longitude + 0.05},${
-          position.coords.latitude - 0.05
-        }`;
         this.eventService.setCurrentPosition(param);
         this.initMap(position.coords);
       },
@@ -93,30 +87,30 @@ export class MapComponent implements OnInit {
     this.addControls(map);
     this.addListeners(map);
     this.mapService.setMap(map);
+    this.applyMapViewportFilter();
   }
 
   addControls(map: Map) {
     const geoLocateControl = this.initGeoLocateControl();
     const geocoder = this.initGeocoder();
-    map.addControl(geocoder,'bottom-right');
-    map.addControl(geoLocateControl,'bottom-right');
-    map.addControl(new mapboxgl.NavigationControl(),'bottom-right');
+    map.addControl(geocoder, 'bottom-right');
+    map.addControl(geoLocateControl, 'bottom-right');
+    map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
   }
 
   initGeoLocateControl(): GeolocateControl {
     return new mapboxgl.GeolocateControl({
       positionOptions: { enableHighAccuracy: true },
       trackUserLocation: true,
-      showUserHeading: true
-    }).on('geolocate',(e)=>{
-
+      showUserHeading: true,
+    }).on('geolocate', (e) => {
       const param = {
         lat: e.coords.latitude,
         lng: e.coords.longitude,
-    };
-    this.eventService.setCurrentPosition(param);
-    this.eventService.updateDistances();
-    })
+      };
+      this.eventService.setCurrentPosition(param);
+      this.eventService.updateDistances();
+    });
   }
 
   initGeocoder(): MapboxGeocoder {
@@ -190,15 +184,15 @@ export class MapComponent implements OnInit {
       this.mapService.removeTemporaryMarker();
     });
 
-    map.on('load', async() => {
+    map.on('load', async () => {
       try {
         await Promise.all([
-          this.loadMapImage(map, 'pawn-marker',   '/pawn.png'),
+          this.loadMapImage(map, 'pawn-marker', '/pawn.png'),
           this.loadMapImage(map, 'knight-marker', '/knight.png'),
           this.loadMapImage(map, 'bishop-marker', '/bishop.png'),
-          this.loadMapImage(map, 'rook-marker',   '/rook.png'),
-          this.loadMapImage(map, 'queen-marker',  '/queen.png'),
-          this.loadMapImage(map, 'king-marker',   '/king.png'),
+          this.loadMapImage(map, 'rook-marker', '/rook.png'),
+          this.loadMapImage(map, 'queen-marker', '/queen.png'),
+          this.loadMapImage(map, 'king-marker', '/king.png'),
         ]);
         this.addGeoJsonSource(map);
         this.addSymbolLayer(map);
@@ -206,6 +200,10 @@ export class MapComponent implements OnInit {
       } catch (error) {
         alert('Failed to load marker images!');
       }
+    });
+
+    map.on('moveend', () => {
+      this.showSearchButton = true;
     });
   }
 
@@ -257,7 +255,7 @@ export class MapComponent implements OnInit {
       type: 'symbol',
       source: 'event-markers',
       filter: ['has', 'point_count'], // Only for clusters
-      layout:  {
+      layout: {
         'icon-allow-overlap': true,
         'text-allow-overlap': true,
         'text-field': '{point_count}',
@@ -266,10 +264,23 @@ export class MapComponent implements OnInit {
     });
   }
 
+  applyMapViewportFilter(): void {
+    const currentBounds = this.mapService.getMap()?.getBounds();
+    if (currentBounds) {
+      const ne = currentBounds.getNorthEast();
+      const sw = currentBounds.getSouthWest();
+      this.eventService.setViewportBounds(sw, ne);
+      this.showSearchButton = false;
+    }
+  }
+
   createEventPopup(map: Map, lngLat: LngLat) {
     //dont show 'create event' popup when we are already creating event or an event is selected
-    if (!this.stateService.showEventForm() && !this.stateService.showEventDetails() && !this.stateService.isEventUpdating()) {
-
+    if (
+      !this.stateService.showEventForm() &&
+      !this.stateService.showEventDetails() &&
+      !this.stateService.isEventUpdating()
+    ) {
       //remove previous popup
       document.getElementsByClassName('popup_w_btn')[0]?.remove();
       const popup = new mapboxgl.Popup({
@@ -303,8 +314,7 @@ export class MapComponent implements OnInit {
       popupTip.style.display = 'none';
       popupContent.style.borderRadius = '16px';
       popupContent.style.opacity = '0';
-      popupContent.style.background = 
-        'linear-gradient( #000000,#b3b3b3 99%)';
+      popupContent.style.background = 'linear-gradient( #000000,#b3b3b3 99%)';
       popupContent.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
 
       // Trigger the fade-in after a short delay (to allow rendering)

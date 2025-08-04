@@ -49,6 +49,10 @@ export class MapService {
     this.map = map;
   }
 
+  getMap(): MyMap | undefined {
+    return this.map;
+  }
+
   flyTo(position: LatLng) {
     if (this.map) {
       this.map.flyTo({center:position, zoom:16});

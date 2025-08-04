@@ -1,9 +1,8 @@
 
 import { Signal, computed } from '@angular/core';
-import { Event } from '../models/event.model';
+import { Event, LatLng } from '../models/event.model';
 import { MapService } from '../services/map.service';
 import { StateService } from '../services/state.service';
-
 const sortEvents = (
   events: Event[],
   sortType: 'Time' | 'Distance',
@@ -24,16 +23,18 @@ const sortEvents = (
 
 const filterEvents = (
   events: Event[],
-  options: { hideFull: boolean; maxDistance: number },
+  options: { hideFull: boolean; /*maxDistance: number,*/ bounds?: Signal<[LatLng, LatLng]>},
   mapService?: MapService
 ): Event[] => {
   return events.filter((event) => {
-    const notFull =
-      !options.hideFull ||
-      event.max === 0 ||
-      event.participants.length < event.max;
-    const withinDistance = event.distance <= options.maxDistance;
-    const visible = notFull && withinDistance;
+    const notFull =!options.hideFull || event.max === 0 || event.participants.length < event.max;
+    // const withinDistance = event.distance <= options.maxDistance;
+
+    const withinBounds = !options.bounds || (
+      event.latLng.lng >= options.bounds()[0].lng && event.latLng.lng <= options.bounds()[1].lng &&
+      event.latLng.lat >= options.bounds()[0].lat && event.latLng.lat <= options.bounds()[1].lat
+    );
+    const visible = notFull && /*withinDistance &&*/ withinBounds;
     if (mapService) {
       if (visible) mapService.addMarker(event);
       else mapService.removeMarkerById(event.id);
@@ -45,16 +46,16 @@ const filterEvents = (
 export const filterAndSortEvents = (
   eventsSignal: Signal<Event[]>,
   stateService: StateService,
-  mapService: MapService
+  mapService: MapService,
+  bounds: Signal<[LatLng, LatLng]>
 ): Signal<Event[]> => {
   return computed(() => {
     const events = eventsSignal();
     const sortType = stateService.sortType();
     const direction = stateService.sortDirection();
     const hideFull = stateService.hidefull();
-    const maxDistance = stateService.maxDistance() * 1000;
-
-    const filtered = filterEvents(events,{ hideFull, maxDistance },mapService);
+    // const maxDistance = stateService.maxDistance() * 1000;
+    const filtered = filterEvents(events,{ hideFull, bounds },mapService);
     const sorted = sortEvents(filtered, sortType, direction);
     return sorted;
   });

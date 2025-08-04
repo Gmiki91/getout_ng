@@ -1,2 +1,7 @@
 <div #map class="map" id="map">
 </div>
+@if(showSearchButton){
+  <button matButton="elevated" class="search-btn" (click)="applyMapViewportFilter()">
+    <mat-icon>search</mat-icon><span class="text">Search events in this area</span>
+  </button>
+}

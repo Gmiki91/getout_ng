@@ -1,11 +1,24 @@
-  .map{
-   height:100%;
-   z-index:0;
-  }
+.map {
+  height: 100%;
+  z-index: 0;
+}
+.search-btn {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
 
-  
+  .text {
+    font-weight: bold;
+    font-size: 20px;
+  }
+}
+
 @media (max-width: 768px) {
-  .container{
+  .container {
     height: 50vh;
- }
+  }
+  .text {
+    display: none;
+  }
 }
