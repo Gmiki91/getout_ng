@@ -12,6 +12,7 @@
   .event-list-container {
     border-bottom-right-radius:20px;
     display: flex;
+    width: 100%;
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;
@@ -26,7 +27,6 @@
   padding: 0.5rem 0 0.5rem 0.5rem;
   font-size: 1.5rem;
   font-weight: bold;
-  text-decoration: underline;
 }
 .event-skeleton {
   width: 25rem;
