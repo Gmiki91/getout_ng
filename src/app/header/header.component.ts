@@ -12,7 +12,7 @@ import { StateService } from '../services/state.service';
 import { MyNotification } from '../models/my-notification.model';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { AuthService } from '../services/auth.service';
-
+import { ThemeService } from '../services/theme.service';
 @Component({
     selector: 'app-header',
     imports: [
@@ -33,6 +33,7 @@ export class HeaderComponent implements OnInit {
   eventService = inject(EventsService);
   stateService = inject(StateService);
   authService = inject(AuthService);
+  themeService = inject(ThemeService);
   document = inject(DOCUMENT);
   user = this.userService.user;
   loading = this.authService.loading;
