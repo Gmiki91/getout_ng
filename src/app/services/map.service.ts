@@ -13,7 +13,10 @@ export class MapService {
   private _markerPosition = signal<LatLng>({} as LatLng);
   markerAddress = this._markerAddress.asReadonly();
   markerPosition = this._markerPosition.asReadonly();
-  markerIdTracker: { [key: string]: number } = {};
+
+  // This is used to keep the map centered on the same location after a theme change
+  viewport : LatLng |undefined;
+  zoom : number | undefined = 15;
 
   convertLatLngToAddress(latlng: LatLng): void {
     this.nominatimService.reverseLookup(latlng).subscribe((result) => {
@@ -123,6 +126,16 @@ export class MapService {
       data.features.push(newMarker);
       this.mapSource.setData(data);
       this.markerMapData.set(properties['id'],newMarker);
+    }
+  }
+
+  resetMap(): void {
+    if(this.map){
+      this.markerMapData.clear();
+      this.viewport = {lat:this.map.getCenter().lat, lng:this.map!.getCenter().lng};
+      this.zoom =this.map.getZoom();
+      this.map = undefined;
+      this.mapSource = undefined;
     }
   }
 }

@@ -1,7 +1,9 @@
 <div class="body">
   <app-header></app-header>
   <app-event-sidebar></app-event-sidebar>
-  <app-map />
+  @if(showMap){
+    <app-map />
+  }
   @if(state.showEventForm()){
   <app-event-form @dumbParent></app-event-form>
   } @if(state.showEventDetails()){

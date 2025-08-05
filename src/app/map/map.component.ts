@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnDestroy, OnInit, inject } from '@angular/core';
 import { MapService } from '../services/map.service';
 import { EventsService } from '../services/events.service';
 import mapboxgl, { GeolocateControl, LngLat, Map } from 'mapbox-gl';
@@ -9,6 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { StateService } from '../services/state.service';
 import { AuthService } from '../services/auth.service';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { ThemeService } from '../services/theme.service';
+import { LatLng } from '../models/event.model';
 
 // Define the layout for marker symbols
 // This layout is used for individual events marked with pawns
@@ -33,7 +35,7 @@ const clusterSymbolLayout: mapboxgl.SymbolLayerSpecification['layout'] = {
     9, 'queen-marker',
     10, 'king-marker',
   ],
-  'text-field': '{markerCount} events',
+  'text-field': '{point_count} events',
   'icon-anchor': 'bottom',
   'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
   'text-size': 14,
@@ -47,41 +49,55 @@ const clusterSymbolLayout: mapboxgl.SymbolLayerSpecification['layout'] = {
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
   private mapService = inject(MapService);
   private eventService = inject(EventsService);
   private stateService = inject(StateService);
   private authService = inject(AuthService);
   private destroyRef = inject(DestroyRef);
+  private themeService = inject(ThemeService);
   showSearchButton = false;
 
   //Get current location
   ngOnInit(): void {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const param = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        this.eventService.setCurrentPosition(param);
-        this.initMap(position.coords);
-      },
-      (err) => {
-        // alert(`ERROR(${err.code}): ${err.message}`);
-        this.initMap();
-      }
-    );
+    let param: LatLng = { lat: 0, lng: 0 };
+    let zoom = 15;
+    if(this.mapService.viewport){
+      param = this.mapService.viewport;
+      zoom  = this.mapService.zoom || 15;
+      this.eventService.setCurrentPosition(param);
+      this.initMap(zoom,param);
+    }else{
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+           param = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          } as LatLng;
+          this.eventService.setCurrentPosition(param);
+          this.initMap(zoom,param);
+        },
+        (err) => {
+          // alert(`ERROR(${err.code}): ${err.message}`);
+          this.initMap(zoom);
+        }
+      );
+    }
   }
 
-  initMap(coords?: GeolocationCoordinates): void {
+  ngOnDestroy(): void {
+      this.mapService.resetMap();
+  }
+
+  initMap(zoom:number,coords?: LatLng): void {
     const map = new mapboxgl.Map({
       accessToken: environment.mapbox.accessToken,
       container: 'map',
-      style: 'mapbox://styles/mapbox/light-v11',
+      style: `mapbox://styles/mapbox/${this.themeService.currentTheme()}-v11`,
       center: coords
-        ? { lat: coords.latitude, lon: coords.longitude }
+        ? { lat: coords.lat, lon: coords.lng }
         : { lat: 0, lon: 0 },
-      zoom: 13,
+      zoom: zoom,
     });
     map.on('error', e => alert("An error occurred while initializing the map, please try again later."));
     this.addControls(map);
@@ -125,16 +141,13 @@ export class MapComponent implements OnInit {
         lng: location.geometry.coordinates[0],
         lat: location.geometry.coordinates[1],
       } as LngLat;
-      // removing this option to avoid stacking markers on the same spot
-      // this.createEventPopup(map, latLng); 
-      // this.mapService.addTemporaryMarker(latLng);
       this.mapService.setPosition(location.place_name, latLng);
     });
   }
 
   initMarkers(): void {
    const sub =  this.authService.isAuthenticated$.pipe(
-      distinctUntilChanged(), // if the authentication state changes upon login/logout, refresh the event list groups (joined and other events)
+      distinctUntilChanged(), // if the authentication state changes upon login/logout, refresh the event list groups 
       switchMap(() => this.eventService.getEvents())
     ).subscribe(events => {
       events.forEach((event) => {
@@ -184,14 +197,15 @@ export class MapComponent implements OnInit {
     });
 
     map.on('load', async () => {
+      const theme = this.themeService.currentTheme();
       try {
         await Promise.all([
-          this.loadMapImage(map, 'pawn-marker', '/pawn.png'),
-          this.loadMapImage(map, 'knight-marker', '/knight.png'),
-          this.loadMapImage(map, 'bishop-marker', '/bishop.png'),
-          this.loadMapImage(map, 'rook-marker', '/rook.png'),
-          this.loadMapImage(map, 'queen-marker', '/queen.png'),
-          this.loadMapImage(map, 'king-marker', '/king.png'),
+          this.loadMapImage(map, 'pawn-marker', `/${theme}/pawn.png`),
+          this.loadMapImage(map, 'knight-marker', `/${theme}/knight.png`),
+          this.loadMapImage(map, 'bishop-marker', `/${theme}/bishop.png`),
+          this.loadMapImage(map, 'rook-marker', `/${theme}/rook.png`),
+          this.loadMapImage(map, 'queen-marker', `/${theme}/queen.png`),
+          this.loadMapImage(map, 'king-marker', `/${theme}/king.png`),
         ]);
         this.addGeoJsonSource(map);
         this.addSymbolLayer(map);
@@ -228,9 +242,9 @@ export class MapComponent implements OnInit {
       cluster: true, // Enable clustering
       clusterRadius: 50, // Radius of each cluster when zoomed out
       clusterMaxZoom: 14,
-      clusterProperties: {
-        markerCount: ['+', 1],
-      },
+      // clusterProperties: {
+      //   markerCount: ['+', 1],
+      // },
     });
     const source = map.getSource('event-markers') as mapboxgl.GeoJSONSource;
     this.mapService.setGeoJSONSource(source); // Set the GeoJSON source in MapService
