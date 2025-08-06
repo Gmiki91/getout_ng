@@ -9,11 +9,11 @@ import {
 export const slideDown = trigger('slideDown', [
   transition(':enter', [
     style({ transform: 'translateY(-100%)' }), // Initial state
-    animate('0.3s ease-out', style({ transform: 'translateY(0)' })), // Final state
+    animate('0.5s ease-out', style({ transform: 'translateY(0)' })), // Final state
   ]),
   transition(':leave', [
     style({ transform: 'translateY(0)' }), // Initial state
-    animate('0.3s ease-in', style({ transform: 'translateY(-100%)' })),
+    animate('0.5s ease-in', style({ transform: 'translateY(-100%)' })),
   ]),
 ]);
 
