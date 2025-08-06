@@ -262,6 +262,9 @@ export class MapComponent implements OnInit, OnDestroy {
         'text-field': ['get', 'title'],
         ...markerSymbolLayout,
       },
+      paint:{
+        "text-color": this.themeService.currentTheme() === 'light' ? '#000000' : '#ffffff',
+      }
     });
     map.addLayer({
       id: 'clusters',
@@ -274,6 +277,9 @@ export class MapComponent implements OnInit, OnDestroy {
         'text-field': '{point_count}',
         ...clusterSymbolLayout,
       },
+      paint:{
+        "text-color": this.themeService.currentTheme() === 'light' ? '#000000' : '#ffffff',
+      }
     });
   }
 
@@ -327,7 +333,7 @@ export class MapComponent implements OnInit, OnDestroy {
       popupTip.style.display = 'none';
       popupContent.style.borderRadius = '16px';
       popupContent.style.opacity = '0';
-      popupContent.style.background = 'linear-gradient( #000000,#b3b3b3 99%)';
+      popupContent.style.background = this.themeService.currentTheme() === 'light'? 'linear-gradient( #000000,#b3b3b3 99%)' : 'linear-gradient( #000000,#595959 99%)';
       popupContent.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
 
       // Trigger the fade-in after a short delay (to allow rendering)
