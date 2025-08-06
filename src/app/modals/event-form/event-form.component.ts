@@ -64,8 +64,7 @@ export class EventFormComponent{
   durationInDays = 0;
   snackBar = inject(MatSnackBar);
   loading=false;
-  eventCount = computed(()=>this.eventsService.events().length);
-  defaultTitle = "OTB #"+(this.eventCount()+1); 
+  defaultTitle = "OTB #"+(this.eventsService.eventCount()+1); 
 
   onClose() {
     this.locationSelectMode ? this.locationSelectMode=false : this.stateService.toggleEventForm();

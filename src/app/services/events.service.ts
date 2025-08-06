@@ -1,5 +1,5 @@
-import { Injectable, signal, inject } from '@angular/core';
-import { NewEventData, Event, LatLng, UpdateEventData } from '../models/event.model';
+import { Injectable, signal, inject,computed } from '@angular/core';
+import { NewEventData, Event, LatLng } from '../models/event.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { catchError, Observable, tap, throwError } from 'rxjs';
@@ -25,7 +25,7 @@ export class EventsService {
   private _user = this._userService.user;
   currentPosition = this._currentPosition.asReadonly();
   selectedEvent = this._selectedEvent.asReadonly();
-
+  eventCount = computed(()=>this._events().length);
   events = filterAndSortEvents(
     this._events,
     this._stateService,
