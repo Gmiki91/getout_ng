@@ -7,88 +7,78 @@
   z-index: 21;
 }
 
-mat-card-header{
-  display:flex;
+mat-card-header {
+  display: flex;
   justify-content: space-between;
- mat-card-title{
-  font-weight: bold;
- }
-  mat-icon{
-    cursor:pointer;
+  mat-card-title {
+    font-weight: bold;
+  }
+  mat-icon {
+    cursor: pointer;
   }
 }
 
-.event-dialog {
-  top: 0;
-  left: auto;
-  border-radius: 6px;
-  border: none;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-  padding: 1rem;
-  z-index: 22;
+.event-card {
+  box-shadow: none;
+  background: transparent;
 
-  .event-card {
-    box-shadow: none;
-    background:transparent;
+  button {
+    font-weight: bold;
+  }
 
-    button{
-      font-weight: bold;
+  .clickable-text {
+    text-align: right;
+    font-size: 10px;
+    height: 0;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
     }
+  }
+  .comment-box {
+    width: 100%;
+  }
 
-    .clickable-text{
-      text-align: right;
-      font-size: 10px;
-      height: 0;
-      cursor: pointer;
-      &:hover{
-        text-decoration: underline;
+  .time {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .avatar {
+    width: 25px;
+    height: 25px;
+    border-radius: 20px;
+    margin-right: 5px;
+  }
+  .comment-list {
+    overflow: auto;
+    max-height: 250px;
+
+    .comment-item {
+      height: auto;
+
+
+      i {
+        font-size: 12px;
+        float: right;
+      }
+
+      .avatar {
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+      }
+
+      .comment-text {
+        text-wrap: wrap;
+
       }
     }
-    .comment-box {
-      width: 100%;
-    }
+  }
 
-    .time {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .avatar{
-      width:25px;
-      height:25px;
-      border-radius: 20px;
-      margin-right:5px;
-    }
-    .comment-list {
-      overflow: auto;
-      max-height: 250px;
-
-      .comment-item {
-        height: auto;
-        color: black;
-
-        i{
-          font-size: 12px;
-          float: right;
-        }
-
-        .avatar{
-          width:20px;
-          height:20px;
-          border-radius: 10px;
-        }
-
-        .comment-text {
-          text-wrap: wrap;
-          color: black;
-        }
-      }
-    }
-
-    .event-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-    }
+  .event-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
   }
 }

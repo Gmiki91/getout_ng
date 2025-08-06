@@ -49,7 +49,7 @@ import { StateService } from '../../services/state.service';
     ],
     providers: [MatSnackBar],
     templateUrl: './event-details.component.html',
-    styleUrl: './event-details.component.scss',
+    styleUrls: ['./event-details.component.scss','../event-form.component.scss'],
     animations: [slideDown]
 })
 export class EventDetailsComponent implements OnInit {
