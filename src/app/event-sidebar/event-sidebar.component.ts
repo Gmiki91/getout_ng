@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { MatLabel } from '@angular/material/form-field';
 import { EventsService } from '../services/events.service';
 import { MapService } from '../services/map.service';
 import { Event } from '../models/event.model';
@@ -10,7 +9,7 @@ import { EventComponent } from '../event/event.component';
 
 @Component({
   selector: 'app-event-sidebar',
-  imports: [FilterComponent, MatLabel, EventComponent, FilterComponent, NgxSkeletonLoaderComponent],
+  imports: [FilterComponent,  EventComponent, FilterComponent, NgxSkeletonLoaderComponent],
   templateUrl: './event-sidebar.component.html',
   styleUrl: './event-sidebar.component.scss',
 })

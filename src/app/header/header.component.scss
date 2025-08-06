@@ -7,7 +7,7 @@
   border-bottom-left-radius: 30px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
   background: var(--app-primary-container);
-
+  color:var(--app-on-primary-container);
   .avatar {
     width: 40px;
     height: 40px;
@@ -33,7 +33,10 @@
     animation: spin 0.25s linear;
   }
 }
-
+.notification-container{
+   padding: 10px;
+   color: var(--app-on-primary-container);
+ }
 button {
   align-self: center;
 }

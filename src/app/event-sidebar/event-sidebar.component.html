@@ -7,12 +7,12 @@
     ></app-event>
 
     } @if(events().length==0){
-    <mat-label class="sticky-title">No events around here :(</mat-label>
+    <span class="placeholder-text">No events around here :(</span>
     } } @placeholder (minimum 500ms) {
     <ngx-skeleton-loader
       class="event-skeleton"
       count="5"
-      [theme]="{ height: '75px' }"
+      [theme]="{ height: '75px', backgroundColor: 'var(--app-inverse-primary)' }"
     />
     }
   </div>

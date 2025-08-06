@@ -5,9 +5,10 @@
   border-radius: 0;
   transition: background-color 0.3s ease;
   z-index: 5;
+  color:var(--app-on-primary-container);
   cursor: pointer;
   &:hover {
-    background-color: var(--app-primary-container);
+    background-color: var(--app-inverse-primary);
   }
 
   .header {
@@ -16,7 +17,7 @@
   }
 
   .event-info {
-    padding: 10px;
+    padding: 20px;
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
 

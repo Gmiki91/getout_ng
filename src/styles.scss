@@ -4,11 +4,25 @@
 
 :root {
   --app-primary: var(--mat-sys-primary);
+  --app-inverse-primary: var(--mat-sys-inverse-primary);
+  --app-on-primary: var(--mat-sys-on-primary);
   --app-primary-container: var(--mat-sys-primary-container);
   --app-on-primary-container: var(--mat-sys-on-primary-container);
-  --app-on-primary: var(--mat-sys-on-primary);
   --app-surface: var(--mat-sys-surface);
   --app-on-surface: var(--mat-sys-on-surface);
+  --app-surface-container: var(--mat-sys-surface-container);
+  --app-on-surface-container: var(--mat-sys-on-surface-container);
+  --app-background: var(--mat-sys-background);
+  --app-on-background: var(--mat-sys-on-background);
+  --app-secondary: var(--mat-sys-secondary);
+  --app-on-secondary: var(--mat-sys-on-secondary);  
+  --app-secondary-container: var(--mat-sys-secondary-container);
+  --app-on-secondary-container: var(--mat-sys-on-secondary-container);
+  --app-tertiary: var(--mat-sys-tertiary);
+  --app-on-tertiary: var(--mat-sys-on-tertiary);
+  --app-tertiary-container: var(--mat-sys-tertiary-container);
+  --app-on-tertiary-container: var(--mat-sys-on-tertiary-container);
+
   --app-error: var(--mat-sys-error);
   --app-on-error: var(--mat-sys-on-error);
 

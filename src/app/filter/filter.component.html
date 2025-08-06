@@ -12,15 +12,19 @@
     <div class="control">
       <div>
         @if(sortType() ==='Time'){
-        <mat-icon style="cursor:pointer" matTooltip="Sort by time" matTooltipShowDelay="500"  [matMenuTriggerFor]="menu">watch_later</mat-icon>
-        <mat-icon style="cursor:pointer" (click)="toggleSortDirection()">{{
-          sortDirection()==='asc' ? "arrow_drop_up" : "arrow_drop_down"
-        }}</mat-icon>
+          <button mat-icon-button matTooltip="Sort by time" matTooltipShowDelay="500"  [matMenuTriggerFor]="menu">
+            <mat-icon>watch_later</mat-icon>
+          </button>
+          <button mat-icon-button (click)="toggleSortDirection()">
+            <mat-icon>{{sortDirection()==='asc' ? "arrow_drop_up" : "arrow_drop_down"}}</mat-icon>
+          </button>
         }@else{
-        <mat-icon style="cursor:pointer" matTooltip="Sort by distance" matTooltipShowDelay="500"  [matMenuTriggerFor]="menu">place</mat-icon>
-        <mat-icon style="cursor:pointer" (click)="toggleSortDirection()">{{
-          sortDirection()==='asc' ? "arrow_drop_up" : "arrow_drop_down"
-        }}</mat-icon>
+          <button mat-icon-button matTooltip="Sort by distance" matTooltipShowDelay="500"  [matMenuTriggerFor]="menu">
+            <mat-icon>place</mat-icon>
+          </button>
+          <button mat-icon-button (click)="toggleSortDirection()">
+            <mat-icon >{{sortDirection()==='asc' ? "arrow_drop_up" : "arrow_drop_down"}}</mat-icon>
+          </button>
         }
       </div>
       <mat-menu #menu="matMenu">

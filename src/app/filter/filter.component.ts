@@ -8,10 +8,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatSliderModule } from '@angular/material/slider';
 import { StateService } from '../services/state.service';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-filter',
   imports: [
     MatIcon,
+    MatButtonModule,
     MatMenuModule,
     MatSlideToggleModule,
     MatInputModule,
