@@ -44,6 +44,7 @@ export class RegisterComponent {
     this.authService.register(username, email, password, eloValue).subscribe({
       next: (response) => {
         console.log('Registration successful', response);
+        alert('Registration successful! Please check your email to confirm your account.');
         this.stateService.closeRegister();
       },
       error: (error) => {

@@ -28,7 +28,7 @@ export class LoginComponent {
         },
         error: (error) => {
           console.error('Login failed', error);
-          alert('Username or password is incorrect');
+          alert(`Login failed, ${error.error.message}`);
         }
       });
     } else {

@@ -60,6 +60,10 @@ export class AuthService {
       .pipe(tap(response => this.handleAuthSuccess(response.token, response.user)));
   }
 
+  confirmEmail(token: string): Observable<{ status: boolean }> {
+    return this.http.post<{ status: boolean }>(`${this.url}/confirm-email`, { token })
+  }
+
   private handleAuthSuccess( token: string, user: User ) {
   if (token) {
     this.setAccessToken(token);
