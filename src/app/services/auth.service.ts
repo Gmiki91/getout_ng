@@ -54,11 +54,11 @@ export class AuthService {
        .pipe(tap(response => this.handleAuthSuccess(response.token, response.user)));
   }
 
-  register(username: string,email: string,password: string, elo:number): Observable<{ status: boolean; token: string,user:User }> {
+  register(username: string,email: string,password: string, elo:number): Observable<string> {
     this._loading.set(true)
-    return this.http.post<{ status: boolean; token: string,user:User }>(`${this.url}/register`, {username,password,email,elo})
-      .pipe(tap(response => this.handleAuthSuccess(response.token, response.user)));
-  }
+    return this.http.post(`${this.url}/register`, {username,password,email,elo},{responseType:'text'})
+    .pipe(tap(()=>this._loading.set(false)));
+}
 
   confirmEmail(token: string): Observable<{ status: boolean }> {
     return this.http.post<{ status: boolean }>(`${this.url}/confirm-email`, { token })
