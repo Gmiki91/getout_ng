@@ -1,10 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { MainComponent } from './main/main.component';
 import { AuthService } from './services/auth.service';
-
+import { RouterOutlet } from '@angular/router';
 @Component({
     selector: 'app-root',
-    imports: [MainComponent],
+    imports: [RouterOutlet],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
