@@ -56,12 +56,12 @@ export class AuthService {
 
   register(username: string,email: string,password: string, elo:number): Observable<string> {
     this._loading.set(true)
-    return this.http.post(`${this.url}/register`, {username,password,email,elo},{responseType:'text'})
+    return this.http.post<string>(`${this.url}/register`, {username,password,email,elo})
     .pipe(tap(()=>this._loading.set(false)));
 }
 
-  confirmEmail(token: string): Observable<{ status: boolean }> {
-    return this.http.post<{ status: boolean }>(`${this.url}/confirm-email`, { token })
+  confirmEmail(token: string): Observable<string> {
+    return this.http.get<string>(`${this.url}/confirm-email?token=${token}`)
   }
 
   private handleAuthSuccess( token: string, user: User ) {
