@@ -20,8 +20,12 @@
       }
       
     </mat-menu>
+
     @if(loading()){
-      <mat-spinner diameter="30"></mat-spinner>
+      <ngx-skeleton-loader
+      class="username-skeleton"
+      [theme]="{backgroundColor: 'var(--app-inverse-primary)'}"
+    />
     }@else { 
       <span class="username" >
         hi {{ user().name }}!

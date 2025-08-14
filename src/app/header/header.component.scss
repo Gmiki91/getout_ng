@@ -1,5 +1,6 @@
 .container {
   position: absolute;
+  display: flex;
   padding: 10px;
   height:40px;
   z-index: 30;
@@ -24,9 +25,14 @@
   }
 
   .username {
-    vertical-align: text-bottom;
     font-size: 1.5rem;
     font-weight: bold;
+    align-self: anchor-center;
+    margin-right: 10px;
+  }
+  .username-skeleton{
+    width: 150px;
+    align-self: end;
   }
 
   .spin .refresh-icon {
@@ -58,6 +64,9 @@ button {
     }
     .avatar {
       margin-left: 0;
+    }
+    .username-skeleton{
+      width: 50px;
     }
   }
 }

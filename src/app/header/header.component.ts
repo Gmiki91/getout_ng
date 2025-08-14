@@ -10,7 +10,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { TimeTextPipe } from '../pipes/time-text.pipe';
 import { StateService } from '../services/state.service';
 import { MyNotification } from '../models/my-notification.model';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 import { AuthService } from '../services/auth.service';
 import { ThemeService } from '../services/theme.service';
 @Component({
@@ -21,7 +21,7 @@ import { ThemeService } from '../services/theme.service';
         MatTooltip,
         MatMenuModule,
         MatBadgeModule,
-        MatProgressSpinnerModule,
+        NgxSkeletonLoaderComponent,
         TimeTextPipe
     ],
     templateUrl: './header.component.html',
@@ -38,7 +38,6 @@ export class HeaderComponent implements OnInit {
   user = this.userService.user;
   loading = this.authService.loading;
   unseenNotifications = computed(() =>this.user().notifications.filter((notification:MyNotification) => !notification.read).length);
-  isSpinning = false;
   isAuthenticated = false;
   userNameTooltip = computed(() => {
     const user = this.user();
@@ -54,9 +53,6 @@ export class HeaderComponent implements OnInit {
 
   // onToggleSideBar(): void {
   //   this.stateService.toggleSideBar();
-  // }
-  // onToggleFilter(): void {
-  //   this.stateService.toggleFilter();
   // }
   onToggleEventForm(): void {
     this.stateService.toggleEventForm();
