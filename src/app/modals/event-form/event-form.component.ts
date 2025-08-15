@@ -113,14 +113,14 @@ export class EventFormComponent{
             this.snackBar.open("created "+title,undefined,{duration:3000});
           },
           error: (error) => {
-            console.error('Error adding event:', error);
+            this.snackBar.open(`Error: ${error.error.message}`,undefined,{duration:3000,verticalPosition:'top'});
           },
         });
         this.destroyRef.onDestroy(()=>sub.unsubscribe());
     } else if (!form.valid) {
-      alert('Form is invalid');
+      this.snackBar.open('Form is invalid',undefined,{duration:3000,verticalPosition:'top'});
     } else if (this.mapService.markerAddress() == '') {
-      alert('Select an address from the map');
+       this.snackBar.open('Select an address from the map',undefined,{duration:3000,verticalPosition:'top'});
     }
   }
 

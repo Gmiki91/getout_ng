@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { AvatarListComponent } from '../avatar-list/avatar-list.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-user-settings',
@@ -26,6 +27,7 @@ export class UserSettingsComponent {
   userService = inject(UserService);
   authService = inject(AuthService);
   destroyRef = inject(DestroyRef);
+  snackBar = inject(MatSnackBar);
   password = '';
   confirmPassword = '';
   elo = this.userService.user().elo
@@ -58,12 +60,12 @@ export class UserSettingsComponent {
       .changePassword(this.password)
       .subscribe({
         next: () => {
-          alert('Password changed successfully');
+          this.snackBar.open('Password changed successfully');
           this.password = '';
           this.confirmPassword = '';
         },
         error: (error) => {
-          console.error('Error changing password:', error);
+          this.snackBar.open(`Error: ${error}`,undefined,{duration:3000,verticalPosition:'top'});
         },
       });
     this.destroyRef.onDestroy(() => {

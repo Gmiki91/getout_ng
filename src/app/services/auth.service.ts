@@ -1,10 +1,11 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom, Observable, BehaviorSubject } from 'rxjs';
-import { tap,map } from 'rxjs/operators';
+import { firstValueFrom, Observable, BehaviorSubject, throwError } from 'rxjs';
+import { tap,map, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { User, Visitor } from '../models/user.model';
 import { UserService } from './user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ export class AuthService {
   private url = environment.url + 'auth';
   private http = inject(HttpClient);
   private userService = inject(UserService);
+  private snackBar = inject(MatSnackBar);
   private _loading = signal(true);
   loading = this._loading.asReadonly(); 
   isAuthenticated$=new BehaviorSubject<boolean>(false);
@@ -42,7 +44,7 @@ export class AuthService {
     } catch (error) {
       console.error('Error initializing user:', error);
       this.logout();
-      alert("You have been logged out.");
+      this.snackBar.open("You have been logged out.");
     }
   }
 
@@ -51,7 +53,13 @@ export class AuthService {
   login(username: string,password: string): Observable<{ status: boolean; token: string,user:User }> {
     this._loading.set(true)
     return this.http.post<{ status: boolean; token: string,user:User }>(`${this.url}/login`, {username,password})
-       .pipe(tap(response => this.handleAuthSuccess(response.token, response.user)));
+       .pipe(
+        tap(response => this.handleAuthSuccess(response.token, response.user)),
+        catchError(err => {
+          this._loading.set(false);
+          return throwError(() => err);
+        })
+       )
   }
 
   register(username: string,email: string,password: string, elo:number): Observable<string> {

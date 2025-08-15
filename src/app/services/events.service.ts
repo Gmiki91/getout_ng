@@ -8,6 +8,7 @@ import { MapService } from './map.service';
 import { StateService } from './state.service';
 import { filterAndSortEvents } from '../utils/event-processing.utils';
 import { calculateDistance } from '../utils/distance.utils';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({ providedIn: 'root' })
 export class EventsService {
@@ -25,6 +26,7 @@ export class EventsService {
   private _user = this._userService.user;
   currentPosition = this._currentPosition.asReadonly();
   selectedEvent = this._selectedEvent.asReadonly();
+  snackBar = inject(MatSnackBar);
   eventCount = computed(()=>this._events().length);
   events = filterAndSortEvents(
     this._events,
@@ -36,7 +38,7 @@ export class EventsService {
   getEvents(): Observable< Event[]> {
     return this._http.get<Event[]>(`${this.url}/user/${this._user().id}`)
       .pipe(catchError((error) => {
-          alert('An error occurred while fetching events, please try again!');
+          this.snackBar.open('An error occurred while fetching events, please try again!',undefined,{duration:3000,verticalPosition:'top'});
           return throwError(()=>new Error("An error occurred while fetching events: " + error.message));
         }),
         tap((result) => {

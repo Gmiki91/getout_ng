@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { slideDown } from '../../utils/animation.utils';
 import { StateService } from '../../services/state.service';
 import { AuthService } from '../../services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-register',
@@ -24,6 +25,7 @@ import { AuthService } from '../../services/auth.service';
 export class RegisterComponent {
   stateService = inject(StateService);
   authService = inject(AuthService);
+  snackBar= inject(MatSnackBar);
   passwordMismatch = false;
   password = '';
   password2 = '';
@@ -44,12 +46,12 @@ export class RegisterComponent {
     this.authService.register(username, email, password, eloValue).subscribe({
       next: (response) => {
         console.log('Registration successful', response);
-        alert('Registration successful! Please check your email to confirm your account.');
+        this.snackBar.open('Registration successful! Please check your email to confirm your account.');
         this.stateService.closeRegister();
       },
       error: (error) => {
         console.error('Registration failed', error);
-        alert(error.error.message || 'Registration failed, please try again');
+        this.snackBar.open(`Registration failed: ${error.error.message}`,undefined,{duration:3000,verticalPosition:'top'});
       },
     });
   }
