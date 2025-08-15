@@ -26,9 +26,11 @@ export class RegisterComponent {
   stateService = inject(StateService);
   authService = inject(AuthService);
   snackBar= inject(MatSnackBar);
+  isRegistrationSent = false;
   passwordMismatch = false;
   password = '';
   password2 = '';
+  mail='';
 
   onSubmit(form: NgForm) {
     if (form.invalid) {
@@ -43,16 +45,20 @@ export class RegisterComponent {
       return;
     }
     const eloValue = elo || 0;
+    this.mail=email;
     this.authService.register(username, email, password, eloValue).subscribe({
       next: (response) => {
         console.log('Registration successful', response);
-        this.snackBar.open('Registration successful! Please check your email to confirm your account.');
-        this.stateService.closeRegister();
+        this.isRegistrationSent = true;
       },
       error: (error) => {
         console.error('Registration failed', error);
-        this.snackBar.open(`Registration failed: ${error.error.message}`,undefined,{duration:3000,verticalPosition:'top'});
+        this.snackBar.open(`Registration failed`,undefined,{duration:3000,verticalPosition:'top'});
       },
     });
+  }
+
+  onResendConfirmation(){
+
   }
 }

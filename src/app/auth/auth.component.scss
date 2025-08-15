@@ -1,10 +1,23 @@
 .form {
   display: flex;
   flex-direction: column;
+  width: 20rem;
 }
 
 .actions {
   display: flex;
   justify-content: flex-end;
+
+}
+
+.resend-btn{
+  align-self: center;
+  width: fit-content;
+
+}
+.resend-text{
+  color:var(--app-on-primary-container);
+  text-align: center;
+  padding:5px
 
 }

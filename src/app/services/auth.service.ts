@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable, BehaviorSubject, throwError } from 'rxjs';
-import { tap,map, catchError } from 'rxjs/operators';
+import { tap,map, catchError, finalize } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { User, Visitor } from '../models/user.model';
 import { UserService } from './user.service';
@@ -65,7 +65,7 @@ export class AuthService {
   register(username: string,email: string,password: string, elo:number): Observable<string> {
     this._loading.set(true)
     return this.http.post<string>(`${this.url}/register`, {username,password,email,elo})
-    .pipe(tap(()=>this._loading.set(false)));
+    .pipe(finalize(() => this._loading.set(false)));
 }
 
   confirmEmail(token: string): Observable<string> {
