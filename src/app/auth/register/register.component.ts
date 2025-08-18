@@ -30,7 +30,7 @@ export class RegisterComponent {
   passwordMismatch = false;
   password = '';
   password2 = '';
-  mail='';
+  tempEmail='';
 
   onSubmit(form: NgForm) {
     if (form.invalid) {
@@ -45,7 +45,7 @@ export class RegisterComponent {
       return;
     }
     const eloValue = elo || 0;
-    this.mail=email;
+    this.tempEmail=email;
     this.authService.register(username, email, password, eloValue).subscribe({
       next: (response) => {
         console.log('Registration successful', response);
@@ -59,6 +59,6 @@ export class RegisterComponent {
   }
 
   onResendConfirmation(){
-
+  this.authService.resendEmailConfirmation(this.tempEmail);
   }
 }

@@ -64,7 +64,22 @@ export class AuthService {
 }
 
   confirmEmail(token: string): Observable<string> {
-    return this.http.get<string>(`${this.url}/confirm-email?token=${token}`)
+    this._loading.set(true);
+    return this.http.get<string>(`${this.url}/confirm-email?token=${token}`).pipe(finalize(()=>this._loading.set(false)));
+  }
+
+  resendEmailConfirmation(email:string):void{
+    this._loading.set(true);
+     this.http.post<string>(`${this.url}/resend-confirmation`,{email})
+     .pipe(finalize(() => this._loading.set(false)))
+     .subscribe({
+      next:()=>
+        this.snackBar.open(`Confirmation link is sent to ${email}`),
+      error:err=>{
+        console.log(err); 
+        this.snackBar.open(`Error: ${err.error.message}`,undefined,{duration:3000,verticalPosition:'top'});
+      }
+    })
   }
 
   private handleAuthSuccess( token: string, user: User ) {
