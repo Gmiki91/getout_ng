@@ -10,16 +10,19 @@ export function authInterceptor(
   const authService = inject(AuthService);
   const accessToken = authService.getAccessToken();
 
-  const isRefreshRequest = req.url.includes('/auth/refresh-token');
-  // Add Authorization header if token exists and request is not a refresh token request
+   const isAuthRequest =
+    req.url.includes('/auth/login') ||
+    req.url.includes('/auth/register') ||
+    req.url.includes('/auth/refresh-token');
+  // Add Authorization header if token exists and request is not an authorization request
   const cloned =
-    accessToken && !isRefreshRequest
+    accessToken && !isAuthRequest
       ? req.clone({ setHeaders: { Authorization: `Bearer ${accessToken}` } })
       : req;
 
   return next(cloned).pipe(
     catchError((err) => {
-      if (err.status === 401 && !isRefreshRequest) {
+      if (err.status === 401 && !isAuthRequest) {
         return authService.refreshToken().pipe(
           switchMap((newToken) => {
             return next(
