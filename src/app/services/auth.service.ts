@@ -47,19 +47,14 @@ export class AuthService {
       this.snackBar.open("You have been logged out.");
     }
   }
-
   
-  
-  login(username: string,password: string): Observable<{ status: boolean; token: string,user:User }> {
-    this._loading.set(true)
-    return this.http.post<{ status: boolean; token: string,user:User }>(`${this.url}/login`, {username,password})
+  login(email: string,password: string): Observable<{ status: boolean; token: string,user:User }> {
+    this._loading.set(true);
+    return this.http.post<{ status: boolean; token: string,user:User }>(`${this.url}/login`, {email,password})
        .pipe(
         tap(response => this.handleAuthSuccess(response.token, response.user)),
-        catchError(err => {
-          this._loading.set(false);
-          return throwError(() => err);
-        })
-       )
+        finalize(() => this._loading.set(false))
+       );
   }
 
   register(username: string,email: string,password: string, elo:number): Observable<string> {

@@ -2,14 +2,14 @@
     <mat-card-content>
       <form class="form" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
         <mat-form-field appearance="outline">
-          <mat-label for="name">name</mat-label>
+          <mat-label for="email">Email</mat-label>
           <input
             matInput
             required
-            name="name"
+            name="email"
             ngModel
             #name="ngModel"
-            type="text"
+            type="email"
           />
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -24,7 +24,7 @@
           />
         </mat-form-field>
         @if(showConfirmBtn){
-          <div class="clickable-text">Resend confirmation mail</div>
+          <div class="clickable-text" (click)="onResendConfirmation()">Resend confirmation mail</div>
         }
         <mat-card-actions class="actions">
           <button

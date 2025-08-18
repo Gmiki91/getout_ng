@@ -22,18 +22,20 @@ export class LoginComponent {
   authService = inject(AuthService);
   snackBar = inject(MatSnackBar);
   showConfirmBtn=false;
+  tempEmail = ''
   onSubmit(form:NgForm){
     if (form.valid) {
-      const { name, password } = form.value;
-      this.authService.login(name, password).subscribe({
+      const { email, password } = form.value;
+      this.authService.login(email, password).subscribe({
         next: (response) => {
           console.log('Login successful', response);
           this.stateService.closeLogin();
         },
         error: (error) => {
           console.error('Login failed', error);
-          if(error.error.status===HttpStatusCode.Forbidden){
+          if(error.status===HttpStatusCode.Forbidden){
             this.showConfirmBtn=true;
+            this.tempEmail=email;
           }
           this.snackBar.open(`Login failed: ${error.error.message}`,undefined,{duration:3000,verticalPosition:'top'});
         }
@@ -41,6 +43,10 @@ export class LoginComponent {
     } else {
       console.error('Form is invalid');
     }
+  }
+
+  onResendConfirmation(){
+    this.authService.resendEmailConfirmation(this.tempEmail);
   }
 
 }
