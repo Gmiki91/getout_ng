@@ -23,6 +23,9 @@
             type="password"
           />
         </mat-form-field>
+        @if(showConfirmBtn){
+          <div class="clickable-text">Resend confirmation mail</div>
+        }
         <mat-card-actions class="actions">
           <button
             mat-flat-button

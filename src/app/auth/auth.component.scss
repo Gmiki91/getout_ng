@@ -9,7 +9,18 @@
   justify-content: flex-end;
 
 }
-
+.clickable-text{
+   color:var(--app-on-primary-container);
+   text-align: right;
+   font-size:small;
+   vertical-align: top;
+   margin-top:-10px;
+   z-index:2;
+   cursor: pointer;
+   &:hover{
+    text-decoration: underline;
+   }
+}
 .resend-btn{
   align-self: center;
   width: fit-content;
@@ -19,5 +30,4 @@
   color:var(--app-on-primary-container);
   text-align: center;
   padding:5px
-
 }

@@ -8,6 +8,7 @@ import { StateService } from '../../services/state.service';
 import { slideDown } from '../../utils/animation.utils';
 import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
     selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginComponent {
   stateService = inject(StateService);
   authService = inject(AuthService);
   snackBar = inject(MatSnackBar);
+  showConfirmBtn=false;
   onSubmit(form:NgForm){
     if (form.valid) {
       const { name, password } = form.value;
@@ -30,6 +32,9 @@ export class LoginComponent {
         },
         error: (error) => {
           console.error('Login failed', error);
+          if(error.error.status===HttpStatusCode.Forbidden){
+            this.showConfirmBtn=true;
+          }
           this.snackBar.open(`Login failed: ${error.error.message}`,undefined,{duration:3000,verticalPosition:'top'});
         }
       });
