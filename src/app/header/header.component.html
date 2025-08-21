@@ -1,4 +1,5 @@
 <div class="container">
+  <div>
     <button mat-icon-button matTooltip="Dark mode" matTooltipShowDelay="500" (click)="themeService.toggleTheme()">
       <mat-icon>dark_mode</mat-icon>
     </button>
@@ -20,6 +21,7 @@
       }
       
     </mat-menu>
+  </div>
 
     @if(loading()){
       <ngx-skeleton-loader
@@ -49,5 +51,6 @@
       </div>
     }
     </mat-menu>
-  </div>
+
+</div>
 

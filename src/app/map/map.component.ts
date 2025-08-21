@@ -11,6 +11,7 @@ import { AuthService } from '../services/auth.service';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { ThemeService } from '../services/theme.service';
 import { LatLng } from '../models/event.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 // Define the layout for marker symbols
 // This layout is used for individual events marked with pawns
@@ -56,6 +57,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private destroyRef = inject(DestroyRef);
   private themeService = inject(ThemeService);
+  private snackBar = inject(MatSnackBar);
   showSearchButton = false;
 
   //Get current location
@@ -78,7 +80,6 @@ export class MapComponent implements OnInit, OnDestroy {
           this.initMap(zoom,param);
         },
         (err) => {
-          // alert(`ERROR(${err.code}): ${err.message}`);
           this.initMap(zoom);
         }
       );
@@ -99,7 +100,7 @@ export class MapComponent implements OnInit, OnDestroy {
         : { lat: 0, lon: 0 },
       zoom: zoom,
     });
-    map.on('error', e => alert("An error occurred while initializing the map, please try again later."));
+    map.on('error', e => this.snackBar.open("An error occurred while initializing the map, please try again later."));
     this.addControls(map);
     this.addListeners(map);
     this.mapService.setMap(map);
@@ -211,7 +212,7 @@ export class MapComponent implements OnInit, OnDestroy {
         this.addSymbolLayer(map);
         this.initMarkers();
       } catch (error) {
-        alert('Failed to load marker images!');
+        console.log('Failed to load marker images!');
       }
     });
 
