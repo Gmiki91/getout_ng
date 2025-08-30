@@ -1,40 +1,47 @@
 <mat-card>
-    <mat-card-content>
-      <form class="form" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
-        <mat-form-field appearance="outline">
-          <mat-label for="email">Email</mat-label>
-          <input
-            matInput
-            required
-            name="email"
-            ngModel
-            #name="ngModel"
-            type="email"
-          />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label for="password">password</mat-label>
-          <input
-            matInput
-            required
-            name="password"
-            ngModel
-            #password="ngModel"
-            type="password"
-          />
-        </mat-form-field>
-        @if(showConfirmBtn){
-          <div class="clickable-text" (click)="onResendConfirmation()">Resend confirmation mail</div>
-        }
-        <mat-card-actions class="actions">
-          <button
-            mat-flat-button
-            type="submit"
-            class="bold"
-            [disabled]="loginForm.invalid">
-            sign in
-          </button>
-        </mat-card-actions>
-      </form>
-    </mat-card-content>
-  </mat-card>
+  <mat-card-content>
+    <form class="form" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+      <mat-form-field appearance="outline">
+        <mat-label for="email">Email</mat-label>
+        <input
+          matInput
+          required
+          name="email"
+          ngModel
+          #name="ngModel"
+          type="email"
+        />
+      </mat-form-field>
+      @if(!forgotPassword){
+      <mat-form-field appearance="outline">
+        <mat-label for="password">password</mat-label>
+        <input
+          matInput
+          required
+          name="password"
+          ngModel
+          #password="ngModel"
+          type="password"
+        />
+      </mat-form-field>
+      } @if(showConfirmBtn){
+      <div class="clickable-text" (click)="onResendConfirmation()">
+        Resend confirmation mail
+      </div>
+      }@else{
+      <div class="clickable-text" (click)="onForgotPassword()">
+        Forgot your password?
+      </div>
+      }
+      <mat-card-actions class="actions">
+        <button
+          mat-flat-button
+          type="submit"
+          class="bold"
+          [disabled]="loginForm.invalid">
+          {{ forgotPassword ? "resend password" : "sign in" }}
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+</mat-card>

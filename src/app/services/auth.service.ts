@@ -82,6 +82,27 @@ export class AuthService {
     })
   }
 
+  requestPasswordReset(email:string):void{
+    this._loading.set(true);
+    this.http.post<string>(`${this.url}/forgot-password`,{email})
+    .pipe(finalize(() => this._loading.set(false)))
+    .subscribe({
+      next:()=>
+        this.snackBar.open(`Password reset link is sent to ${email}`),
+      error:err=>{
+        console.log(err); 
+        this.snackBar.open(`Error: ${err.error.message}`,undefined,{duration:3000,verticalPosition:'top'});
+      }
+    })
+  }
+
+  resetPassword(token:string, password:string): Observable<string> {
+    this._loading.set(true);
+    return this.http.post<string>(`${this.url}/reset-password`,{token,password})
+    .pipe(finalize(() => this._loading.set(false)))
+    
+  }
+
   private handleAuthSuccess( token: string, user: User ) {
   if (token) {
     this.setAccessToken(token);

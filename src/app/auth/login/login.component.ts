@@ -22,27 +22,45 @@ export class LoginComponent {
   authService = inject(AuthService);
   snackBar = inject(MatSnackBar);
   showConfirmBtn=false;
+  forgotPassword=false;
   tempEmail = ''
+
   onSubmit(form:NgForm){
     if (form.valid) {
-      const { email, password } = form.value;
-      this.authService.login(email, password).subscribe({
-        next: (response) => {
-          console.log('Login successful', response);
-          this.stateService.closeLogin();
-        },
-        error: (error) => {
-          console.error('Login failed', error);
-          if(error.status===HttpStatusCode.Forbidden){
-            this.showConfirmBtn=true;
-            this.tempEmail=email;
-          }
-          this.snackBar.open(`Login failed: ${error.error.message}`,undefined,{duration:3000,verticalPosition:'top'});
-        }
-      });
+      if(!this.forgotPassword){
+        this.login(form.value.email, form.value.password);
+      }else{
+        this.requestPasswordReset(form.value.email);
+      }
     } else {
       console.error('Form is invalid');
     }
+  }
+
+  login(email:string, password:string){
+    this.authService.login(email, password).subscribe({
+      next: (response) => {
+        console.log('Login successful', response);
+        this.stateService.closeLogin();
+      },
+      error: (error) => {
+        console.error('Login failed', error);
+        if(error.status===HttpStatusCode.Forbidden){
+          this.showConfirmBtn=true;
+          this.tempEmail=email;
+        }
+        this.snackBar.open(`Login failed: ${error.error.message}`,undefined,{duration:3000,verticalPosition:'top'});
+      }
+    });
+  }
+
+  requestPasswordReset(email:string){
+    this.authService.requestPasswordReset(email);
+    this.forgotPassword=false;
+  }
+
+  onForgotPassword(){
+    this.forgotPassword = true;
   }
 
   onResendConfirmation(){
