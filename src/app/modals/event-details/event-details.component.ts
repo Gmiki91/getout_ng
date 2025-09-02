@@ -15,6 +15,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatFormField } from '@angular/material/form-field';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatInput } from '@angular/material/input';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { TimeTextPipe } from '../../pipes/time-text.pipe';
 import { MatCardModule } from '@angular/material/card';
 import { EventsService } from '../../services/events.service';
@@ -36,6 +37,7 @@ import { StateService } from '../../services/state.service';
         DatePipe,
         TextFieldModule,
         MatButton,
+        MatSlideToggleModule,
         MatCardModule,
         MatFormField,
         MatList,
@@ -123,6 +125,9 @@ export class EventDetailsComponent implements OnInit {
 
   toggleLocationPopup(){
     this.showLocationInfo=!this.showLocationInfo;
+  }
+
+  toggleBoardBringer():void{
   }
 
 }
