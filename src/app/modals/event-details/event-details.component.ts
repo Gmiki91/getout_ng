@@ -127,7 +127,4 @@ export class EventDetailsComponent implements OnInit {
     this.showLocationInfo=!this.showLocationInfo;
   }
 
-  toggleBoardBringer():void{
-  }
-
 }
