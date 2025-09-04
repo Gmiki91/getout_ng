@@ -74,8 +74,8 @@ export class EventFormComponent{
     this.showOSMInfo=!this.showOSMInfo;
   }
 
-  toggleLocationSelect() {
-    this.locationSelectMode = !this.locationSelectMode;
+  setLocationMode(value:boolean) {
+    this.locationSelectMode = value;
   }
 
   updateDurationInDays(value:number){
@@ -92,6 +92,7 @@ export class EventFormComponent{
       this.mapService.removeTemporaryMarker();
       let finalRecurring = this.checkDuration(this.durationInDays, recurring);
       this.loading=true;
+      console.log(location,latLng);
       const sub = this.eventsService
         .addEvent({
           title: title,
@@ -107,6 +108,7 @@ export class EventFormComponent{
         })
         .subscribe({
           next: (event) => {
+            console.log(event.location,event.latLng);
             this.loading=false;
             this.mapService.addMarker(event);
             this.onClose();

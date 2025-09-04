@@ -33,7 +33,7 @@
       @if(locationSelectMode){
         <div class="clickable-text" (click)="toggleOSMInfo()">wrong location?</div>
       }
-      <app-location-field (locationSelect)="toggleLocationSelect()" />
+      <app-location-field (locationSelect)="setLocationMode(true)" />
       @if(!locationSelectMode){
         <app-time-field (durationInDays)="updateDurationInDays($event)"/>
       }
@@ -97,7 +97,7 @@
         <button
           mat-flat-button
           type="button"
-          (click)="toggleLocationSelect()"
+          (click)="setLocationMode(false)"
           class="bold">
           ok
         </button>

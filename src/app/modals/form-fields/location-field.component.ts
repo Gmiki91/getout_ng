@@ -1,9 +1,7 @@
 import {
   Component,
-  ElementRef,
   inject,
-  output,
-  ViewChild,
+  output
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -18,14 +16,13 @@ import {  MatInputModule } from '@angular/material/input';
     <mat-form-field appearance="outline">
       <mat-label for="location">location</mat-label>
       <input
-        readonly
-        #locationInput
         matInput
         required
         [ngModel]="markerAddress()"
+        (change)="updateAddressManually(location.value)"
         #location="ngModel"
         name="location"
-        (click)="toggleLocationSelect()"
+        (click)="locationSelect.emit()"
       />
       @if( location.invalid && (location.dirty || location.touched)){
       <mat-error>Invalid address</mat-error>}
@@ -36,13 +33,11 @@ import {  MatInputModule } from '@angular/material/input';
        `
 })
 export class LocationFieldComponent {
-  @ViewChild('locationInput')
-  location!: ElementRef;
   locationSelect = output();
   mapService: MapService = inject(MapService);
   markerAddress = this.mapService.markerAddress;
 
-  toggleLocationSelect() {
-    this.locationSelect.emit();
+  updateAddressManually(location:string){
+    this.mapService.setAddressManually(location);
   }
 }

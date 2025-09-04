@@ -39,6 +39,11 @@ export class MapService {
     });
   }
 
+  // OSM is not always reliable
+  setAddressManually(address:string){
+    this._markerAddress.set(address);
+  }
+
   setPosition(address:string, location:LatLng){
     this._markerAddress.set(address);
     this._markerPosition.set(location);
