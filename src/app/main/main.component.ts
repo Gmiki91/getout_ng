@@ -13,6 +13,7 @@ import { UserSettingsComponent } from '../user/user-settings/user-settings.compo
 import { HeaderComponent } from '../header/header.component';
 import { FloatingActionBtnComponent } from '../floating-action-btn/floating-action-btn.component';
 import { ThemeService } from '../services/theme.service';
+import { ChatComponent } from "../chat/chat.component";
 @Component({
   selector: 'app-main',
   imports: [
@@ -27,7 +28,8 @@ import { ThemeService } from '../services/theme.service';
     DialogComponent,
     UserSettingsComponent,
     FloatingActionBtnComponent,
-  ],
+    ChatComponent
+],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   animations: [dumbParent],

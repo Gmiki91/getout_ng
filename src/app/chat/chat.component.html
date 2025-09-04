@@ -1,0 +1,16 @@
+<div class="chat-container">
+  <div class="messages">
+    @for(msg of chatService.getMessages(); track msg){
+
+        <div class="message">
+             <span class="sender">{{ msg.sender }}:</span>
+  <span class="content">{{ msg.content }}</span>
+        </div>
+    }
+  </div>
+
+  <div class="input-box">
+    <input [(ngModel)]="text" placeholder="Type a message..." (keyup.enter)="send()" />
+    <button (click)="send()">Send</button>
+  </div>
+</div>
