@@ -2,6 +2,7 @@ import { Component,inject } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { FormsModule } from '@angular/forms';
 import { ChatMessage } from '../models/chat-message.model';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-chat',
@@ -10,16 +11,17 @@ import { ChatMessage } from '../models/chat-message.model';
   imports:[FormsModule]
 })
 export class ChatComponent {
+  userService = inject(UserService);
   text = '';
-  username = 'Guest' + Math.floor(Math.random() * 1000);
+  user = this.userService.user;
   chatService = inject(ChatService);
   send() {
     if (this.text.trim()) {
       const msg: ChatMessage = {
-        sender: this.username,
-        content: this.text
+        sender: this.user().name,
+        message: this.text
       };
-      //this.chatService.sendMessage(msg);
+      this.chatService.sendMessage(msg);
       this.text = '';
     
     }

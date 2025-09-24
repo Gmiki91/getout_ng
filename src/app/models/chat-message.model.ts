@@ -1,4 +1,4 @@
 export type ChatMessage = {
     sender: string,
-    content: string
+    message: string
 }

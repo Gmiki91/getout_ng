@@ -5,16 +5,13 @@ import { ChatMessage } from '../models/chat-message.model';
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {
-  private client: Client = new Client();
-  private messages: ChatMessage[] = [
-    {content:"anyadat",sender:"tula"},
-    {content:"te szemet",sender:"leki"}
-  ];
-/*
+  private client: Client;
+  private messages: ChatMessage[]=[];
+
   constructor() {
     this.client = new Client({
-      brokerURL: 'ws://localhost:8080/ws', // your backend WebSocket endpoint
-      webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+      brokerURL: 'ws://localhost:8000/ws',
+      webSocketFactory: () => new SockJS('http://localhost:8000/ws'),
       reconnectDelay: 5000,
     });
 
@@ -27,7 +24,6 @@ export class ChatService {
 
     this.client.activate();
   }
-*/
   getMessages() {
     return this.messages;
   }
