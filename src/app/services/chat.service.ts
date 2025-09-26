@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable,signal } from '@angular/core';
 import { Client, IMessage } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { ChatMessage } from '../models/chat-message.model';
@@ -7,6 +7,8 @@ import { ChatMessage } from '../models/chat-message.model';
 export class ChatService {
   private client: Client;
   private messages: ChatMessage[]=[];
+  private collapsed = signal(true);
+  chatCollapsed = this.collapsed.asReadonly();
 
   constructor() {
     this.client = new Client({
@@ -30,5 +32,8 @@ export class ChatService {
 
   sendMessage(message: ChatMessage) {
     this.client.publish({ destination: '/app/chat', body: JSON.stringify(message) });
+  }
+  toggleChatWindow(){
+    this.collapsed.update(()=>this.collapsed()===true?false:true);
   }
 }

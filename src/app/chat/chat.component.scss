@@ -3,13 +3,44 @@
   flex-direction: column;
   height: 400px;
   width: 300px;
-  border: 1px solid #ccc;
   border-radius: 8px;
   font-family: sans-serif;
   background-color: var(--app-surface);
   position: absolute;
   bottom:0px;
-  right:100px;
+  left:0px;
+  z-index: 21;
+}
+.chat-container-collapsed {
+  display: flex;
+  flex-direction: column;
+  padding:8px;
+  width: 150px;
+  border-radius: 8px;
+    background-color: var(--app-primary-container);
+  color: var(--app-on-primary-container);
+  position: absolute;
+  bottom:0px;
+  left:0px;
+  cursor: pointer;
+  font-weight: bold;
+  z-index: 21;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  background-color: var(--app-primary-container);
+  color: var(--app-on-primary-container);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-weight: bold;
+}
+
+.collapse-btn{
+  color: var(--app-on-primary);
 }
 
 .messages {
@@ -20,6 +51,7 @@
 
 .message {
   margin-bottom: 8px;
+  color:var(--app-on-surface);
 }
 
 .sender {

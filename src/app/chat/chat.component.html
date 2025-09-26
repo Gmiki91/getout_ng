@@ -1,4 +1,9 @@
+@if(!chatCollapsed()){
 <div class="chat-container">
+  <div class="header">
+    <span class="title">Global chat</span>
+    <button mat-icon-button class="collapse-btn" (click)="toggleChat()"><mat-icon>minimize</mat-icon></button>
+  </div>
   <div class="messages">
     @for(msg of chatService.getMessages(); track msg){
 
@@ -14,3 +19,8 @@
     <button (click)="send()">Send</button>
   </div>
 </div>
+}@else {
+  <div class="chat-container-collapsed">
+    <span class="title" (click)="toggleChat()">Global chat</span>
+    </div>
+}
