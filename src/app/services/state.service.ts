@@ -12,6 +12,7 @@ export class StateService {
   private _showUserSettings = signal<boolean>(false);
   private _isEventUpdating = signal<boolean>(false);
   private _areEventsLoaded = signal<boolean>(false);
+  private _isChatActive = signal<boolean>(false);
   showLogin = this._showLogin.asReadonly();
   showRegister = this._showRegister.asReadonly();
   showVisitorPage = this._showVisitorPage.asReadonly();
@@ -20,14 +21,15 @@ export class StateService {
   showUserSettings = this._showUserSettings.asReadonly();
   isEventUpdating = this._isEventUpdating.asReadonly();
   areEventsLoaded = this._areEventsLoaded.asReadonly();
+  isChatActive = this._isChatActive.asReadonly();
 
   // Filters
   private _hideFull = signal<boolean>(false);
-  private _maxDistance = signal<number>(10);
+  // private _maxDistance = signal<number>(10);
   private _sortType = signal<'Time' | 'Distance'>('Time');
   private _sortDirection = signal<'asc' | 'desc'>('asc');
   hidefull = this._hideFull.asReadonly();
-  maxDistance = this._maxDistance.asReadonly();
+  // maxDistance = this._maxDistance.asReadonly();
   sortType = this._sortType.asReadonly();
   sortDirection = this._sortDirection.asReadonly();
 
@@ -55,6 +57,10 @@ export class StateService {
 
   toggleVisitorPage() {
     this._showVisitorPage.set(false);
+  }
+
+  activateChat(): void {
+    this._isChatActive.set(true);
   }
 
   toggleEventDetails(): void {
@@ -109,7 +115,7 @@ export class StateService {
   toggleFullEvents(): void {
     this._hideFull.set(!this._hideFull());
   }
-  setMaxDistance(value: number): void {
-    this._maxDistance.set(value);
-  }
+  // setMaxDistance(value: number): void {
+  //   this._maxDistance.set(value);
+  // }
 }

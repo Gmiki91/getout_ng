@@ -25,9 +25,11 @@
           <strong>participants:</strong> {{ event().participants ?event().participants.length:"unknown"}}{{event().max>0? "/"+event().max : ""}}
       
           <br>
-          <span>
+          <span class="avatar">
           @for(user of event().participants; track user.id; let last = $last){
-            <img class="avatar" [src]="user.avatarUrl" alt="no img :*("  [matTooltip]="user.name" matTooltipShowDelay="500"/> 
+            <div (click)="onMessageTo(user)">
+              <img [src]="user.avatarUrl" alt="no img :*("  [matTooltip]="user.name" matTooltipShowDelay="500"/> 
+            </div>
           }
         </span>
         </div>

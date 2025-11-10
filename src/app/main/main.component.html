@@ -25,5 +25,7 @@
     </app-dialog>
   }
   <app-floating-action-btn></app-floating-action-btn>
-  <app-chat></app-chat>
+  @if(state.isChatActive()){
+    <app-chat></app-chat>
+}
 </div>

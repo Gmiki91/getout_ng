@@ -29,6 +29,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { LocationInfoComponent } from '../location-info/location-info.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { StateService } from '../../services/state.service';
+import { ChatService } from '../../services/chat.service';
 
 @Component({
     selector: 'app-event-details',
@@ -62,6 +63,7 @@ export class EventDetailsComponent implements OnInit {
   mapService = inject(MapService);
   userService = inject(UserService);
   stateService = inject(StateService);
+  chatService = inject(ChatService);
   event = this.eventService.selectedEvent;
   komments = this.kommentService.comments;
   showCommentBtn = false;
@@ -121,6 +123,10 @@ export class EventDetailsComponent implements OnInit {
     if (this.kommentRef.nativeElement.value.trim().length <= 0) {
         this.showCommentBtn = inFocus;
     }
+  }
+
+  onMessageTo(user:Visitor):void{
+    this.chatService.setReceiver(user);
   }
 
   toggleLocationPopup(){

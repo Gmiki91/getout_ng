@@ -1,11 +1,12 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom, Observable, BehaviorSubject, throwError } from 'rxjs';
-import { tap,map, catchError, finalize } from 'rxjs/operators';
+import { firstValueFrom, Observable, BehaviorSubject } from 'rxjs';
+import { tap,map, finalize } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { User, Visitor } from '../models/user.model';
 import { UserService } from './user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ChatService } from './chat.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,7 @@ export class AuthService {
   private url = environment.url + 'auth';
   private http = inject(HttpClient);
   private userService = inject(UserService);
+  private chatService = inject(ChatService);
   private snackBar = inject(MatSnackBar);
   private _loading = signal(true);
   loading = this._loading.asReadonly(); 
@@ -108,6 +110,7 @@ export class AuthService {
     this.setAccessToken(token);
     this.userService.setUser(user);
     this.isAuthenticated$.next(true);
+     this.chatService.disconnect(); // Disconnect the guest user's chat session
   }
   this._loading.set(false);
 }
@@ -134,6 +137,7 @@ export class AuthService {
 
   async logout(): Promise<void> {
     localStorage.removeItem('authToken');
+    this.chatService.disconnect();
     await this.userService.initializeGuest();
     this.isAuthenticated$.next(false)
   }
